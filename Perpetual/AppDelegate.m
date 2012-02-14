@@ -16,16 +16,12 @@
 @synthesize endSlider;
 @synthesize currentTimeLabel;
 @synthesize currentTimeBar;
-
 @synthesize playButton;
 
 @synthesize startTime;
 @synthesize endTime;
-
 @synthesize currentTime;
-
 @synthesize music;
-
 @synthesize paused;
 
 
@@ -37,15 +33,12 @@
         }
     }
     
-    
-    // Create the NSDates
     NSCalendar *sysCalendar = [NSCalendar currentCalendar];
 
     NSDate *date1 = [[NSDate alloc] init];
     NSDate *date2 = [[NSDate alloc] initWithTimeInterval:currentTime sinceDate:date1]; 
     
-    // Get conversion to months, days, hours, minutes
-    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSSecondCalendarUnit;
+    unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
     
     NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
     
@@ -56,14 +49,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
 
 }
 
 - (void)loadMusic:(NSURL *) fileURL {
     NSSound * m = [NSSound alloc];
     music = [m initWithContentsOfURL:fileURL byReference:YES];
-    //music = [[NSSound alloc] initWithContentsOfURL:fileURL byReference:YES];
     double maxValue = [music duration];
     paused = YES;
     startTime = 0.0;
@@ -81,7 +72,6 @@
 }
 
 - (IBAction)startSliderSet:(id)sender {
-//    NSLog(@"%f",[startSlider doubleValue]);
     if([startSlider doubleValue] < endTime) {
         startTime = [startSlider doubleValue];
     }
@@ -91,7 +81,6 @@
 }
 
 - (IBAction)endSliderSet:(id)sender {
-//    NSLog(@"%f",[endSlider doubleValue]);
     if([endSlider doubleValue] > startTime) {
         endTime = [endSlider doubleValue];
     }
@@ -120,14 +109,12 @@
     NSOpenPanel *openPanel	= [NSOpenPanel openPanel];
     NSInteger tvarNSInteger	= [openPanel runModal];
     if(tvarNSInteger == NSOKButton){
+        if([music isPlaying]) {
+            [music stop];
+        }
         NSURL * fileURL = [openPanel URL];    
         [self loadMusic:fileURL];
-    } else if(tvarNSInteger == NSCancelButton) {
-     	return;
-    } else {
-     	return;
     }
 }
-
 
 @end

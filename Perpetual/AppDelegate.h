@@ -22,9 +22,7 @@
 @property (assign) double endTime;
 @property (assign) double currentTime;
 
-
 @property (retain) NSSound *music;
-
 - (void)checkTime:(NSTimer*)theTimer;
 - (IBAction)playButtonClick:(id)sender;
 - (IBAction)startSliderSet:(id)sender;
