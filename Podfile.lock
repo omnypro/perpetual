@@ -1,0 +1,5 @@
+PODS:
+  - INAppStoreWindow (1.0)
+
+DEPENDENCIES:
+  - INAppStoreWindow (~> 1.0)
