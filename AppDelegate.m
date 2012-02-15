@@ -49,7 +49,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    self.window.titleBarHeight = 30.0;
+    [[self window] setTitleBarHeight:30.0];
+    [[self window] setTrafficLightButtonsLeftMargin:7.0];
 }
 
 - (void)loadMusic:(NSURL *) fileURL {
