@@ -1,2 +1,2 @@
 platform :osx
-dependency 'INAppStoreWindow', '~> 1.0'
+dependency 'INAppStoreWindow', :git => 'https://github.com/indragiek/INAppStoreWindow.git'
