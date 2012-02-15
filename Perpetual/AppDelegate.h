@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  Test
+//  Perpetual
 //
 //  Created by Kalle Persson on 2/14/12.
 //  Copyright (c) 2012 Afonso Wilsson. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  Test
+//  Perpetual
 //
 //  Created by Kalle Persson on 2/14/12.
 //  Copyright (c) 2012 Afonso Wilsson. All rights reserved.
@@ -32,16 +32,16 @@
             [music setCurrentTime:startTime];
         }
     }
-    
+
     NSCalendar *sysCalendar = [NSCalendar currentCalendar];
 
     NSDate *date1 = [[NSDate alloc] init];
-    NSDate *date2 = [[NSDate alloc] initWithTimeInterval:currentTime sinceDate:date1]; 
-    
+    NSDate *date2 = [[NSDate alloc] initWithTimeInterval:currentTime sinceDate:date1];
+
     unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    
+
     NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-    
+
     [currentTimeLabel setStringValue:[NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]]];
     [currentTimeBar setFloatValue:currentTime];
 
@@ -68,7 +68,7 @@
     [endSlider setNumberOfTickMarks:(int) endTime];
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
     [music play];
-    [music pause];    
+    [music pause];
 }
 
 - (IBAction)startSliderSet:(id)sender {
@@ -112,7 +112,7 @@
         if([music isPlaying]) {
             [music stop];
         }
-        NSURL * fileURL = [openPanel URL];    
+        NSURL * fileURL = [openPanel URL];
         [self loadMusic:fileURL];
     }
 }
