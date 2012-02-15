@@ -1,0 +1,5 @@
+PODS:
+  - INAppStoreWindow (1.0)
+
+DEPENDENCIES:
+  - INAppStoreWindow (from `https://github.com/indragiek/INAppStoreWindow.git')
