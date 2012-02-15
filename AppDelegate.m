@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <CoreAudio/CoreAudio.h>
+#import "metadataRetriever.h"
 
 @implementation AppDelegate
 
@@ -17,6 +18,7 @@
 @synthesize currentTimeLabel;
 @synthesize currentTimeBar;
 @synthesize playButton;
+@synthesize currentTrackLabel;
 
 @synthesize startTime;
 @synthesize endTime;
@@ -57,6 +59,14 @@
     NSSound * m = [NSSound alloc];
     music = [m initWithContentsOfURL:fileURL byReference:YES];
     double maxValue = [music duration];
+    
+    NSString * trackFilePath = [fileURL absoluteString];
+    trackFilePath = [trackFilePath stringByReplacingOccurrencesOfString:@"file://localhost" withString:@""];
+    NSArray *metadataArray = [metadataRetriever getMetadataForFile:trackFilePath];
+    [currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",[metadataArray objectAtIndex:1],[metadataArray objectAtIndex:0]]];
+
+    
+    
     paused = YES;
     startTime = 0.0;
     endTime = maxValue;

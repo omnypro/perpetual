@@ -17,6 +17,8 @@
 @property (weak) IBOutlet NSSlider *endSlider;
 @property (weak) IBOutlet NSLevelIndicator *currentTimeBar;
 @property (weak) IBOutlet NSTextField *currentTimeLabel;
+@property (weak) IBOutlet NSTextField *currentTrackLabel;
+
 
 @property (assign) BOOL paused;
 @property (assign) double startTime;
