@@ -7,10 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "INAppStoreWindow.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (unsafe_unretained) IBOutlet NSWindow *window;
+@property (unsafe_unretained) INAppStoreWindow *window;
+
 @property (weak) IBOutlet NSButton *playButton;
 @property (weak) IBOutlet NSSlider *startSlider;
 @property (weak) IBOutlet NSSlider *endSlider;
