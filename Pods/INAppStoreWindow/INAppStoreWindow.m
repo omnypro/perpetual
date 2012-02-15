@@ -18,6 +18,7 @@
 #import "INAppStoreWindow.h"
 
 #define IN_RUNNING_LION (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6)
+#define IN_COMPILING_LION __MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
 
 /** -----------------------------------------
  - There are 2 sets of colors, one for an active (key) state and one for an inactivate state
@@ -26,26 +27,46 @@
  to change at any time
  ----------------------------------------- **/
 
-#define COLOR_MAIN_START [NSColor colorWithDeviceWhite:0.659 alpha:1.0]
-#define COLOR_MAIN_END [NSColor colorWithDeviceWhite:0.812 alpha:1.0]
-#define COLOR_MAIN_BOTTOM [NSColor colorWithDeviceWhite:0.318 alpha:1.0]
+#define IN_COLOR_MAIN_START [NSColor colorWithDeviceWhite:0.659 alpha:1.0]
+#define IN_COLOR_MAIN_END [NSColor colorWithDeviceWhite:0.812 alpha:1.0]
+#define IN_COLOR_MAIN_BOTTOM [NSColor colorWithDeviceWhite:0.318 alpha:1.0]
 
-#define COLOR_NOTMAIN_START [NSColor colorWithDeviceWhite:0.851 alpha:1.0]
-#define COLOR_NOTMAIN_END [NSColor colorWithDeviceWhite:0.929 alpha:1.0]
-#define COLOR_NOTMAIN_BOTTOM [NSColor colorWithDeviceWhite:0.600 alpha:1.0]
+#define IN_COLOR_NOTMAIN_START [NSColor colorWithDeviceWhite:0.851 alpha:1.0]
+#define IN_COLOR_NOTMAIN_END [NSColor colorWithDeviceWhite:0.929 alpha:1.0]
+#define IN_COLOR_NOTMAIN_BOTTOM [NSColor colorWithDeviceWhite:0.600 alpha:1.0]
 
 /** Lion */
 
-#define COLOR_MAIN_START_L [NSColor colorWithDeviceWhite:0.66 alpha:1.0]
-#define COLOR_MAIN_END_L [NSColor colorWithDeviceWhite:0.9 alpha:1.0]
-#define COLOR_MAIN_BOTTOM_L [NSColor colorWithDeviceWhite:0.408 alpha:1.0]
+#define IN_COLOR_MAIN_START_L [NSColor colorWithDeviceWhite:0.66 alpha:1.0]
+#define IN_COLOR_MAIN_END_L [NSColor colorWithDeviceWhite:0.9 alpha:1.0]
+#define IN_COLOR_MAIN_BOTTOM_L [NSColor colorWithDeviceWhite:0.408 alpha:1.0]
 
-#define COLOR_NOTMAIN_START_L [NSColor colorWithDeviceWhite:0.878 alpha:1.0]
-#define COLOR_NOTMAIN_END_L [NSColor colorWithDeviceWhite:0.976 alpha:1.0]
-#define COLOR_NOTMAIN_BOTTOM_L [NSColor colorWithDeviceWhite:0.655 alpha:1.0]
+#define IN_COLOR_NOTMAIN_START_L [NSColor colorWithDeviceWhite:0.878 alpha:1.0]
+#define IN_COLOR_NOTMAIN_END_L [NSColor colorWithDeviceWhite:0.976 alpha:1.0]
+#define IN_COLOR_NOTMAIN_BOTTOM_L [NSColor colorWithDeviceWhite:0.655 alpha:1.0]
 
 /** Corner clipping radius **/
-#define CORNER_CLIP_RADIUS 4.0
+const CGFloat INCornerClipRadius = 4.0;
+const CGFloat INButtonTopOffset = 3.0;
+
+NS_INLINE CGFloat INMidHeight(NSRect aRect) {
+    return (aRect.size.height * (CGFloat)0.5);
+}
+
+static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFloat factor)
+{
+    NSUInteger size = width*height;
+    char *rgba = (char *)malloc(size); srand(124);
+    for(NSUInteger i=0; i < size; ++i){rgba[i] = rand()%256*factor;}
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+    CGContextRef bitmapContext = 
+    CGBitmapContextCreate(rgba, width, height, 8, width, colorSpace, kCGImageAlphaNone);
+    CFRelease(colorSpace);
+    free(rgba);
+    CGImageRef image = CGBitmapContextCreateImage(bitmapContext);
+    CFRelease(bitmapContext);
+    return image;
+}
 
 @interface INAppStoreWindow ()
 @property (INAppStoreWindowCopy) NSString *windowMenuTitle;
@@ -54,8 +75,11 @@
 - (void)_setupTrafficLightsTrackingArea;
 - (void)_recalculateFrameForTitleBarView;
 - (void)_layoutTrafficLightsAndContent;
-- (float)_minimumTitlebarHeight;
+- (CGFloat)_minimumTitlebarHeight;
 - (void)_displayWindowAndTitlebar;
+- (void)_hideTitleBarView:(BOOL)hidden;
+- (CGFloat)_defaultTrafficLightLeftMargin;
+- (CGFloat)_trafficLightSeparation;
 @end
 
 @implementation INTitlebarView
@@ -68,50 +92,46 @@
     NSColor *startColor = nil;
     NSColor *endColor = nil;
     if (IN_RUNNING_LION) {
-        startColor = drawsAsMainWindow ? COLOR_MAIN_START_L : COLOR_NOTMAIN_START_L;
-        endColor = drawsAsMainWindow ? COLOR_MAIN_END_L : COLOR_NOTMAIN_END_L;
+        startColor = drawsAsMainWindow ? IN_COLOR_MAIN_START_L : IN_COLOR_NOTMAIN_START_L;
+        endColor = drawsAsMainWindow ? IN_COLOR_MAIN_END_L : IN_COLOR_NOTMAIN_END_L;
     } else {
-        startColor = drawsAsMainWindow ? COLOR_MAIN_START : COLOR_NOTMAIN_START;
-        endColor = drawsAsMainWindow ? COLOR_MAIN_END : COLOR_NOTMAIN_END;
+        startColor = drawsAsMainWindow ? IN_COLOR_MAIN_START : IN_COLOR_NOTMAIN_START;
+        endColor = drawsAsMainWindow ? IN_COLOR_MAIN_END : IN_COLOR_NOTMAIN_END;
     }
-    [NSGraphicsContext saveGraphicsState];
-    [[self clippingPathWithRect:drawingRect cornerRadius:CORNER_CLIP_RADIUS] addClip];
+    [[self clippingPathWithRect:drawingRect cornerRadius:INCornerClipRadius] addClip];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startColor endingColor:endColor];
     [gradient drawInRect:drawingRect angle:90];
-    #if !__has_feature(objc_arc)
+#if !__has_feature(objc_arc)
     [gradient release];
-    #endif
+#endif
     if (IN_RUNNING_LION && drawsAsMainWindow) {
-        static CIImage *noisePattern = nil;
-        if (!noisePattern) {
-            CIFilter *randomGenerator = [CIFilter filterWithName:@"CIColorMonochrome"];
-            [randomGenerator setValue:[[CIFilter filterWithName:@"CIRandomGenerator"] valueForKey:@"outputImage"]
-                               forKey:@"inputImage"];
-            [randomGenerator setDefaults];
-            #if __has_feature(objc_arc)
-            noisePattern = [randomGenerator valueForKey:@"outputImage"];
-            #else
-            noisePattern = [[randomGenerator valueForKey:@"outputImage"] retain];
-            #endif
+        static CGImageRef noisePattern = nil;
+        if (noisePattern == nil) noisePattern = createNoiseImageRef(128, 128, 0.015);
+        [NSGraphicsContext saveGraphicsState];
+        [[NSGraphicsContext currentContext] setCompositingOperation:NSCompositePlusLighter];
+        CGRect noisePatternRect = CGRectZero;
+        noisePatternRect.size = CGSizeMake(CGImageGetWidth(noisePattern), CGImageGetHeight(noisePattern));        
+        CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+        CGContextDrawTiledImage(context, noisePatternRect, noisePattern);
+        [NSGraphicsContext restoreGraphicsState];
+    }
+    
+    if ([(INAppStoreWindow *)[self window] showsBaselineSeparator]) {
+        NSColor *bottomColor = nil;
+        if (IN_RUNNING_LION) {
+            bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM_L : IN_COLOR_NOTMAIN_BOTTOM_L;
+        } else {
+            bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM : IN_COLOR_NOTMAIN_BOTTOM;
         }
-        [noisePattern drawAtPoint:NSZeroPoint fromRect:self.bounds operation:NSCompositePlusLighter fraction:0.04];
-    }
-    [NSGraphicsContext restoreGraphicsState];
-    
-    NSColor *bottomColor = nil;
-    if (IN_RUNNING_LION) {
-        bottomColor = drawsAsMainWindow ? COLOR_MAIN_BOTTOM_L : COLOR_NOTMAIN_BOTTOM_L;
-    } else {
-        bottomColor = drawsAsMainWindow ? COLOR_MAIN_BOTTOM : COLOR_NOTMAIN_BOTTOM;
-    }
-    NSRect bottomRect = NSMakeRect(0.0, NSMinY(drawingRect), NSWidth(drawingRect), 1.0);
-    [bottomColor set];
-    NSRectFill(bottomRect);
-    
-    if (IN_RUNNING_LION) {
-        bottomRect.origin.y += 1.0;
-        [[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
-        [[NSBezierPath bezierPathWithRect:bottomRect] fill];
+        NSRect bottomRect = NSMakeRect(0.0, NSMinY(drawingRect), NSWidth(drawingRect), 1.0);
+        [bottomColor set];
+        NSRectFill(bottomRect);
+        
+        if (IN_RUNNING_LION) {
+            bottomRect.origin.y += 1.0;
+            [[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
+            [[NSBezierPath bezierPathWithRect:bottomRect] fill];
+        }
     }
 }
 
@@ -133,7 +153,8 @@
     return path;
 }
 
-- (void)mouseUp:(NSEvent *)theEvent {
+- (void)mouseUp:(NSEvent *)theEvent 
+{
     if ([theEvent clickCount] == 2) {
         // Get settings from "System Preferences" >  "Appearance" > "Double-click on windows title bar to minimize"
         NSString *const MDAppleMiniaturizeOnDoubleClickKey = @"AppleMiniaturizeOnDoubleClick";
@@ -149,9 +170,10 @@
 @end
 
 @implementation INAppStoreWindow
-
 @synthesize windowMenuTitle = _windowMenuTitle;
-
+@synthesize centerFullScreenButton = _centerFullScreenButton;
+@synthesize centerTrafficLightButtons = _centerTrafficLightButtons;
+@synthesize hideTitleBarInFullScreen = _hideTitleBarInFullScreen;
 #pragma mark -
 #pragma mark Initialization
 
@@ -177,11 +199,11 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    #if !__has_feature(objc_arc)
+#if !__has_feature(objc_arc)
     [_titleBarView release];
 	[_windowMenuTitle release];
     [super dealloc];    
-    #endif
+#endif
 }
 
 #pragma mark -
@@ -247,15 +269,14 @@
 {
     if ((_titleBarView != newTitleBarView) && newTitleBarView) {
         [_titleBarView removeFromSuperview];
-        #if __has_feature(objc_arc)
+#if __has_feature(objc_arc)
         _titleBarView = newTitleBarView;
-        #else
+#else
         [_titleBarView release];
         _titleBarView = [newTitleBarView retain];
-        #endif
+#endif
         // Configure the view properties and add it as a subview of the theme frame
-        NSView *contentView = [self contentView];
-        NSView *themeFrame = [contentView superview];
+        NSView *themeFrame = [[self contentView] superview];
         NSView *firstSubview = [[themeFrame subviews] objectAtIndex:0];
         [_titleBarView setAutoresizingMask:(NSViewMinYMargin | NSViewWidthSizable)];
         [self _recalculateFrameForTitleBarView];
@@ -265,18 +286,15 @@
     }
 }
 
-- (NSView*)titleBarView
+- (NSView *)titleBarView
 {
     return _titleBarView;
 }
 
-- (void)setTitleBarHeight:(CGFloat)newTitleBarHeight
+- (void)setTitleBarHeight:(CGFloat)newTitleBarHeight 
 {
-    float minTitleHeight = [self _minimumTitlebarHeight];
-    if (newTitleBarHeight < minTitleHeight) {
-        newTitleBarHeight = minTitleHeight;
-    }
 	if (_titleBarHeight != newTitleBarHeight) {
+        _cachedTitleBarHeight = newTitleBarHeight;
 		_titleBarHeight = newTitleBarHeight;
 		[self _recalculateFrameForTitleBarView];
 		[self _layoutTrafficLightsAndContent];
@@ -289,14 +307,77 @@
     return _titleBarHeight;
 }
 
+- (void)setShowsBaselineSeparator:(BOOL)showsBaselineSeparator
+{
+    if (_showsBaselineSeparator != showsBaselineSeparator) {
+        _showsBaselineSeparator = showsBaselineSeparator;
+        [self.titleBarView setNeedsDisplay:YES];
+    }
+}
+
+- (BOOL)showsBaselineSeparator
+{
+    return _showsBaselineSeparator;
+}
+
+- (void)setTrafficLightButtonsLeftMargin:(CGFloat)newTrafficLightButtonsLeftMargin
+{
+	if (_trafficLightButtonsLeftMargin != newTrafficLightButtonsLeftMargin) {
+		_trafficLightButtonsLeftMargin = newTrafficLightButtonsLeftMargin;
+		[self _recalculateFrameForTitleBarView];
+		[self _layoutTrafficLightsAndContent];
+		[self _displayWindowAndTitlebar];
+	}
+}
+
+- (CGFloat)trafficLightButtonsLeftMargin
+{
+    return _trafficLightButtonsLeftMargin;
+}
+
+
+- (void)setFullScreenButtonRightMargin:(CGFloat)newFullScreenButtonRightMargin
+{
+	if (_fullScreenButtonRightMargin != newFullScreenButtonRightMargin) {
+        _setFullScreenButtonRightMargin = YES;
+		_fullScreenButtonRightMargin = newFullScreenButtonRightMargin;
+		[self _recalculateFrameForTitleBarView];
+		[self _layoutTrafficLightsAndContent];
+		[self _displayWindowAndTitlebar];
+	}
+}
+
+- (CGFloat)fullScreenButtonRightMargin
+{
+    return _fullScreenButtonRightMargin;
+}
+
+- (void)setCenterFullScreenButton:(BOOL)centerFullScreenButton{
+    if( _centerFullScreenButton != centerFullScreenButton ) {
+        _centerFullScreenButton = centerFullScreenButton;
+        [self _layoutTrafficLightsAndContent];
+    }
+}
+
+- (void)setCenterTrafficLightButtons:(BOOL)centerTrafficLightButtons
+{
+    if ( _centerTrafficLightButtons != centerTrafficLightButtons ) {
+        _centerTrafficLightButtons = centerTrafficLightButtons;
+        [self _layoutTrafficLightsAndContent];
+    }
+}
+
 #pragma mark -
 #pragma mark Private
 
 - (void)_doInitialWindowSetup
 {
-    // Calculate titlebar height
+    _showsBaselineSeparator = YES;
+    _centerTrafficLightButtons = YES;
     _titleBarHeight = [self _minimumTitlebarHeight];
+	_trafficLightButtonsLeftMargin = [self _defaultTrafficLightLeftMargin];
     [self setMovableByWindowBackground:YES];
+    
     /** -----------------------------------------
      - The window automatically does layout every time its moved or resized, which means that the traffic lights and content view get reset at the original positions, so we need to put them back in place
      - NSWindow is hardcoded to redraw the traffic lights in a specific rect, so when they are moved down, only part of the buttons get redrawn, causing graphical artifacts. Therefore, the window must be force redrawn every time it becomes key/resigns key
@@ -309,11 +390,13 @@
     [nc addObserver:self selector:@selector(_setupTrafficLightsTrackingArea) name:NSWindowDidBecomeKeyNotification object:self];
     [nc addObserver:self selector:@selector(_displayWindowAndTitlebar) name:NSApplicationDidBecomeActiveNotification object:nil];
     [nc addObserver:self selector:@selector(_displayWindowAndTitlebar) name:NSApplicationDidResignActiveNotification object:nil];
-    #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+#if IN_COMPILING_LION
     if (IN_RUNNING_LION) {
         [nc addObserver:self selector:@selector(_setupTrafficLightsTrackingArea) name:NSWindowDidExitFullScreenNotification object:nil];
+        [nc addObserver:self selector:@selector(windowWillEnterFullScreen:) name:NSWindowWillEnterFullScreenNotification object:nil];
+        [nc addObserver:self selector:@selector(windowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:nil];
     }
-    #endif
+#endif
     [self _createTitlebarView];
     [self _layoutTrafficLightsAndContent];
     [self _setupTrafficLightsTrackingArea];
@@ -321,7 +404,6 @@
 
 - (void)_layoutTrafficLightsAndContent
 {
-    NSView *contentView = [self contentView];
     NSButton *close = [self standardWindowButton:NSWindowCloseButton];
     NSButton *minimize = [self standardWindowButton:NSWindowMiniaturizeButton];
     NSButton *zoom = [self standardWindowButton:NSWindowZoomButton];
@@ -330,31 +412,92 @@
     NSRect closeFrame = [close frame];
     NSRect minimizeFrame = [minimize frame];
     NSRect zoomFrame = [zoom frame];
-    float buttonOrigin = floor(NSMidY([_titleBarView frame]) - (closeFrame.size.height / 2.0));
+    NSRect titleBarFrame = [_titleBarView frame];
+    CGFloat buttonOrigin = 0.0;
+    if ( self.centerTrafficLightButtons ) {
+        buttonOrigin = round(NSMidY(titleBarFrame) - INMidHeight(closeFrame));
+    } else {
+        buttonOrigin = NSMaxY(titleBarFrame) - NSHeight(closeFrame) - INButtonTopOffset;
+    }
     closeFrame.origin.y = buttonOrigin;
     minimizeFrame.origin.y = buttonOrigin;
     zoomFrame.origin.y = buttonOrigin;
+	closeFrame.origin.x = _trafficLightButtonsLeftMargin;
+    minimizeFrame.origin.x = _trafficLightButtonsLeftMargin + [self _trafficLightSeparation];
+    zoomFrame.origin.x = _trafficLightButtonsLeftMargin + [self _trafficLightSeparation] * 2;
     [close setFrame:closeFrame];
     [minimize setFrame:minimizeFrame];
     [zoom setFrame:zoomFrame];
     
+#if IN_COMPILING_LION
+    // Set the frame of the FullScreen button in Lion if available
+    if ( IN_RUNNING_LION ) {
+        NSButton *fullScreen = [self standardWindowButton:NSWindowFullScreenButton];        
+        if( fullScreen ) {
+            NSRect fullScreenFrame = [fullScreen frame];
+            if ( !_setFullScreenButtonRightMargin ) {
+                self.fullScreenButtonRightMargin = NSWidth([_titleBarView frame]) - NSMaxX(fullScreen.frame);
+            }
+			fullScreenFrame.origin.x = NSWidth(titleBarFrame) - NSWidth(fullScreenFrame) - _fullScreenButtonRightMargin;
+            if( self.centerFullScreenButton ) {
+                fullScreenFrame.origin.y = round(NSMidY(titleBarFrame) - INMidHeight(fullScreenFrame));
+            } else {
+                fullScreenFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(fullScreenFrame) - INButtonTopOffset;
+            }
+            [fullScreen setFrame:fullScreenFrame];
+        }
+    }
+#endif
+    
     // Reposition the content view
+    NSView *contentView = [self contentView];    
     NSRect windowFrame = [self frame];
     NSRect newFrame = [contentView frame];
-    float titleHeight = windowFrame.size.height - newFrame.size.height;
-    float extraHeight = _titleBarHeight - titleHeight;
+    CGFloat titleHeight = NSHeight(windowFrame) - NSHeight(newFrame);
+    CGFloat extraHeight = _titleBarHeight - titleHeight;
     newFrame.size.height -= extraHeight;
     [contentView setFrame:newFrame];
+    [contentView setNeedsDisplay:YES];
+}
+
+- (void)windowWillEnterFullScreen:(NSNotification *)notification 
+{
+    if (_hideTitleBarInFullScreen) {
+        // Recalculate the views when entering from fullscreen
+        _titleBarHeight = 0.0f;
+		[self _recalculateFrameForTitleBarView];
+		[self _layoutTrafficLightsAndContent];
+		[self _displayWindowAndTitlebar];
+        
+        [self _hideTitleBarView:YES];
+    }
+}
+
+- (void)windowWillExitFullScreen:(NSNotification *)notification 
+{
+    if (_hideTitleBarInFullScreen) {
+        _titleBarHeight = _cachedTitleBarHeight;
+		[self _recalculateFrameForTitleBarView];
+		[self _layoutTrafficLightsAndContent];
+		[self _displayWindowAndTitlebar];
+        
+        [self _hideTitleBarView:NO];
+    }
 }
 
 - (void)_createTitlebarView
 {
     // Create the title bar view
-    #if __has_feature(objc_arc)
+#if __has_feature(objc_arc)
     self.titleBarView = [[INTitlebarView alloc] initWithFrame:NSZeroRect];
-    #else
+#else
     self.titleBarView = [[[INTitlebarView alloc] initWithFrame:NSZeroRect] autorelease];
-    #endif
+#endif
+}
+
+- (void)_hideTitleBarView:(BOOL)hidden 
+{
+    [self.titleBarView setHidden:hidden];
 }
 
 // Solution for tracking area issue thanks to @Perspx (Alex Rozanski) <https://gist.github.com/972958>
@@ -366,22 +509,42 @@
 
 - (void)_recalculateFrameForTitleBarView
 {
-    NSView *contentView = [self contentView];
-    NSView *themeFrame = [contentView superview];
+    NSView *themeFrame = [[self contentView] superview];
     NSRect themeFrameRect = [themeFrame frame];
-    NSRect titleFrame = NSMakeRect(0.0, NSMaxY(themeFrameRect) - _titleBarHeight, themeFrameRect.size.width, _titleBarHeight);
+    NSRect titleFrame = NSMakeRect(0.0, NSMaxY(themeFrameRect) - _titleBarHeight, NSWidth(themeFrameRect), _titleBarHeight);
     [_titleBarView setFrame:titleFrame];
 }
 
-- (float)_minimumTitlebarHeight
+- (CGFloat)_minimumTitlebarHeight
 {
-    static float minTitleHeight = 0.0;
-    if (!minTitleHeight) {
+    static CGFloat minTitleHeight = 0.0;
+    if ( !minTitleHeight ) {
         NSRect frameRect = [self frame];
         NSRect contentRect = [self contentRectForFrameRect:frameRect];
-        minTitleHeight = (frameRect.size.height - contentRect.size.height);
+        minTitleHeight = NSHeight(frameRect) - NSHeight(contentRect);
     }
     return minTitleHeight;
+}
+
+- (CGFloat)_defaultTrafficLightLeftMargin
+{
+    static CGFloat trafficLightLeftMargin = 0.0;
+    if ( !trafficLightLeftMargin ) {
+        NSButton *close = [self standardWindowButton:NSWindowCloseButton];
+        trafficLightLeftMargin = NSMinX(close.frame);
+    }
+    return trafficLightLeftMargin;
+}
+
+- (CGFloat)_trafficLightSeparation
+{
+    static CGFloat trafficLightSeparation = 0.0;
+    if ( !trafficLightSeparation ) {
+        NSButton *close = [self standardWindowButton:NSWindowCloseButton];
+        NSButton *minimize = [self standardWindowButton:NSWindowMiniaturizeButton];
+        trafficLightSeparation = NSMinX(minimize.frame) - NSMinX(close.frame);
+    }
+    return trafficLightSeparation;    
 }
 
 - (void)_displayWindowAndTitlebar

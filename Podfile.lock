@@ -2,4 +2,4 @@ PODS:
   - INAppStoreWindow (1.0)
 
 DEPENDENCIES:
-  - INAppStoreWindow (~> 1.0)
+  - INAppStoreWindow (from `https://github.com/indragiek/INAppStoreWindow.git')

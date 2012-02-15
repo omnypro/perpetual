@@ -16,7 +16,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <QuartzCore/QuartzCore.h>
 
 #if __has_feature(objc_arc)
 #define INAppStoreWindowCopy nonatomic, strong
@@ -40,9 +39,27 @@
     CGFloat _titleBarHeight;
     NSView *_titleBarView;
 	NSString *_windowMenuTitle;
+    BOOL _centerFullScreenButton;
+    BOOL _hideTitleBarInFullScreen;
+    BOOL _showsBaselineSeparator;
+    BOOL _centerTrafficLightButtons;
+    CGFloat _cachedTitleBarHeight;
+	CGFloat _trafficLightButtonsLeftMargin;
+	CGFloat _fullScreenButtonRightMargin;
+    BOOL _setFullScreenButtonRightMargin;
 }
 /** The height of the title bar. By default, this is set to the standard title bar height. **/
 @property (nonatomic) CGFloat titleBarHeight;
 /** The title bar view itself. Add subviews to this view that you want to show in the title bar (e.g. buttons, a toolbar, etc.). This view can also be set if you want to use a different styled title bar aside from the default one (textured, etc.). **/
 @property (INAppStoreWindowRetain) NSView *titleBarView;
+@property (nonatomic) BOOL centerFullScreenButton;
+@property (nonatomic) BOOL centerTrafficLightButtons;
+/** If you want to hide the title bar in fullscreen mode, set this boolean to YES **/
+@property (nonatomic) BOOL hideTitleBarInFullScreen;
+/** Use this API to hide the baseline INAppStoreWindow draws between itself and the main window contents. */
+@property (nonatomic) BOOL showsBaselineSeparator;
+/** Adjust the left and right padding of the trafficlight and fullscreen buttons */
+@property (nonatomic) CGFloat trafficLightButtonsLeftMargin;
+@property (nonatomic) CGFloat fullScreenButtonRightMargin;
+
 @end
