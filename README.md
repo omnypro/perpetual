@@ -12,7 +12,7 @@ like they would while you're playing the game. Fade outs suck.
 
 ## The Solution
 
-![](http://dribbble.com/system/users/334/screenshots/424982/perpetual.png?1329218138)
+![](http://dribbble.s3.amazonaws.com/users/334/screenshots/424982/attachments/25147/perpetual-full.png)
 
 This music player strives to do _one_ thing and do it _very_ well: incessently
 loop your music. Choose how many times you want to loop it, or just loop it
