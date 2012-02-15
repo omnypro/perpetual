@@ -25,6 +25,12 @@
 @synthesize paused;
 
 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    [[self window] setTitleBarHeight:30.0];
+    [[self window] setTrafficLightButtonsLeftMargin:7.0];
+}
+
 -(void) checkTime:(NSTimer*)theTimer{
     currentTime = [music currentTime];
     if([music isPlaying]){
@@ -45,12 +51,6 @@
     [currentTimeLabel setStringValue:[NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]]];
     [currentTimeBar setFloatValue:currentTime];
 
-}
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    [[self window] setTitleBarHeight:30.0];
-    [[self window] setTrafficLightButtonsLeftMargin:7.0];
 }
 
 - (void)loadMusic:(NSURL *) fileURL {
