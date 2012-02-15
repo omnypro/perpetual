@@ -89,7 +89,7 @@
 				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
 			);
-			path = Perpetual;
+			name = Perpetual;
 			sourceTree = "<group>";
 		};
 		9AC739D914EAEAB6000A57AD /* Supporting Files */ = {
@@ -256,8 +256,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Perpetual/Perpetual-Prefix.pch";
-				INFOPLIST_FILE = "Perpetual/Perpetual-Info.plist";
+				GCC_PREFIX_HEADER = "Perpetual-Prefix.pch";
+				INFOPLIST_FILE = "Perpetual-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -267,8 +267,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Perpetual/Perpetual-Prefix.pch";
-				INFOPLIST_FILE = "Perpetual/Perpetual-Info.plist";
+				GCC_PREFIX_HEADER = "Perpetual-Prefix.pch";
+				INFOPLIST_FILE = "Perpetual-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
