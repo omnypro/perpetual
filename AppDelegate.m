@@ -60,8 +60,7 @@
     music = [m initWithContentsOfURL:fileURL byReference:YES];
     double maxValue = [music duration];
     
-    NSString * trackFilePath = [fileURL absoluteString];
-    trackFilePath = [trackFilePath stringByReplacingOccurrencesOfString:@"file://localhost" withString:@""];
+    NSString * trackFilePath = [fileURL path];
     NSArray *metadataArray = [metadataRetriever getMetadataForFile:trackFilePath];
     [currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",[metadataArray objectAtIndex:1],[metadataArray objectAtIndex:0]]];
 
