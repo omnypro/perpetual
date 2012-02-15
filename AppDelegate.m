@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
-#import "metadataRetriever.h"
 
 @implementation AppDelegate
 
