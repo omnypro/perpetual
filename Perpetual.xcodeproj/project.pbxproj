@@ -23,10 +23,10 @@
 		9AC739D514EAEAB6000A57AD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		9AC739D614EAEAB6000A57AD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9AC739D714EAEAB6000A57AD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		9AC739DA14EAEAB6000A57AD /* Perpetual-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Perpetual-Info.plist"; sourceTree = "<group>"; };
+		9AC739DA14EAEAB6000A57AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AC739DC14EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9AC739DE14EAEAB6000A57AD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		9AC739E014EAEAB6000A57AD /* Perpetual-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Perpetual-Prefix.pch"; sourceTree = "<group>"; };
+		9AC739E014EAEAB6000A57AD /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		9AC739E214EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		9AC739E414EAEAB6000A57AD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC739E514EAEAB6000A57AD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -89,17 +89,17 @@
 				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
 			);
-			path = Perpetual;
+			name = Perpetual;
 			sourceTree = "<group>";
 		};
 		9AC739D914EAEAB6000A57AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
-				9AC739DA14EAEAB6000A57AD /* Perpetual-Info.plist */,
+				9AC739DA14EAEAB6000A57AD /* Info.plist */,
 				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
 				9AC739DE14EAEAB6000A57AD /* main.m */,
-				9AC739E014EAEAB6000A57AD /* Perpetual-Prefix.pch */,
+				9AC739E014EAEAB6000A57AD /* Prefix.pch */,
 				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -256,8 +256,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Perpetual/Perpetual-Prefix.pch";
-				INFOPLIST_FILE = "Perpetual/Perpetual-Info.plist";
+				GCC_PREFIX_HEADER = Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -267,8 +267,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Perpetual/Perpetual-Prefix.pch";
-				INFOPLIST_FILE = "Perpetual/Perpetual-Info.plist";
+				GCC_PREFIX_HEADER = Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
