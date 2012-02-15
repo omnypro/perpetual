@@ -49,7 +49,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-
+    self.window.titleBarHeight = 30.0;
 }
 
 - (void)loadMusic:(NSURL *) fileURL {
