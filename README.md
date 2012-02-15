@@ -16,9 +16,11 @@ like they would while you're playing the game. Fade outs suck.
 
 This music player strives to do _one_ thing and do it _very_ well: incessently
 loop your music. Choose how many times you want to loop it, or just loop it
-perpetually.
+perpetually. Right now, that process is manual. Eventually we hope to do it
+for you.
 
-Right now, that process is manual. Eventually we hope to do it for you.
+Also, this will eventually be on the App Store, but it will always be open
+source.
 
 ## The Backstory
 
@@ -33,4 +35,4 @@ It's quite simple actually:
 ## The Developers
 
 * [@bryanveloso](https://twitter.com/bryanveloso) — https://github.com/bryanveloso
-* [@kallepersson](https://twitter.com/kallepersson) - https://github.com/kallepersson
+* [@kallepersson](https://twitter.com/kallepersson) — https://github.com/kallepersson
