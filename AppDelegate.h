@@ -11,8 +11,7 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (unsafe_unretained) INAppStoreWindow *window;
-
+@property (unsafe_unretained) IBOutlet INAppStoreWindow *window;
 @property (weak) IBOutlet NSButton *playButton;
 @property (weak) IBOutlet NSSlider *startSlider;
 @property (weak) IBOutlet NSSlider *endSlider;
