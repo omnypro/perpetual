@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
+		9395B6B014EB8D91002999D9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9395B6AF14EB8D91002999D9 /* Podfile */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
 		9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC739D214EAEAB6000A57AD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -105,12 +107,13 @@
 		9AC739D914EAEAB6000A57AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9395B6AF14EB8D91002999D9 /* Podfile */,
 				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
-				9AC739DA14EAEAB6000A57AD /* Info.plist */,
-				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
 				9AC739DE14EAEAB6000A57AD /* main.m */,
 				9AC739E014EAEAB6000A57AD /* Prefix.pch */,
+				9AC739DA14EAEAB6000A57AD /* Info.plist */,
 				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
+				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 				9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */,
 				9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */,
 				9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */,
+				9395B6B014EB8D91002999D9 /* Podfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
