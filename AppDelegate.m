@@ -79,20 +79,25 @@
     [startSlider setNumberOfTickMarks:(int) maxValue/timeScale];
     [endSlider setNumberOfTickMarks:(int) maxValue/timeScale];
     
-    //Set title and artist labels from metadata
-    NSArray * mdArray = [music commonMetadata];
+    //Set title and artist labels from 
     NSString * trackTitle = @"Unknown title";
     NSString * trackArtist = @"Unknown artist";
-
-    NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:@"title" keySpace:nil];
-    if([titleMetadataItems count] > 0) {
-        trackTitle = [[titleMetadataItems objectAtIndex:0] stringValue];
-    }
-    NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:@"artist" keySpace:nil];
-    if([artistMetadataItems count] > 0) {
-        trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
-    }
     
+    NSArray * mdFormatsArray = [music availableMetadataFormats];
+    for(int i=0;i<[mdFormatsArray count];i++) {
+        NSArray * mdArray = [music metadataForFormat:[mdFormatsArray objectAtIndex:i]];   
+        //Fixme: find out why we need to replace @ with ©
+        NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
+        if([titleMetadataItems count] > 0) {
+            trackTitle = [[titleMetadataItems objectAtIndex:0] stringValue];
+        }
+        //Fixme: find out why we need to replace @ with ©
+        NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyArtist stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
+        if([artistMetadataItems count] > 0) {
+            trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
+        }
+    }
+
     [currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
     
     //Start loop and play track
