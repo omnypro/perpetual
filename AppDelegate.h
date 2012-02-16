@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <QTKit/QTKit.h>
 #import "INAppStoreWindow.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
@@ -17,13 +18,16 @@
 @property (weak) IBOutlet NSSlider *endSlider;
 @property (weak) IBOutlet NSLevelIndicator *currentTimeBar;
 @property (weak) IBOutlet NSTextField *currentTimeLabel;
+@property (weak) IBOutlet NSTextField *currentTrackLabel;
+
 
 @property (assign) BOOL paused;
-@property (assign) double startTime;
-@property (assign) double endTime;
-@property (assign) double currentTime;
+@property (assign) QTTime startTime;
+@property (assign) QTTime endTime;
+@property (assign) QTTime currentTime;
+@property (assign) long timeScale;
 
-@property (retain) NSSound *music;
+@property (retain) QTMovie *music;
 - (void)checkTime:(NSTimer*)theTimer;
 - (IBAction)playButtonClick:(id)sender;
 - (IBAction)startSliderSet:(id)sender;

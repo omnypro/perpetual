@@ -11,12 +11,14 @@
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		9395B6B014EB8D91002999D9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9395B6AF14EB8D91002999D9 /* Podfile */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
+		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
 		9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */; };
 		9AC739DF14EAEAB6000A57AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739DE14EAEAB6000A57AD /* main.m */; };
 		9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E114EAEAB6000A57AD /* Credits.rtf */; };
 		9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739E514EAEAB6000A57AD /* AppDelegate.m */; };
 		9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* MainMenu.xib */; };
+		9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE4EA5614EC59D6002EF094 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,7 @@
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
+		9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC739D214EAEAB6000A57AD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9AC739D514EAEAB6000A57AD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -37,6 +40,7 @@
 		9AC739E414EAEAB6000A57AD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC739E514EAEAB6000A57AD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9AC739E814EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		9AE4EA5614EC59D6002EF094 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -45,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */,
+				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
 				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
 				9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */,
 				351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */,
@@ -57,6 +63,8 @@
 		9AC739C314EAEAB6000A57AD = {
 			isa = PBXGroup;
 			children = (
+				9AE4EA5614EC59D6002EF094 /* QTKit.framework */,
+				9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */,
 				9395B6AC14EB88A8002999D9 /* QuartzCore.framework */,
 				9AC739D814EAEAB6000A57AD /* Perpetual */,
 				9AC739D114EAEAB6000A57AD /* Frameworks */,
