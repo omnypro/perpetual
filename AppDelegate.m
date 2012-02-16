@@ -19,7 +19,11 @@
 @synthesize currentTimeBar;
 @synthesize playButton;
 @synthesize currentTrackLabel;
+@synthesize loopCountLabel;
+@synthesize loopCountStepper;
 
+@synthesize loopCount;
+@synthesize loopInfiniteCount;
 @synthesize timeScale;
 @synthesize startTime;
 @synthesize endTime;
@@ -27,17 +31,36 @@
 @synthesize music;
 @synthesize paused;
 
+-(void) setTheLoopCount:(int)theLoopCount{
+    //Sets the property and updates the label
+    [self setLoopCount:theLoopCount];
+    if([self loopCount] < [self loopInfiniteCount]) {
+        [loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d",self.loopCount]];
+    }
+    else {
+        [loopCountLabel setStringValue:@"∞"];
+    }
+    //Finally update the stepper so it's synchronized
+    [loopCountStepper setIntValue:[self loopCount]];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [[self window] setTitleBarHeight:30.0];
     [[self window] setTrafficLightButtonsLeftMargin:7.0];
+    [self setLoopInfiniteCount:31];
+    [self setTheLoopCount:10];
+    [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
 }
 
 -(void) checkTime:(NSTimer*)theTimer{
     currentTime = [music currentTime];
 
-    if(currentTime.timeValue >= endTime.timeValue && startTime.timeValue < endTime.timeValue){
+    if(currentTime.timeValue >= endTime.timeValue && startTime.timeValue < endTime.timeValue && [self loopCount] > 0){
+        if([self loopCount] < [self loopInfiniteCount]) {
+            //[self loopInfiniteCount] is the magic infinite number
+            [self setTheLoopCount:[self loopCount]-1];
+        }
         [music setCurrentTime:startTime];
     }
 
@@ -137,6 +160,10 @@
         [music play];
         paused = NO;
     }
+}
+
+- (IBAction)loopStepperStep:(id)sender {
+    [self setTheLoopCount:[loopCountStepper intValue]];
 }
 
 - (IBAction)openFile:(id)sender {
