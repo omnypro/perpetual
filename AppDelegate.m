@@ -54,7 +54,7 @@
     [self setLoopInfiniteCount:31];
     [self setTheLoopCount:10];
     [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
-    TimeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0,0, 64, 24) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    TimeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0,0, 50, 17) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
 }
 
 -(void) checkTime:(NSTimer*)theTimer{
@@ -68,17 +68,7 @@
         [music setCurrentTime:startTime];
     }
 
-
-    NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-
-    NSDate *date1 = [[NSDate alloc] init];
-    NSDate *date2 = [[NSDate alloc] initWithTimeInterval:currentTime.timeValue/timeScale sinceDate:date1];
-
-    unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-
-    NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-
-    [currentTimeLabel setStringValue:[NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]]];
+    [currentTimeLabel setStringValue:[self QTTimeToString:currentTime]];
     [currentTimeBar setFloatValue:(float)currentTime.timeValue];
 
 }
@@ -168,7 +158,7 @@
         
         NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
         
-        return [NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]];
+        return [NSString stringWithFormat:@"%01d:%02d",[conversionInfo minute],[conversionInfo second]];
     }
     else {
         return @"00:00";

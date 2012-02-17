@@ -19,16 +19,24 @@
     self = [super initWithContentRect:contentRect styleMask:windowStyle backing:bufferingType defer:deferCreation];
     if (self) {
         [self setOpaque:NO];
-        [self setAlphaValue:0.90];
-        [self setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.95 blue:0.76 alpha:1.0]];
+        [self setAlphaValue:0.75];
+        [self setBackgroundColor:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:1.0]];
         [self setHasShadow:YES];
         [self setLevel:NSStatusWindowLevel];
         [self ignoresMouseEvents];
-        textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0,-4,64,24)];
+        
+        NSImageView * timeImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(5, 3, 9, 10)];
+        NSImage * timeImage = [NSImage imageNamed:@"tooltipTime"];
+        [timeImageView setImage:timeImage];
+        [[self contentView] addSubview:timeImageView];
+        
+        textField = [[NSTextField alloc] initWithFrame:NSMakeRect(12,5,35,10)];
         [textField setEditable:NO];
         [textField setSelectable:NO];
         [textField setBezeled:NO];
         [textField setBordered:NO];
+        [textField setFont:[NSFont fontWithName:@"Helvetica-Bold" size:10]];
+        [textField setTextColor:[NSColor whiteColor]];
         [textField setDrawsBackground:NO];
         [textField setAlignment:NSCenterTextAlignment];
         [textField setStringValue:@"00:00"];
