@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TooltipWindow.h"
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
 
@@ -22,6 +23,7 @@
 @synthesize loopCountLabel;
 @synthesize loopCountStepper;
 
+@synthesize TimeTooltip;
 @synthesize loopCount;
 @synthesize loopInfiniteCount;
 @synthesize timeScale;
@@ -42,6 +44,7 @@
     }
     //Finally update the stepper so it's synchronized
     [loopCountStepper setIntValue:[self loopCount]];
+    
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -51,6 +54,7 @@
     [self setLoopInfiniteCount:31];
     [self setTheLoopCount:10];
     [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
+    TimeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0,0, 64, 24) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
 }
 
 -(void) checkTime:(NSTimer*)theTimer{
@@ -130,7 +134,10 @@
 - (IBAction)startSliderSet:(id)sender {
     if([startSlider doubleValue] < (float)endTime.timeValue) {
         startTime = QTMakeTime((long)[startSlider doubleValue],timeScale);
-
+        [TimeTooltip setString:[self QTTimeToString:startTime]];
+        float y = [_window frame].origin.y + [startSlider frame].origin.y + 24;
+        [TimeTooltip updatePosition:y];
+        [TimeTooltip show];
     }
     else{
         [startSlider setFloatValue:(float)startTime.timeValue];
@@ -140,9 +147,31 @@
 - (IBAction)endSliderSet:(id)sender {
     if([endSlider doubleValue] > (float)startTime.timeValue) {
         endTime = QTMakeTime((long)[endSlider doubleValue],timeScale);
+        [TimeTooltip setString:[self QTTimeToString:endTime]];
+        float y = [_window frame].origin.y + [endSlider frame].origin.y - 24;
+        [TimeTooltip updatePosition:y];
+        [TimeTooltip show];
     }
     else{
         [endSlider setFloatValue:(float)endTime.timeValue];
+    }
+}
+
+- (NSString *) QTTimeToString:(QTTime) time{
+    if(time.timeValue > 0.0) {
+        NSCalendar *sysCalendar = [NSCalendar currentCalendar];
+        
+        NSDate *date1 = [[NSDate alloc] init];
+        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:time.timeValue/timeScale sinceDate:date1];
+        
+        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        
+        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
+        
+        return [NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]];
+    }
+    else {
+        return @"00:00";
     }
 }
 

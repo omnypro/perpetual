@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <QTKit/QTKit.h>
 #import "INAppStoreWindow.h"
+#import "TooltipWindow.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -29,12 +30,16 @@
 @property (assign) QTTime currentTime;
 @property (assign) long timeScale;
 @property (assign) int loopCount;
+@property (nonatomic, strong) TooltipWindow * TimeTooltip;
+
+
 
 //The value where we'll start looping infinitely
 @property (assign) int loopInfiniteCount;
 
 
 @property (retain) QTMovie *music;
+- (NSString*)QTTimeToString:(QTTime) time;
 - (void)checkTime:(NSTimer*)theTimer;
 - (IBAction)loopStepperStep:(id)sender;
 - (IBAction)playButtonClick:(id)sender;
