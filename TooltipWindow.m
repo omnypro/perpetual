@@ -20,7 +20,7 @@
     if (self) {
         [self setOpaque:NO];
         [self setAlphaValue:0.90];
-        [self setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.90 blue:0.75 alpha:1.0]];
+        [self setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.95 blue:0.76 alpha:1.0]];
         [self setHasShadow:YES];
         [self setLevel:NSStatusWindowLevel];
         [self ignoresMouseEvents];
