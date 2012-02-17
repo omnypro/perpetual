@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "TooltipWindow.h"
+#import "ColorGradientView.h"
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
 
@@ -22,6 +23,7 @@
 @synthesize currentTrackLabel;
 @synthesize loopCountLabel;
 @synthesize loopCountStepper;
+@synthesize gradientView;
 
 @synthesize TimeTooltip;
 @synthesize loopCount;
@@ -55,6 +57,15 @@
     [self setTheLoopCount:10];
     [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
     TimeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0,0, 50, 17) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    
+
+    [gradientView setStartingStrokeColor:[NSColor whiteColor]];
+    [gradientView setStartingColor:[NSColor colorWithSRGBRed:0.99 green:0.99 blue:0.99 alpha:1.0]];
+    [gradientView setEndingColor:[NSColor colorWithSRGBRed:0.85 green:0.85 blue:0.85 alpha:1.0]];
+    [gradientView setEndingStrokeColor:[NSColor colorWithSRGBRed:0.67 green:0.67 blue:0.67 alpha:1.0]];
+    [gradientView setAngle:270];
+    
+    
 }
 
 -(void) checkTime:(NSTimer*)theTimer{

@@ -14,6 +14,7 @@
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9ABE468F14EDC849001C30C1 /* TooltipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABE468E14EDC849001C30C1 /* TooltipWindow.m */; };
 		9AC3DB8C14EE4DB700F8AA76 /* tooltipTime.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AC3DB8B14EE4DB700F8AA76 /* tooltipTime.png */; };
+		9AC3DB9014EE7B7800F8AA76 /* ColorGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3DB8F14EE7B7800F8AA76 /* ColorGradientView.m */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
 		9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */; };
 		9AC739DF14EAEAB6000A57AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739DE14EAEAB6000A57AD /* main.m */; };
@@ -32,6 +33,8 @@
 		9ABE468D14EDC849001C30C1 /* TooltipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TooltipWindow.h; sourceTree = "<group>"; };
 		9ABE468E14EDC849001C30C1 /* TooltipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TooltipWindow.m; sourceTree = "<group>"; };
 		9AC3DB8B14EE4DB700F8AA76 /* tooltipTime.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tooltipTime.png; sourceTree = "<group>"; };
+		9AC3DB8E14EE7B7800F8AA76 /* ColorGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorGradientView.h; sourceTree = "<group>"; };
+		9AC3DB8F14EE7B7800F8AA76 /* ColorGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorGradientView.m; sourceTree = "<group>"; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC739D214EAEAB6000A57AD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9AC739D514EAEAB6000A57AD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -115,6 +118,8 @@
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
 				9ABE468D14EDC849001C30C1 /* TooltipWindow.h */,
 				9ABE468E14EDC849001C30C1 /* TooltipWindow.m */,
+				9AC3DB8E14EE7B7800F8AA76 /* ColorGradientView.h */,
+				9AC3DB8F14EE7B7800F8AA76 /* ColorGradientView.m */,
 			);
 			name = Perpetual;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 				9AC739DF14EAEAB6000A57AD /* main.m in Sources */,
 				9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */,
 				9ABE468F14EDC849001C30C1 /* TooltipWindow.m in Sources */,
+				9AC3DB9014EE7B7800F8AA76 /* ColorGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

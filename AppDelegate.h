@@ -10,6 +10,7 @@
 #import <QTKit/QTKit.h>
 #import "INAppStoreWindow.h"
 #import "TooltipWindow.h"
+#import "ColorGradientView.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -22,6 +23,7 @@
 @property (weak) IBOutlet NSTextField *currentTrackLabel;
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
+@property (weak) IBOutlet ColorGradientView *gradientView;
 
 
 @property (assign) BOOL paused;
