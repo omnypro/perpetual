@@ -127,6 +127,10 @@
     }
 
     [currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
+    [currentTrackLabel setDrawsBackground:NO];
+
+    [[currentTrackLabel cell] setBackgroundStyle:NSBackgroundStyleRaised];
+
     
     //Start loop and play track
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];

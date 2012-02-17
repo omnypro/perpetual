@@ -19,7 +19,6 @@
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code here.
         [self setStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
         [self setEndingColor:nil];
         [self setAngle:270];
@@ -29,16 +28,12 @@
 
 - (void)drawRect:(NSRect)rect {
     if (endingColor == nil || [startingColor isEqual:endingColor]) {
-        // Fill view with a standard background color
         [startingColor set];
         NSRectFill(rect);
     }
     else {
-        // Fill view with a top-down gradient
-        // from startingColor to endingColor
         NSGradient* aGradient;
         if(startingStrokeColor != nil && startingColor != nil && endingColor != nil && endingStrokeColor != nil) {
-            NSLog(@"asda");
             aGradient = [[NSGradient alloc] initWithColorsAndLocations:startingStrokeColor,0.0,startingColor,0.02,endingColor,0.98,endingStrokeColor,1.0,nil];
         }
         else if(startingStrokeColor != nil && startingColor != nil && endingColor != nil) {
@@ -50,7 +45,6 @@
         else if(startingColor != nil && endingColor != nil) {
             aGradient = [[NSGradient alloc] initWithColorsAndLocations:startingColor,0.0,endingColor,1.0,nil];
         }
-        NSLog(@"%@",aGradient);
         [aGradient drawInRect:[self bounds] angle:angle];
     }
 }

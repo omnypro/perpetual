@@ -7,6 +7,7 @@
 //
 
 #import "TooltipWindow.h"
+#import "ColorGradientView.h"
 
 
 @implementation TooltipWindow
@@ -20,10 +21,18 @@
     if (self) {
         [self setOpaque:NO];
         [self setAlphaValue:0.75];
+        
         [self setBackgroundColor:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:1.0]];
         [self setHasShadow:YES];
         [self setLevel:NSStatusWindowLevel];
         [self ignoresMouseEvents];
+        
+        /*
+        ColorGradientView * gradientView = [[ColorGradientView alloc] initWithFrame:NSMakeRect(0, 0, 50, 17)];
+        [gradientView setStartingColor:[NSColor colorWithSRGBRed:0.05 green:0.05 blue:0.05 alpha:1.0]];
+        [gradientView setEndingColor:[NSColor colorWithSRGBRed:0.0 green:0.0 blue:0.0 alpha:1.0]];
+        [[self contentView] addSubview:gradientView];
+        */
         
         NSImageView * timeImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(5, 3, 9, 10)];
         NSImage * timeImage = [NSImage imageNamed:@"tooltipTime"];
