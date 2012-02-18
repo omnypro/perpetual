@@ -39,7 +39,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
 @synthesize paused = _paused;
 
 
--(void) setTheLoopCount:(int)theLoopCount
+-(void) setTheLoopCount:(NSUInteger)theLoopCount
 {
     // Sets the property and updates the label.
     [self setLoopCount:theLoopCount];
@@ -50,7 +50,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
         [self.loopCountLabel setStringValue:@"∞"];
     }
     // Finally update the stepper so it's synchronized.
-    [self.loopCountStepper setIntValue:[self loopCount]];
+    [self.loopCountStepper setIntegerValue:[self loopCount]];
 }
 
 - (void)awakeFromNib
