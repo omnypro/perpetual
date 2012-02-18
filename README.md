@@ -36,3 +36,7 @@ It's quite simple actually:
 
 * [@bryanveloso](https://twitter.com/bryanveloso) — https://github.com/bryanveloso
 * [@kallepersson](https://twitter.com/kallepersson) — https://github.com/kallepersson
+
+## The Contributors
+
+* [@dannygreg](https://twitter.com/dannygreg) - https://github.com/dannygreg
