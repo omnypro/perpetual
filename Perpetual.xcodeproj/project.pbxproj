@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 307BADD814F04DEF0035E3AF /* WebKit.framework */; };
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		9395B6B014EB8D91002999D9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9395B6AF14EB8D91002999D9 /* Podfile */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		307BADD814F04DEF0035E3AF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
 				9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */,
 				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
 				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
@@ -90,6 +93,7 @@
 		9AC739D414EAEAB6000A57AD /* System Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				307BADD814F04DEF0035E3AF /* WebKit.framework */,
 				9AC739D214EAEAB6000A57AD /* Cocoa.framework */,
 				9AE4EA5614EC59D6002EF094 /* QTKit.framework */,
 				9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */,

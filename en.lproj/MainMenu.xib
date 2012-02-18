@@ -6,10 +6,10 @@
 		<string key="IBDocument.InterfaceBuilderVersion">2177</string>
 		<string key="IBDocument.AppKitVersion">1138.32</string>
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2177</string>
-		</object>
+		<dictionary class="NSMutableDictionary" key="IBDocument.PluginVersions">
+			<string key="com.apple.InterfaceBuilder.CocoaPlugin">2177</string>
+			<string key="com.apple.WebKitIBPlugin">1117</string>
+		</dictionary>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSStepper</string>
 			<string>NSMenuItem</string>
@@ -17,9 +17,8 @@
 			<string>NSTextFieldCell</string>
 			<string>NSButtonCell</string>
 			<string>NSButton</string>
-			<string>NSImageView</string>
-			<string>NSImageCell</string>
 			<string>NSLevelIndicator</string>
+			<string>WebView</string>
 			<string>NSSlider</string>
 			<string>NSSliderCell</string>
 			<string>NSCustomObject</string>
@@ -31,6 +30,7 @@
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+			<string>com.apple.WebKitIBPlugin</string>
 		</array>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
 			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
@@ -302,38 +302,6 @@
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
-						<object class="NSImageView" id="379503995">
-							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">274</int>
-							<set class="NSMutableSet" key="NSDragTypes">
-								<string>Apple PDF pasteboard type</string>
-								<string>Apple PICT pasteboard type</string>
-								<string>Apple PNG pasteboard type</string>
-								<string>NSFilenamesPboardType</string>
-								<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
-								<string>NeXT TIFF v4.0 pasteboard type</string>
-							</set>
-							<string key="NSFrame">{{-3, 147}, {406, 256}}</string>
-							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="690740704"/>
-							<string key="NSReuseIdentifierKey">_NS:2141</string>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSImageCell" key="NSCell" id="934480702">
-								<int key="NSCellFlags">130560</int>
-								<int key="NSCellFlags2">33554432</int>
-								<object class="NSCustomResource" key="NSContents">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">cover</string>
-								</object>
-								<string key="NSCellIdentifier">_NS:2141</string>
-								<int key="NSAlign">5</int>
-								<int key="NSScale">0</int>
-								<int key="NSStyle">3</int>
-								<bool key="NSAnimates">NO</bool>
-							</object>
-							<bool key="NSEditable">YES</bool>
-						</object>
 						<object class="NSButton" id="690740704">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">292</int>
@@ -535,11 +503,49 @@
 								<reference key="NSTextColor" ref="41212231"/>
 							</object>
 						</object>
+						<object class="WebView" id="1038146946">
+							<reference key="NSNextResponder" ref="439893737"/>
+							<int key="NSvFlags">274</int>
+							<set class="NSMutableSet" key="NSDragTypes">
+								<string>Apple HTML pasteboard type</string>
+								<string>Apple PDF pasteboard type</string>
+								<string>Apple PICT pasteboard type</string>
+								<string>Apple URL pasteboard type</string>
+								<string>Apple Web Archive pasteboard type</string>
+								<string>NSColor pasteboard type</string>
+								<string>NSFilenamesPboardType</string>
+								<string>NSStringPboardType</string>
+								<string>NeXT RTFD pasteboard type</string>
+								<string>NeXT Rich Text Format v1.0 pasteboard type</string>
+								<string>NeXT TIFF v4.0 pasteboard type</string>
+								<string>WebURLsWithTitlesPboardType</string>
+								<string>public.png</string>
+								<string>public.url</string>
+								<string>public.url-name</string>
+							</set>
+							<string key="NSFrame">{{0, 150}, {400, 250}}</string>
+							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<string key="NSReuseIdentifierKey">_NS:9</string>
+							<string key="FrameName"/>
+							<string key="GroupName"/>
+							<object class="WebPreferences" key="Preferences">
+								<string key="Identifier"/>
+								<dictionary class="NSMutableDictionary" key="Values">
+									<integer value="12" key="WebKitDefaultFixedFontSize"/>
+									<integer value="12" key="WebKitDefaultFontSize"/>
+									<integer value="1" key="WebKitMinimumFontSize"/>
+								</dictionary>
+							</object>
+							<bool key="UseBackForwardList">YES</bool>
+							<bool key="AllowsUndo">YES</bool>
+						</object>
 					</array>
 					<string key="NSFrameSize">{400, 400}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView" ref="379503995"/>
+					<reference key="NSNextKeyView"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1050}}</string>
 				<string key="NSMinSize">{400, 422}</string>
@@ -953,13 +959,13 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="752942585"/>
 							<reference ref="75188771"/>
-							<reference ref="379503995"/>
 							<reference ref="353695766"/>
 							<reference ref="840108087"/>
 							<reference ref="690740704"/>
 							<reference ref="753304525"/>
 							<reference ref="238452651"/>
 							<reference ref="153453889"/>
+							<reference ref="1038146946"/>
 						</array>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -1042,19 +1048,6 @@
 						<reference key="parent" ref="840108087"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">555</int>
-						<reference key="object" ref="379503995"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="934480702"/>
-						</array>
-						<reference key="parent" ref="439893737"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">556</int>
-						<reference key="object" ref="934480702"/>
-						<reference key="parent" ref="379503995"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">549</int>
 						<reference key="object" ref="75188771"/>
 						<array class="NSMutableArray" key="children">
@@ -1106,6 +1099,11 @@
 						<reference key="object" ref="852473342"/>
 						<reference key="parent" ref="238452651"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">623</int>
+						<reference key="object" ref="1038146946"/>
+						<reference key="parent" ref="439893737"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1141,8 +1139,6 @@
 				<string key="547.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="549.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="550.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="555.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="556.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="563.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="564.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1158,6 +1154,7 @@
 				<string key="615.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="617.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="618.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="623.IBPluginDependency">com.apple.WebKitIBPlugin</string>
 				<string key="72.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="73.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="79.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1169,7 +1166,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">622</int>
+			<int key="maxID">623</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1282,7 +1279,6 @@
 			<string key="NSGoRightTemplate">{9, 9}</string>
 			<string key="NSMenuCheckmark">{11, 11}</string>
 			<string key="NSMenuMixedState">{10, 3}</string>
-			<string key="cover">{300, 300}</string>
 		</dictionary>
 	</data>
 </archive>
