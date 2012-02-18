@@ -68,6 +68,11 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
 }
 
+- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo {
+    // We shouldn't be able to drag things into the web view.
+    return WebDragDestinationActionNone;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [[self window] setTitleBarHeight:40.0];
