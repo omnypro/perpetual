@@ -51,6 +51,12 @@
     [self.loopCountStepper setIntValue:[self loopCount]];
 }
 
+- (void)awakeFromNib
+{
+	NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+    [self.coverWebView setMainFrameURL:[htmlFileURL absoluteString]];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [[self window] setTitleBarHeight:40.0];
