@@ -121,14 +121,14 @@
 		9AC739D914EAEAB6000A57AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9395B6AF14EB8D91002999D9 /* Podfile */,
-				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
-				9AC739DE14EAEAB6000A57AD /* main.m */,
-				9AC739E014EAEAB6000A57AD /* Prefix.pch */,
-				9AC739DA14EAEAB6000A57AD /* Info.plist */,
-				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
-				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
 				307BADDA14F04EA50035E3AF /* cover.html */,
+				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
+				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
+				9AC739DA14EAEAB6000A57AD /* Info.plist */,
+				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
+				9AC739DE14EAEAB6000A57AD /* main.m */,
+				9395B6AF14EB8D91002999D9 /* Podfile */,
+				9AC739E014EAEAB6000A57AD /* Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
