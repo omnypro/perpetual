@@ -3,7 +3,7 @@
 //  Perpetual
 //
 //  Created by Kalle Persson on 2/14/12.
-//  Copyright (c) 2012 Afonso Wilsson. All rights reserved.
+//  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -43,5 +43,4 @@
 - (IBAction)startSliderSet:(id)sender;
 - (IBAction)endSliderSet:(id)sender;
 - (IBAction)currentTimeBarSet:(id)sender;
-//- (IBAction)openFile:(id)sender;
 @end
