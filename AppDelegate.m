@@ -31,16 +31,18 @@
 @synthesize music;
 @synthesize paused;
 
--(void) setTheLoopCount:(int)theLoopCount{
-    //Sets the property and updates the label
+
+-(void) setTheLoopCount:(int)theLoopCount
+{
+    // Sets the property and updates the label.
     [self setLoopCount:theLoopCount];
-    if([self loopCount] < [self loopInfiniteCount]) {
+    if ([self loopCount] < [self loopInfiniteCount]) {
         [loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d",self.loopCount]];
     }
     else {
         [loopCountLabel setStringValue:@"∞"];
     }
-    //Finally update the stepper so it's synchronized
+    // Finally update the stepper so it's synchronized.
     [loopCountStepper setIntValue:[self loopCount]];
 }
 
@@ -72,12 +74,13 @@
     [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
 }
 
--(void) checkTime:(NSTimer*)theTimer{
+-(void) checkTime:(NSTimer*)theTimer
+{
     currentTime = [music currentTime];
 
-    if(currentTime.timeValue >= endTime.timeValue && startTime.timeValue < endTime.timeValue && [self loopCount] > 0){
-        if([self loopCount] < [self loopInfiniteCount]) {
-            //[self loopInfiniteCount] is the magic infinite number
+    if (currentTime.timeValue >= endTime.timeValue && startTime.timeValue < endTime.timeValue && [self loopCount] > 0){
+        if ([self loopCount] < [self loopInfiniteCount]) {
+            // [self loopInfiniteCount] is the magic infinite number.
             [self setTheLoopCount:[self loopCount]-1];
         }
         [music setCurrentTime:startTime];
@@ -98,21 +101,22 @@
 
 }
 
-- (void)loadMusic:(NSURL *) fileURL {
-    //Load the track from URL
-    //TODO: Error handling
+- (void)loadMusic:(NSURL *) fileURL 
+{
+    // Load the track from URL.
+    // TODO: Error handling.
     music = [[QTMovie alloc] initWithURL:fileURL error:nil];
 
     //Really needed anymore?
     paused = YES;
 
-    //Find and set slider max values
+    // Find and set slider max values.
     QTTime maxTime = [music duration];
     timeScale = [music duration].timeScale;
     float maxValue = (float)maxTime.timeValue;
-    startTime = QTMakeTime(0.0,timeScale);
+    startTime = QTMakeTime(0.0, timeScale);
     endTime = maxTime;
-    
+
     [currentTimeBar setMaxValue:maxValue];
     [startSlider setMaxValue:maxValue];
     [startSlider setFloatValue:0.0];
@@ -120,58 +124,61 @@
     [endSlider setFloatValue:maxValue];
     [startSlider setNumberOfTickMarks:(int) maxValue/timeScale];
     [endSlider setNumberOfTickMarks:(int) maxValue/timeScale];
-    
-    //Set title and artist labels from 
+
+    // Set title and artist labels from.
     NSString * trackTitle = @"Unknown title";
     NSString * trackArtist = @"Unknown artist";
-    
+
     NSArray * mdFormatsArray = [music availableMetadataFormats];
-    for(int i=0;i<[mdFormatsArray count];i++) {
-        NSArray * mdArray = [music metadataForFormat:[mdFormatsArray objectAtIndex:i]];   
-        //Fixme: find out why we need to replace @ with ©
+    for (int i=0;i<[mdFormatsArray count];i++) {
+        NSArray * mdArray = [music metadataForFormat:[mdFormatsArray objectAtIndex:i]];
+        // Fixme: find out why we need to replace @ with ©.
         NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if([titleMetadataItems count] > 0) {
+        if ([titleMetadataItems count] > 0) {
             trackTitle = [[titleMetadataItems objectAtIndex:0] stringValue];
         }
-        //Fixme: find out why we need to replace @ with ©
+        // Fixme: find out why we need to replace @ with ©.
         NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyArtist stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if([artistMetadataItems count] > 0) {
+        if ([artistMetadataItems count] > 0) {
             trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
         }
     }
 
     [currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
-    
-    //Start loop and play track
+
+    // Start loop and play track.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
 }
 
-- (IBAction)startSliderSet:(id)sender {
-    if([startSlider doubleValue] < (float)endTime.timeValue) {
+- (IBAction)startSliderSet:(id)sender 
+{
+    if ([startSlider doubleValue] < (float)endTime.timeValue) {
         startTime = QTMakeTime((long)[startSlider doubleValue],timeScale);
-
     }
-    else{
+    else {
         [startSlider setFloatValue:(float)startTime.timeValue];
     }
 }
 
-- (IBAction)endSliderSet:(id)sender {
-    if([endSlider doubleValue] > (float)startTime.timeValue) {
+- (IBAction)endSliderSet:(id)sender 
+{
+    if ([endSlider doubleValue] > (float)startTime.timeValue) {
         endTime = QTMakeTime((long)[endSlider doubleValue],timeScale);
     }
-    else{
+    else {
         [endSlider setFloatValue:(float)endTime.timeValue];
     }
 }
 
-- (IBAction)currentTimeBarSet:(id)sender {
+- (IBAction)currentTimeBarSet:(id)sender 
+{
     NSTimeInterval ct = [currentTimeBar doubleValue];
     [music setCurrentTime:QTMakeTime((long)ct,timeScale)];
 }
 
-- (IBAction)playButtonClick:(id)sender {
-    if(!paused) {
+- (IBAction)playButtonClick:(id)sender 
+{
+    if (!paused) {
         [music stop];
         paused = YES;
     }
@@ -181,16 +188,18 @@
     }
 }
 
-- (IBAction)loopStepperStep:(id)sender {
+- (IBAction)loopStepperStep:(id)sender 
+{
     [self setTheLoopCount:[loopCountStepper intValue]];
 }
 
-- (IBAction)openFile:(id)sender {
-    NSOpenPanel *openPanel	= [NSOpenPanel openPanel];
-    NSInteger tvarNSInteger	= [openPanel runModal];
+- (IBAction)openFile:(id)sender 
+{
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    NSInteger tvarNSInteger	= [panel runModal];
     if(tvarNSInteger == NSOKButton){
         [music stop];
-        NSURL * fileURL = [openPanel URL];
+        NSURL *fileURL = [panel URL];
         [self loadMusic:fileURL];
     }
 }

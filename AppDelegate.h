@@ -22,7 +22,6 @@
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 
-
 @property (assign) BOOL paused;
 @property (assign) QTTime startTime;
 @property (assign) QTTime endTime;
@@ -30,7 +29,7 @@
 @property (assign) long timeScale;
 @property (assign) int loopCount;
 
-//The value where we'll start looping infinitely
+// The value where we'll start looping infinitely.
 @property (assign) int loopInfiniteCount;
 
 
