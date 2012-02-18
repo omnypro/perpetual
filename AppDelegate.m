@@ -39,7 +39,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
 @synthesize paused = _paused;
 
 
--(void) setTheLoopCount:(NSUInteger)theLoopCount
+- (void)setTheLoopCount:(NSUInteger)theLoopCount
 {
     // Sets the property and updates the label.
     [self setLoopCount:theLoopCount];
@@ -68,7 +68,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
 }
 
-- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo {
+- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo 
+{
     // We shouldn't be able to drag things into the web view.
     return WebDragDestinationActionNone;
 }
@@ -101,7 +102,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
 }
 
--(void) checkTime:(NSTimer*)theTimer
+- (void)checkTime:(NSTimer*)theTimer
 {
     self.currentTime = [self.music currentTime];
 
