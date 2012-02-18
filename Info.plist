@@ -10,9 +10,10 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>mp3</string>
+				<string>m4a</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Music file</string>
+			<string>Audio File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>NSDocumentClass</key>
