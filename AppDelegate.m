@@ -14,6 +14,8 @@
 #import <QTKit/QTKit.h>
 #import <WebKit/WebKit.h>
 
+NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -54,7 +56,16 @@
 - (void)awakeFromNib
 {
 	NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
-    [self.coverWebView setMainFrameURL:[htmlFileURL absoluteString]];
+    NSError *err = nil;
+    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
+    if (html == nil) {
+        //Do something with the error
+        NSLog(@"%@", err);
+        return;
+    }
+    
+    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
+    [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
