@@ -63,9 +63,6 @@
 		9AC739C314EAEAB6000A57AD = {
 			isa = PBXGroup;
 			children = (
-				9AE4EA5614EC59D6002EF094 /* QTKit.framework */,
-				9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */,
-				9395B6AC14EB88A8002999D9 /* QuartzCore.framework */,
 				9AC739D814EAEAB6000A57AD /* Perpetual */,
 				9AC739D114EAEAB6000A57AD /* Frameworks */,
 				9AC739CF14EAEAB6000A57AD /* Products */,
@@ -84,21 +81,24 @@
 		9AC739D114EAEAB6000A57AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9AC739D214EAEAB6000A57AD /* Cocoa.framework */,
-				9AC739D414EAEAB6000A57AD /* Other Frameworks */,
+				9AC739D414EAEAB6000A57AD /* System Frameworks */,
 				4F63DF7AE63C4BFF97E85379 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		9AC739D414EAEAB6000A57AD /* Other Frameworks */ = {
+		9AC739D414EAEAB6000A57AD /* System Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9AC739D214EAEAB6000A57AD /* Cocoa.framework */,
+				9AE4EA5614EC59D6002EF094 /* QTKit.framework */,
+				9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */,
+				9395B6AC14EB88A8002999D9 /* QuartzCore.framework */,
 				9AC739D514EAEAB6000A57AD /* AppKit.framework */,
 				9AC739D614EAEAB6000A57AD /* CoreData.framework */,
 				9AC739D714EAEAB6000A57AD /* Foundation.framework */,
 			);
-			name = "Other Frameworks";
+			name = "System Frameworks";
 			sourceTree = "<group>";
 		};
 		9AC739D814EAEAB6000A57AD /* Perpetual */ = {
