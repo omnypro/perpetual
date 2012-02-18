@@ -198,17 +198,6 @@
     [self setTheLoopCount:[self.loopCountStepper intValue]];
 }
 
-//- (IBAction)openFile:(id)sender 
-//{
-//    NSOpenPanel *panel = [NSOpenPanel openPanel];
-//    NSInteger tvarNSInteger	= [panel runModal];
-//    if(tvarNSInteger == NSOKButton){
-//        [self.music stop];
-//        NSURL *fileURL = [panel URL];
-//        [self loadMusic:fileURL];
-//    }
-//}
-
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
 {
     [self.music stop];
