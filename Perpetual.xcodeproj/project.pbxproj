@@ -11,7 +11,6 @@
 		307BADDB14F04EA50035E3AF /* cover.html in Resources */ = {isa = PBXBuildFile; fileRef = 307BADDA14F04EA50035E3AF /* cover.html */; };
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
-		9395B6B014EB8D91002999D9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9395B6AF14EB8D91002999D9 /* Podfile */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
@@ -189,7 +188,6 @@
 				9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */,
 				9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */,
 				9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */,
-				9395B6B014EB8D91002999D9 /* Podfile in Resources */,
 				307BADDB14F04EA50035E3AF /* cover.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
