@@ -59,7 +59,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     NSError *err = nil;
     NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
     if (html == nil) {
-        //Do something with the error
+        // Do something with the error.
         NSLog(@"%@", err);
         return;
     }
@@ -131,8 +131,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
 - (void)loadMusic:(NSURL *) fileURL 
 {
     // Load the track from URL.
-    // TODO: Error handling.
-    self.music = [[QTMovie alloc] initWithURL:fileURL error:nil];
+    NSError *err = nil;
+    self.music = [[QTMovie alloc] initWithURL:fileURL error:&err];
+    if (self.music == nil) {
+        // TODO: Error handling.
+        NSLog(@"%@", err);
+        return;
+    }
 
     //Really needed anymore?
     self.paused = YES;
