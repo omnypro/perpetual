@@ -8,7 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QTKit/QTKit.h>
-#import "INAppStoreWindow.h"
+
+@class INAppStoreWindow;
+@class WebView;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -21,16 +23,17 @@
 @property (weak) IBOutlet NSTextField *currentTrackLabel;
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
+@property (weak) IBOutlet WebView *coverWebView;
 
 @property (assign) BOOL paused;
 @property (assign) QTTime startTime;
 @property (assign) QTTime endTime;
 @property (assign) QTTime currentTime;
 @property (assign) long timeScale;
-@property (assign) int loopCount;
+@property (assign) NSUInteger loopCount;
 
 // The value where we'll start looping infinitely.
-@property (assign) int loopInfiniteCount;
+@property (assign) NSInteger loopInfiniteCount;
 
 
 @property (retain) QTMovie *music;
@@ -40,5 +43,5 @@
 - (IBAction)startSliderSet:(id)sender;
 - (IBAction)endSliderSet:(id)sender;
 - (IBAction)currentTimeBarSet:(id)sender;
-- (IBAction)openFile:(id)sender;
+//- (IBAction)openFile:(id)sender;
 @end

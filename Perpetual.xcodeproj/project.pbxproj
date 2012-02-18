@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 307BADD814F04DEF0035E3AF /* WebKit.framework */; };
+		307BADDB14F04EA50035E3AF /* cover.html in Resources */ = {isa = PBXBuildFile; fileRef = 307BADDA14F04EA50035E3AF /* cover.html */; };
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		9395B6B014EB8D91002999D9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9395B6AF14EB8D91002999D9 /* Podfile */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		307BADD814F04DEF0035E3AF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		307BADDA14F04EA50035E3AF /* cover.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = cover.html; sourceTree = "<group>"; };
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				9AC739DA14EAEAB6000A57AD /* Info.plist */,
 				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
 				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
+				307BADDA14F04EA50035E3AF /* cover.html */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */,
 				9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */,
 				9395B6B014EB8D91002999D9 /* Podfile in Resources */,
+				307BADDB14F04EA50035E3AF /* cover.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

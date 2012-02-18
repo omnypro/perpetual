@@ -444,7 +444,6 @@
 							<string key="NSFrame">{{9, 29}, {384, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:3905</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="622609772">
@@ -503,7 +502,7 @@
 								<reference key="NSTextColor" ref="41212231"/>
 							</object>
 						</object>
-						<object class="WebView" id="1038146946">
+						<object class="WebView" id="598347787">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">274</int>
 							<set class="NSMutableSet" key="NSDragTypes">
@@ -545,7 +544,7 @@
 					<string key="NSFrameSize">{400, 400}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView"/>
+					<reference key="NSNextKeyView" ref="598347787"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1050}}</string>
 				<string key="NSMinSize">{400, 422}</string>
@@ -639,6 +638,14 @@
 					<int key="connectionID">493</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openDocument:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="722745758"/>
+					</object>
+					<int key="connectionID">626</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">currentTimeLabel</string>
 						<reference key="source" ref="976324537"/>
@@ -711,14 +718,6 @@
 					<int key="connectionID">553</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openFile:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="722745758"/>
-					</object>
-					<int key="connectionID">611</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">window</string>
 						<reference key="source" ref="976324537"/>
@@ -757,6 +756,14 @@
 						<reference key="destination" ref="153453889"/>
 					</object>
 					<int key="connectionID">622</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">coverWebView</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="598347787"/>
+					</object>
+					<int key="connectionID">624</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -965,7 +972,7 @@
 							<reference ref="753304525"/>
 							<reference ref="238452651"/>
 							<reference ref="153453889"/>
-							<reference ref="1038146946"/>
+							<reference ref="598347787"/>
 						</array>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -1101,7 +1108,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">623</int>
-						<reference key="object" ref="1038146946"/>
+						<reference key="object" ref="598347787"/>
 						<reference key="parent" ref="439893737"/>
 					</object>
 				</array>
@@ -1166,7 +1173,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">623</int>
+			<int key="maxID">626</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1177,7 +1184,6 @@
 						<string key="currentTimeBarSet:">id</string>
 						<string key="endSliderSet:">id</string>
 						<string key="loopStepperStep:">id</string>
-						<string key="openFile:">id</string>
 						<string key="playButtonClick:">id</string>
 						<string key="startSliderSet:">id</string>
 					</dictionary>
@@ -1194,10 +1200,6 @@
 							<string key="name">loopStepperStep:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="openFile:">
-							<string key="name">openFile:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="playButtonClick:">
 							<string key="name">playButtonClick:</string>
 							<string key="candidateClassName">id</string>
@@ -1208,6 +1210,7 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="coverWebView">WebView</string>
 						<string key="currentTimeBar">NSLevelIndicator</string>
 						<string key="currentTimeLabel">NSTextField</string>
 						<string key="currentTrackLabel">NSTextField</string>
@@ -1219,6 +1222,10 @@
 						<string key="window">INAppStoreWindow</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="coverWebView">
+							<string key="name">coverWebView</string>
+							<string key="candidateClassName">WebView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="currentTimeBar">
 							<string key="name">currentTimeBar</string>
 							<string key="candidateClassName">NSLevelIndicator</string>
