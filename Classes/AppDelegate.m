@@ -57,6 +57,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)awakeFromNib
 {
     // Customize INAppStoreWindow.
+    [[self window] setDelegate:self];
     [[self window] setTitleBarHeight:40.0];
     [[self window] setTrafficLightButtonsLeftMargin:7.0];
 
@@ -200,15 +201,49 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
-- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
-{
-    [self.music stop];
-    NSURL *fileURL = [NSURL fileURLWithPath:filename];
-    if (fileURL == nil)
-        return NO; //make me smarter
 
+- (BOOL)performOpen:(NSURL *)fileURL
+{
+    if (fileURL == nil) {
+        return NO; // Make me smarter.
+    }
+
+    // Stop the music there's a track playing.
+    [self.music stop];
+
+    // Add the filename to the recently opened menu (hopefully).
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
+
+    // Bring the window to the foreground (if needed).
+    [[self window] makeKeyAndOrderFront:self];
+
+    // Play the funky music right boy.
     [self loadMusic:fileURL];
     return YES;
+}
+
+- (IBAction)openFile:(id)sender {
+    void (^handler)(NSInteger);
+
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+
+    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+
+    handler = ^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSString *filePath = [[panel URLs] objectAtIndex:0];
+            if (![self performOpen:filePath]) {
+                NSLog(@"Could not load music.");
+            }
+        }
+    };
+
+    [panel beginSheetModalForWindow:[self window] completionHandler:handler];
+}
+
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    return [self performOpen:[NSURL fileURLWithPath:filename]];
 }
 
 
@@ -255,6 +290,14 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 - (IBAction)loopStepperStep:(id)sender
 {
     [self setTheLoopCount:[self.loopCountStepper intValue]];
+}
+
+
+#pragma mark NSWindow Delegate Methods
+
+- (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
+{
+    return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -18);
 }
 
 

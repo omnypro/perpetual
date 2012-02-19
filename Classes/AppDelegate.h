@@ -12,7 +12,7 @@
 @class INAppStoreWindow;
 @class WebView;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 
 @property (unsafe_unretained) IBOutlet INAppStoreWindow *window;
 @property (weak) IBOutlet NSButton *playButton;
@@ -45,4 +45,8 @@
 - (IBAction)currentTimeBarSet:(id)sender;
 
 - (void)loadCoverArtWithIdentifier:(NSString *)identifier;
+
+- (IBAction)openFile:(id)sender;
+- (BOOL)performOpen:(NSString *)filename;
+
 @end
