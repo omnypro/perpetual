@@ -74,7 +74,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     }
 
     [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
-    [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
+    [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
