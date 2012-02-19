@@ -12,6 +12,7 @@
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
 		9309191514F07766000D82ED /* cover.css in Resources */ = {isa = PBXBuildFile; fileRef = 9309191414F07766000D82ED /* cover.css */; };
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
+		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
@@ -31,6 +32,7 @@
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9309191414F07766000D82ED /* cover.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = cover.css; sourceTree = "<group>"; };
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */,
 				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
 				9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */,
 				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
@@ -131,6 +134,7 @@
 		9AC739D414EAEAB6000A57AD /* System Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9326B7B414F1A839009D451C /* AVFoundation.framework */,
 				307BADD814F04DEF0035E3AF /* WebKit.framework */,
 				9AC739D214EAEAB6000A57AD /* Cocoa.framework */,
 				9AE4EA5614EC59D6002EF094 /* QTKit.framework */,
