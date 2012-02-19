@@ -65,17 +65,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[self coverWebView] setFrameLoadDelegate:self];
     [[self coverWebView] setEditingDelegate:self];
 
-    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
-    NSError *err = nil;
-    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
-    if (html == nil) {
-        // Do something with the error.
-        NSLog(@"%@", err);
-        return;
-    }
-
-    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"cover.jpg" options:0 range:NSMakeRange(0, html.length)];
-    [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+    // Load our blank cover, since we obviously have no audio to play.
+    [self loadCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -184,17 +175,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
             NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
             NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
-
-            NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
-            NSError *err = nil;
-            NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
-            if (html == nil) {
-                // Do something with the error.
-                NSLog(@"%@", err);
-                return;
-            }
-            [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:base64uri options:0 range:NSMakeRange(0, html.length)];
-            [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+            [self loadCoverArtWithIdentifier:base64uri];
         }
     }
 
@@ -202,6 +183,21 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
     // Start loop and play track.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+}
+
+- (void)loadCoverArtWithIdentifier:(NSString *)identifier
+{
+    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+    NSError *err = nil;
+    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
+    if (html == nil) {
+        // Do something with the error.
+        NSLog(@"%@", err);
+        return;
+    }
+
+    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
+    [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
