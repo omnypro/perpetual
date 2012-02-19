@@ -129,7 +129,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
 
 }
 
-- (void)loadMusic:(NSURL *) fileURL 
+- (void)loadMusic:(NSURL *) fileURL
 {
     // Load the track from URL.
     NSError *err = nil;
@@ -183,7 +183,21 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
 }
 
-- (IBAction)startSliderSet:(id)sender 
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    [self.music stop];
+    NSURL *fileURL = [NSURL fileURLWithPath:filename];
+    if (fileURL == nil)
+        return NO; //make me smarter
+
+    [self loadMusic:fileURL];
+    return YES;
+}
+
+
+#pragma mark IBAction Methods
+
+- (IBAction)startSliderSet:(id)sender
 {
     if ([self.startSlider doubleValue] < (float)self.endTime.timeValue) {
         self.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.timeScale);
@@ -193,7 +207,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     }
 }
 
-- (IBAction)endSliderSet:(id)sender 
+- (IBAction)endSliderSet:(id)sender
 {
     if ([self.endSlider doubleValue] > (float)self.startTime.timeValue) {
         self.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.timeScale);
@@ -203,13 +217,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     }
 }
 
-- (IBAction)currentTimeBarSet:(id)sender 
+- (IBAction)currentTimeBarSet:(id)sender
 {
     NSTimeInterval ct = [self.currentTimeBar doubleValue];
     [self.music setCurrentTime:QTMakeTime((long)ct, self.timeScale)];
 }
 
-- (IBAction)playButtonClick:(id)sender 
+- (IBAction)playButtonClick:(id)sender
 {
     if (!self.paused) {
         [self.music stop];
@@ -221,26 +235,15 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     }
 }
 
-- (IBAction)loopStepperStep:(id)sender 
+- (IBAction)loopStepperStep:(id)sender
 {
     [self setTheLoopCount:[self.loopCountStepper intValue]];
-}
-
-- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
-{
-    [self.music stop];
-    NSURL *fileURL = [NSURL fileURLWithPath:filename];
-    if (fileURL == nil) 
-        return NO; //make me smarter
-    
-    [self loadMusic:fileURL];
-    return YES;
 }
 
 
 #pragma mark WebView Delegate Methods
 
-- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo 
+- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
 {
     return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
 }
