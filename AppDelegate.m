@@ -248,6 +248,11 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
 }
 
+- (NSUInteger)webView:(WebView *)webView dragSourceActionMaskForPoint:(NSPoint)point
+{
+    return WebDragSourceActionNone; // We shouldn't be able to drag the artwork out of the webView.
+}
+
 - (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
 {
     return nil; // Disable the webView's contextual menu.
