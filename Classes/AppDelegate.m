@@ -11,6 +11,7 @@
 #import "INAppStoreWindow.h"
 #import "NSString+base64.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
 #import <WebKit/WebKit.h>
