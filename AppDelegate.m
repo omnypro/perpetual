@@ -73,12 +73,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
 }
 
-- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo 
-{
-    // We shouldn't be able to drag things into the web view.
-    return WebDragDestinationActionNone;
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [[self window] setTitleBarHeight:40.0];
@@ -242,5 +236,22 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
     return YES;
 }
 
+
+#pragma mark WebView Delegate Methods
+
+- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo 
+{
+    return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
+}
+
+- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
+{
+    return nil; // Disable the webView's contextual menu.
+}
+
+- (BOOL)webView:(WebView *)webView shouldChangeSelectedDOMRange:(DOMRange *)currentRange toDOMRange:(DOMRange *)proposedRange affinity:(NSSelectionAffinity)selectionAffinity stillSelecting:(BOOL)flag
+{
+    return NO; // Prevent the selection of content.
+}
 
 @end
