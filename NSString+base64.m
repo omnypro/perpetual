@@ -38,27 +38,27 @@ static const short _base64DecodingTable[256] = {
     const unsigned char * objRawData = [objData bytes];
     char * objPointer;
     char * strResult;
-    
+
     // Get the Raw Data length and ensure we actually have data
     int intLength = [objData length];
     if (intLength == 0) return nil;
-    
+
     // Setup the String-based Result placeholder and pointer within that placeholder
     strResult = (char *)calloc(((intLength + 2) / 3) * 4, sizeof(char));
     objPointer = strResult;
-    
+
     // Iterate through everything
     while (intLength > 2) { // keep going until we have less than 24 bits
         *objPointer++ = _base64EncodingTable[objRawData[0] >> 2];
         *objPointer++ = _base64EncodingTable[((objRawData[0] & 0x03) << 4) + (objRawData[1] >> 4)];
         *objPointer++ = _base64EncodingTable[((objRawData[1] & 0x0f) << 2) + (objRawData[2] >> 6)];
         *objPointer++ = _base64EncodingTable[objRawData[2] & 0x3f];
-        
+
         // we just handled 3 octets (24 bits) of data
         objRawData += 3;
-        intLength -= 3; 
+        intLength -= 3;
     }
-    
+
     // now deal with the tail end of things
     if (intLength != 0) {
         *objPointer++ = _base64EncodingTable[objRawData[0] >> 2];
@@ -72,10 +72,10 @@ static const short _base64DecodingTable[256] = {
             *objPointer++ = '=';
         }
     }
-    
+
     // Terminate the string-based result
     *objPointer = '\0';
-    
+
     // Return the results as an NSString object
     return [NSString stringWithCString:strResult encoding:NSASCIIStringEncoding];
 }
@@ -85,10 +85,10 @@ static const short _base64DecodingTable[256] = {
     int intLength = strlen(objPointer);
     int intCurrent;
     int i = 0, j = 0, k;
-    
+
     unsigned char * objResult;
     objResult = calloc(intLength, sizeof(char));
-    
+
     // Run through the whole string, converting as we go
     while ( ((intCurrent = *objPointer++) != '\0') && (intLength-- > 0) ) {
         if (intCurrent == '=') {
@@ -99,7 +99,7 @@ static const short _base64DecodingTable[256] = {
             }
             continue;
         }
-        
+
         intCurrent = _base64DecodingTable[intCurrent];
         if (intCurrent == -1) {
             // we're at a whitespace -- simply skip over
@@ -109,29 +109,29 @@ static const short _base64DecodingTable[256] = {
             free(objResult);
             return nil;
         }
-        
+
         switch (i % 4) {
             case 0:
                 objResult[j] = intCurrent << 2;
                 break;
-                
+
             case 1:
                 objResult[j++] |= intCurrent >> 4;
                 objResult[j] = (intCurrent & 0x0f) << 4;
                 break;
-                
+
             case 2:
                 objResult[j++] |= intCurrent >>2;
                 objResult[j] = (intCurrent & 0x03) << 6;
                 break;
-                
+
             case 3:
                 objResult[j++] |= intCurrent;
                 break;
         }
         i++;
     }
-    
+
     // mop things up if we ended on a boundary
     k = j;
     if (intCurrent == '=') {
@@ -140,7 +140,7 @@ static const short _base64DecodingTable[256] = {
                 // Invalid state
                 free(objResult);
                 return nil;
-                
+
             case 2:
                 k++;
                 // flow through
@@ -148,7 +148,7 @@ static const short _base64DecodingTable[256] = {
                 objResult[k] = 0;
         }
     }
-    
+
     // Cleanup and setup the return NSData
     NSData * objData = [[NSData alloc] initWithBytes:objResult length:j];
     free(objResult);

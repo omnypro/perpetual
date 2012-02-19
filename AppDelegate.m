@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "INAppStoreWindow.h"
+#import "NSString+base64.h"
 
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
@@ -73,7 +74,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
         return;
     }
 
-    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
+    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"cover.jpg" options:0 range:NSMakeRange(0, html.length)];
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
@@ -159,12 +160,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [self.endSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
 
     // Set title and artist labels from.
-    NSString * trackTitle = @"Unknown title";
-    NSString * trackArtist = @"Unknown artist";
+    NSString *trackTitle = @"Unknown title";
+    NSString *trackArtist = @"Unknown artist";
 
     NSArray * mdFormatsArray = [self.music availableMetadataFormats];
     for (int i=0;i<[mdFormatsArray count];i++) {
         NSArray * mdArray = [self.music metadataForFormat:[mdFormatsArray objectAtIndex:i]];
+        // NSLog(@"%@", mdArray);
         // Fixme: find out why we need to replace @ with ©.
         NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
         if ([titleMetadataItems count] > 0) {
@@ -174,6 +176,25 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
         NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyArtist stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
         if ([artistMetadataItems count] > 0) {
             trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
+        }
+        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyCoverArt stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
+        if ([coverArtMetadataItems count] > 0) {
+            NSImage *coverArt = [[NSImage alloc] initWithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
+            NSLog(@"%@", coverArt);
+
+            NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
+            NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
+
+            NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+            NSError *err = nil;
+            NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
+            if (html == nil) {
+                // Do something with the error.
+                NSLog(@"%@", err);
+                return;
+            }
+            [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:base64uri options:0 range:NSMakeRange(0, html.length)];
+            [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
         }
     }
 

@@ -19,10 +19,9 @@ body {
     -webkit-box-shadow: inset 0 50px 100px 25px rgba(0, 0, 0, 0.5);
 }
 
-.cover {
+#cover {
     background: #eee;
     margin: 0 auto;
-    min-height: 300px;
-    min-width: 300px;
+    max-width: 300px;
     -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.75), 0 5px 15px 0 rgba(0, 0, 0, 0.5);
 }
