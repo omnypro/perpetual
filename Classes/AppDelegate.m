@@ -30,6 +30,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize loopCountStepper = _loopCountStepper;
 @synthesize coverWebView = _coverWebView;
 @synthesize openFileButton = _openFileButton;
+@synthesize volumeSlider = _volumeSlider;
 
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
@@ -220,7 +221,22 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     return YES;
 }
 
-- (IBAction)openFile:(id)sender {
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    return [self performOpen:[NSURL fileURLWithPath:filename]];
+}
+
+- (void)updateUserInterface
+{
+    float volume = [self.music volume];
+    [self.volumeSlider setFloatValue:volume];
+}
+
+
+#pragma mark IBAction Methods
+
+- (IBAction)openFile:(id)sender
+{
     void (^handler)(NSInteger);
 
     NSOpenPanel *panel = [NSOpenPanel openPanel];
@@ -239,14 +255,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
     [panel beginSheetModalForWindow:[self window] completionHandler:handler];
 }
-
-- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
-{
-    return [self performOpen:[NSURL fileURLWithPath:filename]];
-}
-
-
-#pragma mark IBAction Methods
 
 - (IBAction)startSliderSet:(id)sender
 {
@@ -272,6 +280,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 {
     NSTimeInterval ct = [self.currentTimeBar doubleValue];
     [self.music setCurrentTime:QTMakeTime((long)ct, self.timeScale)];
+}
+
+- (IBAction)setFloatForVolume:(id)sender
+{
+    float newValue = [sender floatValue];
+    [self.music setVolume:newValue];
+    [self updateUserInterface];
 }
 
 - (IBAction)playButtonClick:(id)sender

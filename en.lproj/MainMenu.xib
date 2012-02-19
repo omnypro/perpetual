@@ -444,7 +444,7 @@
 							<string key="NSFrame">{{9, 44}, {384, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="163355172"/>
+							<reference key="NSNextKeyView" ref="931419021"/>
 							<string key="NSReuseIdentifierKey">_NS:3905</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="622609772">
@@ -541,22 +541,22 @@
 							<bool key="UseBackForwardList">YES</bool>
 							<bool key="AllowsUndo">YES</bool>
 						</object>
-						<object class="NSButton" id="163355172">
+						<object class="NSButton" id="931419021">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{6, 3}, {29, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="323229274"/>
 							<string key="NSReuseIdentifierKey">_NS:687</string>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="571964320">
+							<object class="NSButtonCell" key="NSCell" id="424833233">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="556841281"/>
 								<string key="NSCellIdentifier">_NS:687</string>
-								<reference key="NSControlView" ref="163355172"/>
+								<reference key="NSControlView" ref="931419021"/>
 								<int key="NSButtonFlags">-2030812929</int>
 								<int key="NSButtonFlags2">35</int>
 								<object class="NSCustomResource" key="NSNormalImage">
@@ -567,6 +567,31 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
+							</object>
+						</object>
+						<object class="NSSlider" id="323229274">
+							<reference key="NSNextResponder" ref="439893737"/>
+							<int key="NSvFlags">268</int>
+							<string key="NSFrame">{{199, 5}, {194, 21}}</string>
+							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<string key="NSReuseIdentifierKey">_NS:779</string>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSSliderCell" key="NSCell" id="1048085579">
+								<int key="NSCellFlags">-2080244224</int>
+								<int key="NSCellFlags2">0</int>
+								<string key="NSContents"/>
+								<string key="NSCellIdentifier">_NS:779</string>
+								<reference key="NSControlView" ref="323229274"/>
+								<double key="NSMaxValue">1</double>
+								<double key="NSMinValue">0.0</double>
+								<double key="NSValue">1</double>
+								<double key="NSAltIncValue">0.0</double>
+								<int key="NSNumberOfTickMarks">0</int>
+								<int key="NSTickMarkPosition">1</int>
+								<bool key="NSAllowsTickMarkValuesOnly">NO</bool>
+								<bool key="NSVertical">NO</bool>
 							</object>
 						</object>
 					</array>
@@ -800,7 +825,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">openFileButton</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="163355172"/>
+						<reference key="destination" ref="931419021"/>
 					</object>
 					<int key="connectionID">635</int>
 				</object>
@@ -808,9 +833,25 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">openFile:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="571964320"/>
+						<reference key="destination" ref="424833233"/>
 					</object>
 					<int key="connectionID">637</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">volumeSlider</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="323229274"/>
+					</object>
+					<int key="connectionID">640</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">setFloatForVolume:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="323229274"/>
+					</object>
+					<int key="connectionID">641</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1020,7 +1061,8 @@
 							<reference ref="238452651"/>
 							<reference ref="153453889"/>
 							<reference ref="598347787"/>
-							<reference ref="163355172"/>
+							<reference ref="931419021"/>
+							<reference ref="323229274"/>
 						</array>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -1161,16 +1203,29 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">631</int>
-						<reference key="object" ref="163355172"/>
+						<reference key="object" ref="931419021"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="571964320"/>
+							<reference ref="424833233"/>
 						</array>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">632</int>
-						<reference key="object" ref="571964320"/>
-						<reference key="parent" ref="163355172"/>
+						<reference key="object" ref="424833233"/>
+						<reference key="parent" ref="931419021"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">638</int>
+						<reference key="object" ref="323229274"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="1048085579"/>
+						</array>
+						<reference key="parent" ref="439893737"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">639</int>
+						<reference key="object" ref="1048085579"/>
+						<reference key="parent" ref="323229274"/>
 					</object>
 				</array>
 			</object>
@@ -1225,6 +1280,8 @@
 				<string key="623.IBPluginDependency">com.apple.WebKitIBPlugin</string>
 				<string key="631.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="632.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="638.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="639.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="72.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="73.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="79.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1236,7 +1293,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">637</int>
+			<int key="maxID">641</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1249,6 +1306,7 @@
 						<string key="loopStepperStep:">id</string>
 						<string key="openFile:">id</string>
 						<string key="playButtonClick:">id</string>
+						<string key="setFloatForVolume:">id</string>
 						<string key="startSliderSet:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1272,6 +1330,10 @@
 							<string key="name">playButtonClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="setFloatForVolume:">
+							<string key="name">setFloatForVolume:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="startSliderSet:">
 							<string key="name">startSliderSet:</string>
 							<string key="candidateClassName">id</string>
@@ -1288,6 +1350,7 @@
 						<string key="openFileButton">NSButton</string>
 						<string key="playButton">NSButton</string>
 						<string key="startSlider">NSSlider</string>
+						<string key="volumeSlider">NSSlider</string>
 						<string key="window">INAppStoreWindow</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1329,6 +1392,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="startSlider">
 							<string key="name">startSlider</string>
+							<string key="candidateClassName">NSSlider</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="volumeSlider">
+							<string key="name">volumeSlider</string>
 							<string key="candidateClassName">NSSlider</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="window">

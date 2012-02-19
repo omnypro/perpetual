@@ -25,6 +25,7 @@
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 @property (weak) IBOutlet WebView *coverWebView;
 @property (weak) IBOutlet NSButton *openFileButton;
+@property (weak) IBOutlet NSSlider *volumeSlider;
 
 @property (assign) BOOL paused;
 @property (assign) QTTime startTime;
@@ -38,12 +39,15 @@
 
 
 @property (retain) QTMovie *music;
+- (void)updateUserInterface;
+
 - (void)checkTime:(NSTimer*)theTimer;
 - (IBAction)loopStepperStep:(id)sender;
 - (IBAction)playButtonClick:(id)sender;
 - (IBAction)startSliderSet:(id)sender;
 - (IBAction)endSliderSet:(id)sender;
 - (IBAction)currentTimeBarSet:(id)sender;
+- (IBAction)setFloatForVolume:(id)sender;
 
 - (void)loadCoverArtWithIdentifier:(NSString *)identifier;
 
