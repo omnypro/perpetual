@@ -33,7 +33,7 @@
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
-		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "NSString+base64.h"; sourceTree = "<group>"; };
+		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -82,6 +82,15 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		93A6238714F0BDC600B907E3 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				93A6238414F0B65200B907E3 /* NSString+base64.h */,
+				93A6238514F0B65200B907E3 /* NSString+base64.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		9AC739C314EAEAB6000A57AD = {
 			isa = PBXGroup;
 			children = (
@@ -127,13 +136,12 @@
 		9AC739D814EAEAB6000A57AD /* Perpetual */ = {
 			isa = PBXGroup;
 			children = (
+				93A6238714F0BDC600B907E3 /* Categories */,
 				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
 				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
 				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 				9309191E14F07F07000D82ED /* Assets */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
-				93A6238414F0B65200B907E3 /* NSString+base64.h */,
-				93A6238514F0B65200B907E3 /* NSString+base64.m */,
 			);
 			name = Perpetual;
 			sourceTree = "<group>";
