@@ -232,6 +232,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
             NSString *filePath = [[panel URLs] objectAtIndex:0];
             if (![self performOpen:filePath]) {
                 NSLog(@"Could not load music.");
+                return;
             }
         }
     };
