@@ -91,6 +91,16 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		93A623F714F0C88B00B907E3 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				93A6238714F0BDC600B907E3 /* Categories */,
+				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
+				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		9AC739C314EAEAB6000A57AD = {
 			isa = PBXGroup;
 			children = (
@@ -136,12 +146,10 @@
 		9AC739D814EAEAB6000A57AD /* Perpetual */ = {
 			isa = PBXGroup;
 			children = (
-				93A6238714F0BDC600B907E3 /* Categories */,
-				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
-				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
-				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 				9309191E14F07F07000D82ED /* Assets */,
+				93A623F714F0C88B00B907E3 /* Classes */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
+				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 			);
 			name = Perpetual;
 			sourceTree = "<group>";
