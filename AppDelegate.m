@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "INAppStoreWindow.h"
+#import "NSString+base64.h"
 
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
@@ -64,17 +65,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[self coverWebView] setFrameLoadDelegate:self];
     [[self coverWebView] setEditingDelegate:self];
 
-    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
-    NSError *err = nil;
-    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
-    if (html == nil) {
-        // Do something with the error.
-        NSLog(@"%@", err);
-        return;
-    }
-
-    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
-    [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
+    // Load our blank cover, since we obviously have no audio to play.
+    [self loadCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -159,12 +151,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [self.endSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
 
     // Set title and artist labels from.
-    NSString * trackTitle = @"Unknown title";
-    NSString * trackArtist = @"Unknown artist";
+    NSString *trackTitle = @"Unknown title";
+    NSString *trackArtist = @"Unknown artist";
 
     NSArray * mdFormatsArray = [self.music availableMetadataFormats];
     for (int i=0;i<[mdFormatsArray count];i++) {
         NSArray * mdArray = [self.music metadataForFormat:[mdFormatsArray objectAtIndex:i]];
+        // NSLog(@"%@", mdArray);
         // Fixme: find out why we need to replace @ with ©.
         NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
         if ([titleMetadataItems count] > 0) {
@@ -175,12 +168,36 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
         if ([artistMetadataItems count] > 0) {
             trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
         }
+        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyCoverArt stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
+        if ([coverArtMetadataItems count] > 0) {
+            NSImage *coverArt = [[NSImage alloc] initWithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
+            NSLog(@"%@", coverArt);
+
+            NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
+            NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
+            [self loadCoverArtWithIdentifier:base64uri];
+        }
     }
 
     [self.currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
 
     // Start loop and play track.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+}
+
+- (void)loadCoverArtWithIdentifier:(NSString *)identifier
+{
+    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+    NSError *err = nil;
+    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
+    if (html == nil) {
+        // Do something with the error.
+        NSLog(@"%@", err);
+        return;
+    }
+
+    [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
+    [self.coverWebView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
@@ -246,6 +263,11 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 - (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
 {
     return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
+}
+
+- (NSUInteger)webView:(WebView *)webView dragSourceActionMaskForPoint:(NSPoint)point
+{
+    return WebDragSourceActionNone; // We shouldn't be able to drag the artwork out of the webView.
 }
 
 - (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
