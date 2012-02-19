@@ -158,25 +158,32 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     NSString *trackTitle = @"Unknown title";
     NSString *trackArtist = @"Unknown artist";
 
-    NSArray * mdFormatsArray = [self.music availableMetadataFormats];
-    for (int i=0;i<[mdFormatsArray count];i++) {
-        NSArray * mdArray = [self.music metadataForFormat:[mdFormatsArray objectAtIndex:i]];
-        // NSLog(@"%@", mdArray);
-        // Fixme: find out why we need to replace @ with ©.
-        NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if ([titleMetadataItems count] > 0) {
-            trackTitle = [[titleMetadataItems objectAtIndex:0] stringValue];
-        }
-        // Fixme: find out why we need to replace @ with ©.
-        NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyArtist stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if ([artistMetadataItems count] > 0) {
-            trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
-        }
-        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:QTMetadataiTunesMetadataKeyCoverArt keySpace:nil];
-        if ([coverArtMetadataItems count] > 0) {
-            NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
-            NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
-            [self loadCoverArtWithIdentifier:base64uri];
+    AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
+    for (NSString *format in [asset availableMetadataFormats]) {
+        for (AVMetadataItem *item in [asset metadataForFormat:format]) {
+            NSLog(@"%@", item);
+            if ([[item commonKey] isEqualToString:@"title"]) {
+                trackTitle = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"artist"]) {
+                trackArtist = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"artwork"]) {
+                NSString *base64uri = nil;
+                if ([[item value] isKindOfClass:[NSDictionary class]]) {
+                    // MP3s ID3 tags store artwork as a dictionary in the "value" key with the data under a key of "data".
+                    NSString *base64 = [NSString encodeBase64WithData:[(NSDictionary *)[item value] objectForKey:@"data"]];
+                    NSString *mimeType = [(NSDictionary *)[item value] objectForKey:@"MIME"];
+                    base64uri = [NSString stringWithFormat:@"data:%@;base64,%@", mimeType, base64];
+                } else {
+                    // M4As, on the other hand, store simply artwork as data in the "value" key.
+                    NSString *base64 = [NSString encodeBase64WithData:(NSData *)[item value]];
+                    base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
+                }
+                if (base64uri != nil) {
+                    [self loadCoverArtWithIdentifier:base64uri];
+                }
+            }
         }
     }
 
