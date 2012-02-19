@@ -14,7 +14,7 @@
 #import <QTKit/QTKit.h>
 #import <WebKit/WebKit.h>
 
-NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
+NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @implementation AppDelegate
 
