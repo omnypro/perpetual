@@ -169,11 +169,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
         if ([artistMetadataItems count] > 0) {
             trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
         }
-        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyCoverArt stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
+        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:QTMetadataiTunesMetadataKeyCoverArt keySpace:nil];
         if ([coverArtMetadataItems count] > 0) {
-            NSImage *coverArt = [[NSImage alloc] initWithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
-            NSLog(@"%@", coverArt);
-
             NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
             NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
             [self loadCoverArtWithIdentifier:base64uri];
