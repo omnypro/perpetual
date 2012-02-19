@@ -66,6 +66,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9309191E14F07F07000D82ED /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				9309191414F07766000D82ED /* cover.css */,
+				307BADDA14F04EA50035E3AF /* cover.html */,
+				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		9AC739C314EAEAB6000A57AD = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +124,7 @@
 				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
 				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
 				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
+				9309191E14F07F07000D82ED /* Assets */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
 			);
 			name = Perpetual;
@@ -122,9 +133,6 @@
 		9AC739D914EAEAB6000A57AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9309191414F07766000D82ED /* cover.css */,
-				307BADDA14F04EA50035E3AF /* cover.html */,
-				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
 				9AC739E114EAEAB6000A57AD /* Credits.rtf */,
 				9AC739DA14EAEAB6000A57AD /* Info.plist */,
 				9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */,
