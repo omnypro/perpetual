@@ -43,4 +43,6 @@
 - (IBAction)startSliderSet:(id)sender;
 - (IBAction)endSliderSet:(id)sender;
 - (IBAction)currentTimeBarSet:(id)sender;
+
+- (void)loadCoverArtWithIdentifier:(NSString *)identifier;
 @end
