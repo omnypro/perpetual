@@ -55,7 +55,16 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
 
 - (void)awakeFromNib
 {
-	NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+    // Customize INAppStoreWindow.
+    [[self window] setTitleBarHeight:40.0];
+    [[self window] setTrafficLightButtonsLeftMargin:7.0];
+
+    // Set us up as the delegate of the webView for relevant events.
+    [[self coverWebView] setUIDelegate:self];
+    [[self coverWebView] setFrameLoadDelegate:self];
+    [[self coverWebView] setEditingDelegate:self];
+
+    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
     NSError *err = nil;
     NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
     if (html == nil) {
@@ -64,20 +73,12 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
         return;
     }
 
-    // Set us up as the delegate of the webView for relevant events.
-    [[self coverWebView] setUIDelegate:self];
-    [[self coverWebView] setFrameLoadDelegate:self];
-    [[self coverWebView] setEditingDelegate:self];
-    
     [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [[self window] setTitleBarHeight:40.0];
-    [[self window] setTrafficLightButtonsLeftMargin:7.0];
-
     // - NOOP -
     // Implements a very crude NSSegmentControl, used to switch between the album view
     // of the track currently opened and the listening statistics for that track.
