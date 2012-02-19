@@ -29,6 +29,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize loopCountLabel = _loopCountLabel;
 @synthesize loopCountStepper = _loopCountStepper;
 @synthesize coverWebView = _coverWebView;
+@synthesize openFileButton = _openFileButton;
 
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;

@@ -24,6 +24,7 @@
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 @property (weak) IBOutlet WebView *coverWebView;
+@property (weak) IBOutlet NSButton *openFileButton;
 
 @property (assign) BOOL paused;
 @property (assign) QTTime startTime;
