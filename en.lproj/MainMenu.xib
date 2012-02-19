@@ -444,7 +444,7 @@
 							<string key="NSFrame">{{9, 44}, {384, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="931419021"/>
+							<reference key="NSNextKeyView" ref="78701938"/>
 							<string key="NSReuseIdentifierKey">_NS:3905</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="622609772">
@@ -541,22 +541,22 @@
 							<bool key="UseBackForwardList">YES</bool>
 							<bool key="AllowsUndo">YES</bool>
 						</object>
-						<object class="NSButton" id="931419021">
+						<object class="NSButton" id="78701938">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{6, 3}, {29, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="323229274"/>
+							<reference key="NSNextKeyView" ref="361452640"/>
 							<string key="NSReuseIdentifierKey">_NS:687</string>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="424833233">
+							<object class="NSButtonCell" key="NSCell" id="576246277">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="556841281"/>
 								<string key="NSCellIdentifier">_NS:687</string>
-								<reference key="NSControlView" ref="931419021"/>
+								<reference key="NSControlView" ref="78701938"/>
 								<int key="NSButtonFlags">-2030812929</int>
 								<int key="NSButtonFlags2">35</int>
 								<object class="NSCustomResource" key="NSNormalImage">
@@ -569,21 +569,21 @@
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
-						<object class="NSSlider" id="323229274">
+						<object class="NSSlider" id="361452640">
 							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">268</int>
+							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{199, 5}, {194, 21}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:779</string>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSSliderCell" key="NSCell" id="1048085579">
+							<object class="NSSliderCell" key="NSCell" id="805838817">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
 								<string key="NSContents"/>
 								<string key="NSCellIdentifier">_NS:779</string>
-								<reference key="NSControlView" ref="323229274"/>
+								<reference key="NSControlView" ref="361452640"/>
 								<double key="NSMaxValue">1</double>
 								<double key="NSMinValue">0.0</double>
 								<double key="NSValue">1</double>
@@ -825,7 +825,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">openFileButton</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="931419021"/>
+						<reference key="destination" ref="78701938"/>
 					</object>
 					<int key="connectionID">635</int>
 				</object>
@@ -833,7 +833,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">openFile:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="424833233"/>
+						<reference key="destination" ref="576246277"/>
 					</object>
 					<int key="connectionID">637</int>
 				</object>
@@ -841,7 +841,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">volumeSlider</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="323229274"/>
+						<reference key="destination" ref="361452640"/>
 					</object>
 					<int key="connectionID">640</int>
 				</object>
@@ -849,7 +849,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">setFloatForVolume:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="323229274"/>
+						<reference key="destination" ref="361452640"/>
 					</object>
 					<int key="connectionID">641</int>
 				</object>
@@ -1061,8 +1061,8 @@
 							<reference ref="238452651"/>
 							<reference ref="153453889"/>
 							<reference ref="598347787"/>
-							<reference ref="931419021"/>
-							<reference ref="323229274"/>
+							<reference ref="78701938"/>
+							<reference ref="361452640"/>
 						</array>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -1203,29 +1203,29 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">631</int>
-						<reference key="object" ref="931419021"/>
+						<reference key="object" ref="78701938"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="424833233"/>
+							<reference ref="576246277"/>
 						</array>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">632</int>
-						<reference key="object" ref="424833233"/>
-						<reference key="parent" ref="931419021"/>
+						<reference key="object" ref="576246277"/>
+						<reference key="parent" ref="78701938"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">638</int>
-						<reference key="object" ref="323229274"/>
+						<reference key="object" ref="361452640"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="1048085579"/>
+							<reference ref="805838817"/>
 						</array>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">639</int>
-						<reference key="object" ref="1048085579"/>
-						<reference key="parent" ref="323229274"/>
+						<reference key="object" ref="805838817"/>
+						<reference key="parent" ref="361452640"/>
 					</object>
 				</array>
 			</object>
