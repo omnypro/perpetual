@@ -63,6 +63,11 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"#{IMAGE_URL}#";
         NSLog(@"%@", err);
         return;
     }
+
+    // Set us up as the delegate of the webView for relevant events.
+    [[self coverWebView] setUIDelegate:self];
+    [[self coverWebView] setFrameLoadDelegate:self];
+    [[self coverWebView] setEditingDelegate:self];
     
     [html replaceOccurrencesOfString:AppDelegateHTMLImagePlaceholder withString:@"blah" options:0 range:NSMakeRange(0, html.length)];
     [self.coverWebView.mainFrame loadHTMLString:html baseURL:nil];
