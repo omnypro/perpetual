@@ -11,6 +11,7 @@
 #import "INAppStoreWindow.h"
 #import "NSString+base64.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
 #import <WebKit/WebKit.h>
@@ -23,9 +24,10 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize startSlider = _startSlider;
 @synthesize endSlider = _endSlider;
 @synthesize currentTimeLabel = _currentTimeLabel;
+@synthesize trackTitle = _trackTitle;
+@synthesize trackSubTitle = _trackSubTitle;
 @synthesize currentTimeBar = _currentTimeBar;
 @synthesize playButton = _playButton;
-@synthesize currentTrackLabel = _currentTrackLabel;
 @synthesize loopCountLabel = _loopCountLabel;
 @synthesize loopCountStepper = _loopCountStepper;
 @synthesize coverWebView = _coverWebView;
@@ -69,7 +71,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[self coverWebView] setEditingDelegate:self];
 
     // Load our blank cover, since we obviously have no audio to play.
-    [self loadCoverArtWithIdentifier:@"cover.jpg"];
+    [self injectCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -153,39 +155,54 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [self.startSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
     [self.endSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
 
-    // Set title and artist labels from.
-    NSString *trackTitle = @"Unknown title";
-    NSString *trackArtist = @"Unknown artist";
-
-    NSArray * mdFormatsArray = [self.music availableMetadataFormats];
-    for (int i=0;i<[mdFormatsArray count];i++) {
-        NSArray * mdArray = [self.music metadataForFormat:[mdFormatsArray objectAtIndex:i]];
-        // NSLog(@"%@", mdArray);
-        // Fixme: find out why we need to replace @ with ©.
-        NSArray * titleMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeySongName stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if ([titleMetadataItems count] > 0) {
-            trackTitle = [[titleMetadataItems objectAtIndex:0] stringValue];
-        }
-        // Fixme: find out why we need to replace @ with ©.
-        NSArray * artistMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:[QTMetadataiTunesMetadataKeyArtist stringByReplacingOccurrencesOfString:@"@" withString:@"©"] keySpace:nil];
-        if ([artistMetadataItems count] > 0) {
-            trackArtist = [[artistMetadataItems objectAtIndex:0] stringValue];
-        }
-        NSArray * coverArtMetadataItems = [QTMetadataItem metadataItemsFromArray:mdArray withKey:QTMetadataiTunesMetadataKeyCoverArt keySpace:nil];
-        if ([coverArtMetadataItems count] > 0) {
-            NSString *base64 = [NSString encodeBase64WithData:[[coverArtMetadataItems objectAtIndex:0] dataValue]];
-            NSString *base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
-            [self loadCoverArtWithIdentifier:base64uri];
-        }
-    }
-
-    [self.currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
+    // Fetch all of the metadata.
+    [self fetchMetadataForURL:fileURL];
 
     // Start loop and play track.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
 }
 
-- (void)loadCoverArtWithIdentifier:(NSString *)identifier
+- (void)fetchMetadataForURL:(NSURL *)fileURL
+{
+    NSString *title = nil;
+    NSString *artist = nil;
+    NSString *album = nil;
+
+    AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
+    for (NSString *format in [asset availableMetadataFormats]) {
+        for (AVMetadataItem *item in [asset metadataForFormat:format]) {
+            if ([[item commonKey] isEqualToString:@"title"]) {
+                title = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"artist"]) {
+                artist = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"albumName"]) {
+                album = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"artwork"]) {
+                NSString *base64uri = nil;
+                if ([[item value] isKindOfClass:[NSDictionary class]]) {
+                    // MP3s ID3 tags store artwork as a dictionary in the "value" key with the data under a key of "data".
+                    NSString *base64 = [NSString encodeBase64WithData:[(NSDictionary *)[item value] objectForKey:@"data"]];
+                    NSString *mimeType = [(NSDictionary *)[item value] objectForKey:@"MIME"];
+                    base64uri = [NSString stringWithFormat:@"data:%@;base64,%@", mimeType, base64];
+                } else {
+                    // M4As, on the other hand, store simply artwork as data in the "value" key.
+                    NSString *base64 = [NSString encodeBase64WithData:(NSData *)[item value]];
+                    base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
+                }
+                if (base64uri != nil) {
+                    [self injectCoverArtWithIdentifier:base64uri];
+                }
+            }
+        }
+    }
+    [self.trackTitle setStringValue:title];
+    [self.trackSubTitle setStringValue:[NSString stringWithFormat:@"%@ / %@", album, artist]];
+}
+
+- (void)injectCoverArtWithIdentifier:(NSString *)identifier
 {
     NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
     NSError *err = nil;
