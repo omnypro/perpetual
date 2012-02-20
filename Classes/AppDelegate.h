@@ -20,7 +20,8 @@
 @property (weak) IBOutlet NSSlider *endSlider;
 @property (weak) IBOutlet NSLevelIndicator *currentTimeBar;
 @property (weak) IBOutlet NSTextField *currentTimeLabel;
-@property (weak) IBOutlet NSTextField *currentTrackLabel;
+@property (weak) IBOutlet NSTextField *trackTitle;
+@property (weak) IBOutlet NSTextField *trackSubTitle;
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 @property (weak) IBOutlet WebView *coverWebView;
@@ -49,7 +50,8 @@
 - (IBAction)currentTimeBarSet:(id)sender;
 - (IBAction)setFloatForVolume:(id)sender;
 
-- (void)loadCoverArtWithIdentifier:(NSString *)identifier;
+- (void)fetchMetadataForURL:(NSURL *)fileURL;
+- (void)injectCoverArtWithIdentifier:(NSString *)identifier;
 
 - (IBAction)openFile:(id)sender;
 - (BOOL)performOpen:(NSString *)filename;
