@@ -24,9 +24,10 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize startSlider = _startSlider;
 @synthesize endSlider = _endSlider;
 @synthesize currentTimeLabel = _currentTimeLabel;
+@synthesize trackTitle = _trackTitle;
+@synthesize trackSubTitle = _trackSubTitle;
 @synthesize currentTimeBar = _currentTimeBar;
 @synthesize playButton = _playButton;
-@synthesize currentTrackLabel = _currentTrackLabel;
 @synthesize loopCountLabel = _loopCountLabel;
 @synthesize loopCountStepper = _loopCountStepper;
 @synthesize coverWebView = _coverWebView;
@@ -70,7 +71,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[self coverWebView] setEditingDelegate:self];
 
     // Load our blank cover, since we obviously have no audio to play.
-    [self loadCoverArtWithIdentifier:@"cover.jpg"];
+    [self injectCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -154,19 +155,30 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [self.startSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
     [self.endSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
 
-    // Set title and artist labels from.
-    NSString *trackTitle = @"Unknown title";
-    NSString *trackArtist = @"Unknown artist";
+    // Fetch all of the metadata.
+    [self fetchMetadataForURL:fileURL];
+
+    // Start loop and play track.
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+}
+
+- (void)fetchMetadataForURL:(NSURL *)fileURL
+{
+    NSString *title = nil;
+    NSString *artist = nil;
+    NSString *album = nil;
 
     AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     for (NSString *format in [asset availableMetadataFormats]) {
         for (AVMetadataItem *item in [asset metadataForFormat:format]) {
-            NSLog(@"%@", item);
             if ([[item commonKey] isEqualToString:@"title"]) {
-                trackTitle = (NSString *)[item value];
+                title = (NSString *)[item value];
             }
             if ([[item commonKey] isEqualToString:@"artist"]) {
-                trackArtist = (NSString *)[item value];
+                artist = (NSString *)[item value];
+            }
+            if ([[item commonKey] isEqualToString:@"albumName"]) {
+                album = (NSString *)[item value];
             }
             if ([[item commonKey] isEqualToString:@"artwork"]) {
                 NSString *base64uri = nil;
@@ -181,19 +193,16 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
                     base64uri = [NSString stringWithFormat:@"data:image/png;base64,%@", base64];
                 }
                 if (base64uri != nil) {
-                    [self loadCoverArtWithIdentifier:base64uri];
+                    [self injectCoverArtWithIdentifier:base64uri];
                 }
             }
         }
     }
-
-    [self.currentTrackLabel setStringValue:[NSString stringWithFormat:@"%@\n%@",trackTitle,trackArtist]];
-
-    // Start loop and play track.
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+    [self.trackTitle setStringValue:title];
+    [self.trackSubTitle setStringValue:[NSString stringWithFormat:@"%@ / %@", album, artist]];
 }
 
-- (void)loadCoverArtWithIdentifier:(NSString *)identifier
+- (void)injectCoverArtWithIdentifier:(NSString *)identifier
 {
     NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
     NSError *err = nil;
