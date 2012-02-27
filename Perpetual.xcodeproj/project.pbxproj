@@ -97,7 +97,6 @@
 		93A623F714F0C88B00B907E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				93A6238714F0BDC600B907E3 /* Categories */,
 				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
 				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
 			);
@@ -151,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				9309191E14F07F07000D82ED /* Assets */,
+				93A6238714F0BDC600B907E3 /* Categories */,
 				93A623F714F0C88B00B907E3 /* Classes */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
 				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
