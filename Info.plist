@@ -45,7 +45,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2012 Revyver, Inc. All rights reserved.</string>
 	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
+	<string>Menu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
