@@ -12,7 +12,7 @@
 @class INAppStoreWindow;
 @class WebView;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (unsafe_unretained) IBOutlet INAppStoreWindow *window;
 @property (weak) IBOutlet NSButton *playButton;
