@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WindowController : NSWindowController <NSWindowDelegate>
+@interface WindowController : NSWindowController 
 
 + (WindowController *)windowController;
 
