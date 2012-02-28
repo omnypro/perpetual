@@ -14,8 +14,8 @@
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
+		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
-		93C0A96D14FBA27A00D63507 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93C0A96C14FBA27A00D63507 /* Window.xib */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
@@ -37,9 +37,9 @@
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		939EF98F14FCA1DA00CDBA32 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Window.xib; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
-		93C0A96C14FBA27A00D63507 /* Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Window.xib; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
@@ -82,12 +82,22 @@
 		9309191E14F07F07000D82ED /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				939EF99114FCA1E900CDBA32 /* NIBs */,
 				9309192014F07F79000D82ED /* background.png */,
 				9309191414F07766000D82ED /* cover.css */,
 				307BADDA14F04EA50035E3AF /* cover.html */,
 				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		939EF99114FCA1E900CDBA32 /* NIBs */ = {
+			isa = PBXGroup;
+			children = (
+				9AC739E714EAEAB6000A57AD /* Menu.xib */,
+				939EF99014FCA1DA00CDBA32 /* Window.xib */,
+			);
+			name = NIBs;
 			sourceTree = "<group>";
 		};
 		93A6238714F0BDC600B907E3 /* Categories */ = {
@@ -160,8 +170,6 @@
 				93A6238714F0BDC600B907E3 /* Categories */,
 				93A623F714F0C88B00B907E3 /* Classes */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
-				9AC739E714EAEAB6000A57AD /* Menu.xib */,
-				93C0A96C14FBA27A00D63507 /* Window.xib */,
 			);
 			name = Perpetual;
 			sourceTree = "<group>";
@@ -238,7 +246,7 @@
 				307BADDB14F04EA50035E3AF /* cover.html in Resources */,
 				9309191514F07766000D82ED /* cover.css in Resources */,
 				9309192114F07F79000D82ED /* background.png in Resources */,
-				93C0A96D14FBA27A00D63507 /* Window.xib in Resources */,
+				939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +284,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		939EF99014FCA1DA00CDBA32 /* Window.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				939EF98F14FCA1DA00CDBA32 /* en */,
+			);
+			name = Window.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -298,6 +315,7 @@
 				9AC739E814EAEAB6000A57AD /* en */,
 			);
 			name = Menu.xib;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
