@@ -11,8 +11,13 @@
 
 @class INAppStoreWindow;
 @class WebView;
+@class WindowController;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {}
+
+@property (nonatomic, readonly, retain) WindowController *windowController;
+
++ (AppDelegate *)sharedInstance;
 
 @property (unsafe_unretained) IBOutlet INAppStoreWindow *window;
 @property (weak) IBOutlet NSButton *playButton;

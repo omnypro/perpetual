@@ -20,6 +20,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @implementation AppDelegate
 
+@synthesize windowController = _windowController;
+
 @synthesize window = _window;
 @synthesize startSlider = _startSlider;
 @synthesize endSlider = _endSlider;
@@ -43,6 +45,12 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize music = _music;
 @synthesize paused = _paused;
 
+#pragma mark API
+
++ (AppDelegate *)sharedInstance
+{
+    return [NSApp delegate];
+}
 
 - (void)setTheLoopCount:(NSUInteger)theLoopCount
 {
