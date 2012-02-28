@@ -60,11 +60,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)awakeFromNib
 {
-    // Customize INAppStoreWindow.
-    [[self window] setDelegate:self];
-    [[self window] setTitleBarHeight:40.0];
-    [[self window] setTrafficLightButtonsLeftMargin:7.0];
-
     // Set us up as the delegate of the webView for relevant events.
     [[self coverWebView] setUIDelegate:self];
     [[self coverWebView] setFrameLoadDelegate:self];
