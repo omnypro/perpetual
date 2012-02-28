@@ -79,22 +79,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // - NOOP -
-    // Implements a very crude NSSegmentControl, used to switch between the album view
-    // of the track currently opened and the listening statistics for that track.
-    NSView *titleBarView = [[self window] titleBarView];
-    NSSize switcherSize = NSMakeSize(100.f, 30.f);
-    NSRect switcherFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (switcherSize.width / 2.f), NSMidY([titleBarView bounds]) - (switcherSize.height / 2.f), switcherSize.width, switcherSize.height);
-    NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:switcherFrame];
-    [switcher setSegmentCount:2];
-    [switcher setSegmentStyle:NSSegmentStyleTexturedRounded];
-    [switcher setLabel:@"Music" forSegment:0];
-    [switcher setLabel:@"Statistics" forSegment:1];
-    [switcher setSelectedSegment:0];
-    [switcher setEnabled:FALSE forSegment:1]; // Disables the statistics segment.
-    [[switcher cell] setTrackingMode:NSSegmentSwitchTrackingSelectOne];
-    [titleBarView addSubview:switcher];
-
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
     [self setLoopInfiniteCount:31];
