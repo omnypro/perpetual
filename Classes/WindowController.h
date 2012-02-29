@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class WebView;
+
 @interface WindowController : NSWindowController 
 
 + (WindowController *)windowController;
+
+@property (weak) IBOutlet WebView *webView;
 
 @end
