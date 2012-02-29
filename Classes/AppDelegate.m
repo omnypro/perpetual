@@ -9,10 +9,10 @@
 #import "AppDelegate.h"
 
 #import "INAppStoreWindow.h"
-#import "NSString+base64.h"
+#import "PlaybackController.h"
+#import "Track.h"
 #import "WindowController.h"
 
-#import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudio.h>
 #import <QTKit/QTKit.h>
 #import <WebKit/WebKit.h>
@@ -21,11 +21,13 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface AppDelegate ()
 @property (nonatomic, retain) WindowController *windowController;
+@property (nonatomic, retain) PlaybackController *playbackController;
 @end
 
 @implementation AppDelegate
 
 @synthesize windowController = _windowController;
+@synthesize playbackController = _playbackController;
 
 @synthesize window = _window;
 @synthesize startSlider = _startSlider;
@@ -57,20 +59,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     return [NSApp delegate];
 }
 
-- (void)setTheLoopCount:(NSUInteger)theLoopCount
-{
-    // Sets the property and updates the label.
-    [self setLoopCount:theLoopCount];
-    if ([self loopCount] < [self loopInfiniteCount]) {
-        [self.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d",self.loopCount]];
-    }
-    else {
-        [self.loopCountLabel setStringValue:@"∞"];
-    }
-    // Finally update the stepper so it's synchronized.
-    [self.loopCountStepper setIntegerValue:[self loopCount]];
-}
-
 - (void)awakeFromNib
 {
     // Load our blank cover, since we obviously have no audio to play.
@@ -80,76 +68,15 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self setWindowController:[WindowController windowController]];
-    [[self windowController] showWindow:self];
-    
+    [self.windowController showWindow:self];
+
+    [self setPlaybackController:[PlaybackController playbackController]];
+
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
-    [self setLoopInfiniteCount:31];
-    [self setTheLoopCount:10];
-    [[self loopCountStepper] setMaxValue:(double)[self loopInfiniteCount]];
-}
-
-- (void)checkTime:(NSTimer*)theTimer
-{
-    self.currentTime = [self.music currentTime];
-
-    if (self.currentTime.timeValue >= self.endTime.timeValue && self.startTime.timeValue < self.endTime.timeValue && [self loopCount] > 0){
-        if ([self loopCount] < [self loopInfiniteCount]) {
-            // [self loopInfiniteCount] is the magic infinite number.
-            [self setTheLoopCount:[self loopCount]-1];
-        }
-        [self.music setCurrentTime:self.startTime];
-    }
-
-
-    NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-
-    NSDate *date1 = [[NSDate alloc] init];
-    NSDate *date2 = [[NSDate alloc] initWithTimeInterval:self.currentTime.timeValue/self.timeScale sinceDate:date1];
-
-    unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-
-    NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-
-    [self.currentTimeLabel setStringValue:[NSString stringWithFormat:@"%02d:%02d",[conversionInfo minute],[conversionInfo second]]];
-    [self.currentTimeBar setFloatValue:(float)self.currentTime.timeValue];
-
-}
-
-- (void)loadMusic:(NSURL *) fileURL
-{
-    // Load the track from URL.
-    NSError *err = nil;
-    self.music = [[QTMovie alloc] initWithURL:fileURL error:&err];
-    if (self.music == nil) {
-        // TODO: Error handling.
-        NSLog(@"%@", err);
-        return;
-    }
-
-    //Really needed anymore?
-    self.paused = YES;
-
-    // Find and set slider max values.
-    QTTime maxTime = [self.music duration];
-    self.timeScale = [self.music duration].timeScale;
-    float maxValue = (float)maxTime.timeValue;
-    self.startTime = QTMakeTime(0.0, self.timeScale);
-    self.endTime = maxTime;
-
-    [self.currentTimeBar setMaxValue:maxValue];
-    [self.startSlider setMaxValue:maxValue];
-    [self.startSlider setFloatValue:0.0];
-    [self.endSlider setMaxValue:maxValue];
-    [self.endSlider setFloatValue:maxValue];
-    [self.startSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
-    [self.endSlider setNumberOfTickMarks:(int) maxValue/self.timeScale];
-
-    // Fetch all of the metadata.
-    [self fetchMetadataForURL:fileURL];
-
-    // Start loop and play track.
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+    [self.playbackController setLoopInfiniteCount:31];
+    [self.playbackController updateLoopCount:10];
+    [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
 }
 
 - (BOOL)performOpen:(NSURL *)fileURL
@@ -157,9 +84,9 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     if (fileURL == nil) {
         return NO; // Make me smarter.
     }
-
+    
     // Stop the music there's a track playing.
-    [self.music stop];
+    [[[self playbackController] track] stop];
 
     // Add the filename to the recently opened menu (hopefully).
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
@@ -168,7 +95,8 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[self window] makeKeyAndOrderFront:self];
 
     // Play the funky music right boy.
-    [self loadMusic:fileURL];
+    Track *track = [[Track alloc] initWithFileURL:fileURL];
+    [[self playbackController] loadTrack:track withOriginalFileURL:fileURL];
     return YES;
 }
 

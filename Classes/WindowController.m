@@ -19,6 +19,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
+
+- (void)updateUserInterface;
 @end
 
 @implementation WindowController
@@ -113,7 +115,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
-
 
 #pragma mark IBAction Methods
 

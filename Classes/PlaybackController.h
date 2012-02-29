@@ -6,10 +6,21 @@
 //  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <QTKit/QTKit.h>
+
+@class Track;
 
 @interface PlaybackController : NSObject
 
+@property (retain) Track *track;
+@property (assign) BOOL paused;
+@property (assign) QTTime currentTime;
+@property (assign) NSUInteger loopCount;
+@property (assign) NSUInteger loopInfiniteCount;
+
 + (PlaybackController *)playbackController;
+
+- (void)updateLoopCount:(NSUInteger)count;
+- (void)loadTrack:(Track *)track withOriginalFileURL:(NSURL *)fileURL;
 
 @end
