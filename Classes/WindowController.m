@@ -20,7 +20,24 @@
 
 @implementation WindowController
 
+// Cover and Statistics Display
 @synthesize webView = _webView;
+
+// Track Metadata Displays
+@synthesize trackTitle = _trackTitle;
+@synthesize trackSubtitle = _trackSubtitle;
+@synthesize currentTime = _currentTime;
+@synthesize rangeTime = _rangeTime;
+
+// Sliders and Progress Bar
+@synthesize startSlider = _startSlider;
+@synthesize endSlider = _endSlider;
+@synthesize progressBar = _progressBar;
+
+// Lower Toolbar
+@synthesize openFile = _openFile;
+@synthesize play = _play;
+@synthesize volumeControl = _volumeControl;
 
 + (WindowController *)windowController
 {
@@ -73,10 +90,25 @@
 - (void)layoutWebView
 {
     // Set us up as the delegate of the WebView for relevant events.
-    [[self webView] setUIDelegate:self];
-    [[self webView] setFrameLoadDelegate:self];
+    // UIDelegate and FrameLoadDelegate are set in Interface Builder.
     [[self webView] setEditingDelegate:self];    
 }
+
+
+#pragma mark IBAction Methods
+
+- (IBAction)setFloatForStartSlider:(id)sender {
+}
+
+- (IBAction)setFloatForEndSlider:(id)sender {
+}
+
+- (IBAction)setTimeForCurrentTime:(id)sender {
+}
+
+- (IBAction)setFloatForVolume:(id)sender {
+}
+
 
 #pragma mark WebView Delegate Methods
 

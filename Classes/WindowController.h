@@ -12,8 +12,30 @@
 
 @interface WindowController : NSWindowController 
 
+// Cover and Statistics Display
+@property (weak) IBOutlet WebView *webView;
+
+// Track Metadata Displays
+@property (weak) IBOutlet NSTextField *trackTitle;
+@property (weak) IBOutlet NSTextField *trackSubtitle;
+@property (weak) IBOutlet NSTextField *currentTime;
+@property (weak) IBOutlet NSTextField *rangeTime;
+
+// Sliders and Progress Bar
+@property (weak) IBOutlet NSSlider *startSlider;
+@property (weak) IBOutlet NSSlider *endSlider;
+@property (weak) IBOutlet NSLevelIndicator *progressBar;
+
+// Lower Toolbar
+@property (weak) IBOutlet NSButton *openFile;
+@property (weak) IBOutlet NSButton *play;
+@property (weak) IBOutlet NSSlider *volumeControl;
+
 + (WindowController *)windowController;
 
-@property (weak) IBOutlet WebView *webView;
+- (IBAction)setFloatForStartSlider:(id)sender;
+- (IBAction)setFloatForEndSlider:(id)sender;
+- (IBAction)setTimeForCurrentTime:(id)sender;
+- (IBAction)setFloatForVolume:(id)sender;
 
 @end
