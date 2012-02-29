@@ -12,7 +12,8 @@
 
 @interface PlaybackController : NSObject
 
-@property (retain) Track *track;
+@property (nonatomic, readonly, retain) Track *track;
+
 @property (assign) BOOL paused;
 @property (assign) QTTime currentTime;
 @property (assign) NSUInteger loopCount;
@@ -21,6 +22,6 @@
 + (PlaybackController *)playbackController;
 
 - (void)updateLoopCount:(NSUInteger)count;
-- (void)loadTrack:(Track *)track withOriginalFileURL:(NSURL *)fileURL;
+- (IBAction)openFile:(id)sender;
 
 @end

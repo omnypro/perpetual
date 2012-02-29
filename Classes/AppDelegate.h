@@ -20,7 +20,4 @@
 
 + (AppDelegate *)sharedInstance;
 
-- (BOOL)performOpen:(NSString *)filename;
-- (IBAction)openFile:(id)sender;
-
 @end

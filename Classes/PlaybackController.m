@@ -8,19 +8,22 @@
 
 #import "PlaybackController.h"
 
+#import "AppDelegate.h"
 #import "MetadataController.h"
 #import "Track.h"
 #import "WindowController.h"
 
 @interface PlaybackController ()
-@property (nonatomic, retain) WindowController *ui;
+@property (nonatomic, retain) Track *track;
+
+- (void)loadTrack;
+- (BOOL)performOpen:(NSString *)filename;
 @end
 
 @implementation PlaybackController
 
-@synthesize ui = _ui;
-
 @synthesize track = _track;
+
 @synthesize paused = _paused;
 @synthesize currentTime = _currentTime;
 @synthesize loopCount = _loopCount;
@@ -33,17 +36,19 @@
 
 - (void)updateLoopCount:(NSUInteger)count
 {
+    WindowController *ui = [AppDelegate sharedInstance].windowController;
+    
     // Sets the property and updates the label.
     self.loopCount = count;
     if (self.loopCount < self.loopInfiniteCount) {
-        [self.ui.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d", self.loopCount]];
+        [ui.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d", self.loopCount]];
     }
     else {
-        [self.ui.loopCountLabel setStringValue:@"∞"];
+        [ui.loopCountLabel setStringValue:@"∞"];
     }
     
     // Finally, update the stepper so it's snychronized.
-    [self.ui.loopCountStepper setIntegerValue:self.loopCount];
+    [ui.loopCountStepper setIntegerValue:self.loopCount];
 }
 
 - (void)checkTime:(NSTimer *)timer
@@ -58,28 +63,76 @@
     }
 }
 
-- (void)loadTrack:(Track *)track withOriginalFileURL:(NSURL *)fileURL
+- (void)loadTrack
 {
     // Is this really needed?
-    self.track = track;
     self.paused = YES;
     
     // Compose the initial user interface.
     // ???: Should we be doing this in the playback controller?
-    [self.ui.progressBar setMaxValue:self.track.duration.timeValue];
-    [self.ui.startSlider setMaxValue:self.track.duration.timeValue];
-    [self.ui.startSlider setFloatValue:0.0];
-    [self.ui.endSlider setMaxValue:self.track.duration.timeValue];
-    [self.ui.endSlider setFloatValue:self.track.duration.timeValue];
-    [self.ui.startSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
-    [self.ui.endSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
+    WindowController *ui = [AppDelegate sharedInstance].windowController;
+    [ui.progressBar setMaxValue:self.track.duration.timeValue];
+    [ui.startSlider setMaxValue:self.track.duration.timeValue];
+    [ui.startSlider setFloatValue:0.0];
+    [ui.endSlider setMaxValue:self.track.duration.timeValue];
+    [ui.endSlider setFloatValue:self.track.duration.timeValue];
+    [ui.startSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
+    [ui.endSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
     
     // Fetch all of the metadata.
-    [[MetadataController metadataController] fetchMetadataForURL:fileURL];
+    [[MetadataController metadataController] fetchMetadataForURL:self.track.assetURL];
     
     // Start the timer loop.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
 }
 
+# pragma mark File Handling
+
+- (BOOL)performOpen:(NSURL *)fileURL
+{
+    if (fileURL == nil) {
+        return NO; // Make me smarter.
+    }
+    
+    // Stop the music there's a track playing.
+    [[self.track asset] stop];
+    
+    // Add the filename to the recently opened menu (hopefully).
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
+    
+    // Bring the window to the foreground (if needed).
+    [[AppDelegate sharedInstance].windowController showWindow:self];
+    
+    // Play the funky music right boy.
+    [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
+    [self loadTrack];
+    return YES;
+}
+
+- (IBAction)openFile:(id)sender 
+{
+    void(^handler)(NSInteger);
+    
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    
+    handler = ^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSString *filePath = [[panel URLs] objectAtIndex:0];
+            if (![self performOpen:filePath]) {
+                NSLog(@"Could not load track.");
+                return;
+            }
+        }
+    };
+    
+    [panel beginSheetModalForWindow:[[AppDelegate sharedInstance].windowController window] completionHandler:handler];
+}
+
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    return [self performOpen:[NSURL fileURLWithPath:filename]];
+}
 
 @end
