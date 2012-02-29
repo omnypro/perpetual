@@ -35,6 +35,8 @@
 
 + (WindowController *)windowController;
 
+- (void)layoutCoverArtWithIdentifier:(NSString *)identifier;
+
 - (IBAction)handlePlayState:(id)sender;
 - (IBAction)incrementLoopCount:(id)sender;
 - (IBAction)openFile:(id)sender;

@@ -13,6 +13,8 @@
 
 #import <WebKit/WebKit.h>
 
+NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
+
 @interface WindowController () <NSWindowDelegate>
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
@@ -96,6 +98,22 @@
     // UIDelegate and FrameLoadDelegate are set in Interface Builder.
     [[self webView] setEditingDelegate:self];    
 }
+
+- (void)layoutCoverArtWithIdentifier:(NSString *)identifier
+{
+    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
+    NSError *err = nil;
+    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
+    if (html == nil) {
+        // Do something with the error.
+        NSLog(@"%@", err);
+        return;
+    }
+    
+    [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
+    [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
 
 #pragma mark IBAction Methods
 
