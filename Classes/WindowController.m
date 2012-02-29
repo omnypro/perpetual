@@ -10,20 +10,27 @@
 
 #import "AppDelegate.h"
 #import "INAppStoreWindow.h"
+#import "PlaybackController.h"
+#import "Track.h"
 
 #import <WebKit/WebKit.h>
 
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface WindowController () <NSWindowDelegate>
+@property (nonatomic, retain) PlaybackController *playbackController;
+@property (nonatomic, retain) Track *track;
+
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
-
 - (void)updateUserInterface;
 @end
 
 @implementation WindowController
+
+@synthesize playbackController = _playbackController;
+@synthesize track = _track;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -70,6 +77,9 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
     [self layoutTitleBarSegmentedControls];
     [self layoutWebView];
+
+    // Load our blank cover, since we obviously have no audio to play.
+    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)layoutTitleBarSegmentedControls
@@ -81,7 +91,10 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
     NSSize controlSize = NSMakeSize(100.f, 32.f);
-    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f), NSMidY([titleBarView bounds]) - (controlSize.height / 2.f), controlSize.width, controlSize.height);
+    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f), 
+                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f), 
+                                     controlSize.width, 
+                                     controlSize.height);
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
     [switcher setSegmentCount:2];
     [switcher setSegmentStyle:NSSegmentStyleTexturedRounded];
@@ -116,20 +129,35 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
-#pragma mark IBAction Methods
-
-- (IBAction)handlePlayState:(id)sender {
+- (void)updateUserInterface
+{
+    float volume = [self.track.asset volume];
+    [self.volumeControl setFloatValue:volume];
 }
 
-- (IBAction)incrementLoopCount:(id)sender {
+#pragma mark IBAction Methods
+
+- (IBAction)handlePlayState:(id)sender 
+{
+    if (![self.playbackController paused]) {
+        [[self.track asset] stop];
+        [self.playbackController setPaused:YES];
+    }
+    else {
+        [[self.track asset] play];
+        [self.playbackController setPaused:NO];
+    }
+}
+
+- (IBAction)incrementLoopCount:(id)sender 
+{
+    [self.playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
 - (IBAction)openFile:(id)sender 
 {
-    
     void(^handler)(NSInteger);
 
-    AppDelegate *delegate = [AppDelegate sharedInstance];
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     
     [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
@@ -137,7 +165,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
             NSString *filePath = [[panel URLs] objectAtIndex:0];
-            if (![delegate performOpen:filePath]) {
+            if (![[AppDelegate sharedInstance] performOpen:filePath]) {
                 NSLog(@"Could not load track.");
                 return;
             }
@@ -147,16 +175,35 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [panel beginSheetModalForWindow:[self window] completionHandler:handler];
 }
 
-- (IBAction)setFloatForStartSlider:(id)sender {
+- (IBAction)setFloatForStartSlider:(id)sender 
+{
+    if ([self.startSlider doubleValue] > (float)self.track.endTime.timeValue) {
+        self.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.track.duration.timeScale);
+    }
+    else {
+        [self.startSlider setFloatValue:(float)self.track.startTime.timeValue];
+    }
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender {
+    if ([self.endSlider doubleValue] > (float)self.track.startTime.timeValue) {
+        self.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.track.duration.timeScale);
+    }
+    else {
+        [self.endSlider setFloatValue:(float)self.track.startTime.timeValue];
+    }
 }
 
-- (IBAction)setTimeForCurrentTime:(id)sender {
+- (IBAction)setTimeForCurrentTime:(id)sender 
+{
+    NSTimeInterval ti = [self.progressBar doubleValue];
+    [self.playbackController setCurrentTime:QTMakeTime((long)ti, self.track.duration.timeScale)];
 }
 
 - (IBAction)setFloatForVolume:(id)sender {
+    float newValue = [sender floatValue];
+    [self.track.asset setVolume:newValue];
+    [self updateUserInterface];
 }
 
 
