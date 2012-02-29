@@ -47,18 +47,12 @@
 @property (retain) QTMovie *music;
 - (void)updateUserInterface;
 
-- (void)checkTime:(NSTimer*)theTimer;
-- (IBAction)loopStepperStep:(id)sender;
 - (IBAction)playButtonClick:(id)sender;
 - (IBAction)startSliderSet:(id)sender;
 - (IBAction)endSliderSet:(id)sender;
 - (IBAction)currentTimeBarSet:(id)sender;
 - (IBAction)setFloatForVolume:(id)sender;
 
-- (void)fetchMetadataForURL:(NSURL *)fileURL;
-- (void)injectCoverArtWithIdentifier:(NSString *)identifier;
-
-- (IBAction)openFile:(id)sender;
 - (BOOL)performOpen:(NSString *)filename;
 
 @end

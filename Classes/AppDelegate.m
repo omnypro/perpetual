@@ -59,12 +59,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     return [NSApp delegate];
 }
 
-- (void)awakeFromNib
-{
-    // Load our blank cover, since we obviously have no audio to play.
-    [self injectCoverArtWithIdentifier:@"cover.jpg"];
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self setWindowController:[WindowController windowController]];
@@ -86,7 +80,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     }
     
     // Stop the music there's a track playing.
-    [[[self playbackController] track] stop];
+    [[[self.playbackController track] asset] stop];
 
     // Add the filename to the recently opened menu (hopefully).
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
@@ -113,27 +107,6 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 
 #pragma mark IBAction Methods
-
-- (IBAction)openFile:(id)sender
-{
-    void (^handler)(NSInteger);
-
-    NSOpenPanel *panel = [NSOpenPanel openPanel];
-
-    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
-
-    handler = ^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSString *filePath = [[panel URLs] objectAtIndex:0];
-            if (![self performOpen:filePath]) {
-                NSLog(@"Could not load music.");
-                return;
-            }
-        }
-    };
-
-    [panel beginSheetModalForWindow:[self window] completionHandler:handler];
-}
 
 - (IBAction)startSliderSet:(id)sender
 {
