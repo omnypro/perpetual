@@ -27,12 +27,16 @@
 @property (weak) IBOutlet NSLevelIndicator *progressBar;
 
 // Lower Toolbar
-@property (weak) IBOutlet NSButton *openFile;
+@property (weak) IBOutlet NSButton *open;
 @property (weak) IBOutlet NSButton *play;
 @property (weak) IBOutlet NSSlider *volumeControl;
+@property (weak) IBOutlet NSTextField *loopCountLabel;
+@property (weak) IBOutlet NSStepper *loopCountStepper;
 
 + (WindowController *)windowController;
 
+- (IBAction)incrementLoopCount:(id)sender;
+- (IBAction)openFile:(id)sender;
 - (IBAction)setFloatForStartSlider:(id)sender;
 - (IBAction)setFloatForEndSlider:(id)sender;
 - (IBAction)setTimeForCurrentTime:(id)sender;

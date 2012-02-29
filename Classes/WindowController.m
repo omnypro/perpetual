@@ -8,6 +8,7 @@
 
 #import "WindowController.h"
 
+#import "AppDelegate.h"
 #import "INAppStoreWindow.h"
 
 #import <WebKit/WebKit.h>
@@ -35,9 +36,11 @@
 @synthesize progressBar = _progressBar;
 
 // Lower Toolbar
-@synthesize openFile = _openFile;
+@synthesize open = _openFile;
 @synthesize play = _play;
 @synthesize volumeControl = _volumeControl;
+@synthesize loopCountLabel = _loopCountLabel;
+@synthesize loopCountStepper = _loopCountStepper;
 
 + (WindowController *)windowController
 {
@@ -94,8 +97,33 @@
     [[self webView] setEditingDelegate:self];    
 }
 
-
 #pragma mark IBAction Methods
+
+- (IBAction)incrementLoopCount:(id)sender {
+}
+
+- (IBAction)openFile:(id)sender 
+{
+    
+    void(^handler)(NSInteger);
+
+    AppDelegate *delegate = [AppDelegate sharedInstance];
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    
+    handler = ^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSString *filePath = [[panel URLs] objectAtIndex:0];
+            if (![delegate performOpen:filePath]) {
+                NSLog(@"Could not load track.");
+                return;
+            }
+        }
+    };
+    
+    [panel beginSheetModalForWindow:[self window] completionHandler:handler];
+}
 
 - (IBAction)setFloatForStartSlider:(id)sender {
 }
@@ -107,6 +135,14 @@
 }
 
 - (IBAction)setFloatForVolume:(id)sender {
+}
+
+
+#pragma mark NSWindow Delegate Methods
+
+- (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
+{
+    return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -18);
 }
 
 
