@@ -59,12 +59,33 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
 
     // Bring the window to the foreground (if needed).
-    [[self window] makeKeyAndOrderFront:self];
+    [self.windowController showWindow:self];
 
     // Play the funky music right boy.
-    Track *track = [[Track alloc] initWithFileURL:fileURL];
-    [[self playbackController] loadTrack:track withOriginalFileURL:fileURL];
+    [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
+    [self.playbackController loadTrack:self.track];
     return YES;
+}
+
+- (IBAction)openFile:(id)sender 
+{
+    void(^handler)(NSInteger);
+    
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    
+    handler = ^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSString *filePath = [[panel URLs] objectAtIndex:0];
+            if (![self performOpen:filePath]) {
+                NSLog(@"Could not load track.");
+                return;
+            }
+        }
+    };
+    
+    [panel beginSheetModalForWindow:[self.windowController window] completionHandler:handler];
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
@@ -72,94 +93,5 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     return [self performOpen:[NSURL fileURLWithPath:filename]];
 }
 
-- (void)updateUserInterface
-{
-    float volume = [self.music volume];
-    [self.volumeSlider setFloatValue:volume];
-}
-
-
-#pragma mark IBAction Methods
-
-- (IBAction)startSliderSet:(id)sender
-{
-    if ([self.startSlider doubleValue] < (float)self.endTime.timeValue) {
-        self.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.timeScale);
-    }
-    else {
-        [self.startSlider setFloatValue:(float)self.startTime.timeValue];
-    }
-}
-
-- (IBAction)endSliderSet:(id)sender
-{
-    if ([self.endSlider doubleValue] > (float)self.startTime.timeValue) {
-        self.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.timeScale);
-    }
-    else {
-        [self.endSlider setFloatValue:(float)self.endTime.timeValue];
-    }
-}
-
-- (IBAction)currentTimeBarSet:(id)sender
-{
-    NSTimeInterval ct = [self.currentTimeBar doubleValue];
-    [self.music setCurrentTime:QTMakeTime((long)ct, self.timeScale)];
-}
-
-- (IBAction)setFloatForVolume:(id)sender
-{
-    float newValue = [sender floatValue];
-    [self.music setVolume:newValue];
-    [self updateUserInterface];
-}
-
-- (IBAction)playButtonClick:(id)sender
-{
-    if (!self.paused) {
-        [self.music stop];
-        self.paused = YES;
-    }
-    else {
-        [self.music play];
-        self.paused = NO;
-    }
-}
-
-- (IBAction)loopStepperStep:(id)sender
-{
-    [self setTheLoopCount:[self.loopCountStepper intValue]];
-}
-
-
-#pragma mark NSWindow Delegate Methods
-
-- (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
-{
-    return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -18);
-}
-
-
-#pragma mark WebView Delegate Methods
-
-- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
-{
-    return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
-}
-
-- (NSUInteger)webView:(WebView *)webView dragSourceActionMaskForPoint:(NSPoint)point
-{
-    return WebDragSourceActionNone; // We shouldn't be able to drag the artwork out of the webView.
-}
-
-- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
-{
-    return nil; // Disable the webView's contextual menu.
-}
-
-- (BOOL)webView:(WebView *)webView shouldChangeSelectedDOMRange:(DOMRange *)currentRange toDOMRange:(DOMRange *)proposedRange affinity:(NSSelectionAffinity)selectionAffinity stillSelecting:(BOOL)flag
-{
-    return NO; // Prevent the selection of content.
-}
 
 @end

@@ -154,27 +154,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [self.playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
-- (IBAction)openFile:(id)sender 
-{
-    void(^handler)(NSInteger);
-
-    NSOpenPanel *panel = [NSOpenPanel openPanel];
-    
-    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
-    
-    handler = ^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSString *filePath = [[panel URLs] objectAtIndex:0];
-            if (![[AppDelegate sharedInstance] performOpen:filePath]) {
-                NSLog(@"Could not load track.");
-                return;
-            }
-        }
-    };
-    
-    [panel beginSheetModalForWindow:[self window] completionHandler:handler];
-}
-
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
     if ([self.startSlider doubleValue] > (float)self.track.endTime.timeValue) {
