@@ -13,46 +13,19 @@
 #import "Track.h"
 #import "WindowController.h"
 
-#import <CoreAudio/CoreAudio.h>
-#import <QTKit/QTKit.h>
-#import <WebKit/WebKit.h>
-
 NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface AppDelegate ()
 @property (nonatomic, retain) WindowController *windowController;
 @property (nonatomic, retain) PlaybackController *playbackController;
+@property (nonatomic, retain) Track *track;
 @end
 
 @implementation AppDelegate
 
 @synthesize windowController = _windowController;
 @synthesize playbackController = _playbackController;
-
-@synthesize window = _window;
-@synthesize startSlider = _startSlider;
-@synthesize endSlider = _endSlider;
-@synthesize currentTimeLabel = _currentTimeLabel;
-@synthesize trackTitle = _trackTitle;
-@synthesize trackSubTitle = _trackSubTitle;
-@synthesize currentTimeBar = _currentTimeBar;
-@synthesize playButton = _playButton;
-@synthesize loopCountLabel = _loopCountLabel;
-@synthesize loopCountStepper = _loopCountStepper;
-@synthesize coverWebView = _coverWebView;
-@synthesize openFileButton = _openFileButton;
-@synthesize volumeSlider = _volumeSlider;
-
-@synthesize loopCount = _loopCount;
-@synthesize loopInfiniteCount = _loopInfiniteCount;
-@synthesize timeScale = _timeScale;
-@synthesize startTime = _startTime;
-@synthesize endTime = _endTime;
-@synthesize currentTime = _currentTime;
-@synthesize music = _music;
-@synthesize paused = _paused;
-
-#pragma mark API
+@synthesize track = _track;
 
 + (AppDelegate *)sharedInstance
 {
