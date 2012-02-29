@@ -17,6 +17,7 @@
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
+		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
@@ -42,6 +43,8 @@
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
+		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
+		93FC81A914FE0A48004CE24F /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +119,8 @@
 				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
 				93C0A96E14FBA51C00D63507 /* WindowController.h */,
 				93C0A96F14FBA51C00D63507 /* WindowController.m */,
+				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
+				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */,
 				93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */,
 				93C0A97014FBA51C00D63507 /* WindowController.m in Sources */,
+				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
