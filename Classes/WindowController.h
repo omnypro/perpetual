@@ -35,6 +35,7 @@
 
 + (WindowController *)windowController;
 
+- (IBAction)handlePlayState:(id)sender;
 - (IBAction)incrementLoopCount:(id)sender;
 - (IBAction)openFile:(id)sender;
 - (IBAction)setFloatForStartSlider:(id)sender;

@@ -99,6 +99,9 @@
 
 #pragma mark IBAction Methods
 
+- (IBAction)handlePlayState:(id)sender {
+}
+
 - (IBAction)incrementLoopCount:(id)sender {
 }
 
