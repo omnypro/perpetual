@@ -61,7 +61,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
     
-    [self setPlaybackController:[AppDelegate sharedInstance].playbackController];
     [self composeInterface];
 }
 
@@ -139,19 +138,20 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)handlePlayState:(id)sender 
 {
-    if (![self.playbackController paused]) {
-        [[self.playbackController.track asset] stop];
-        [self.playbackController setPaused:YES];
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if (![playbackController paused]) {
+        [[playbackController.track asset] stop];
+        [playbackController setPaused:YES];
     }
     else {
-        [[self.playbackController.track asset] play];
-        [self.playbackController setPaused:NO];
+        [[playbackController.track asset] play];
+        [playbackController setPaused:NO];
     }
 }
 
 - (IBAction)incrementLoopCount:(id)sender 
 {
-    [self.playbackController updateLoopCount:[self.loopCountStepper intValue]];
+    [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
 - (IBAction)setFloatForStartSlider:(id)sender 
