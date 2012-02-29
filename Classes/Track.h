@@ -12,6 +12,7 @@
 @interface Track : NSObject
 
 @property (retain) QTMovie *asset;
+@property (retain) NSURL *assetURL;
 @property (assign) QTTime duration;
 @property (assign) QTTime startTime;
 @property (assign) QTTime endTime;
