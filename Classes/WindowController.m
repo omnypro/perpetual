@@ -19,7 +19,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, retain) PlaybackController *playbackController;
-@property (nonatomic, retain) Track *track;
 
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
@@ -30,7 +29,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @implementation WindowController
 
 @synthesize playbackController = _playbackController;
-@synthesize track = _track;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -61,7 +59,9 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [[self window] setAllowsConcurrentViewDrawing:YES];   
+    [[self window] setAllowsConcurrentViewDrawing:YES];
+    
+    [self setPlaybackController:[AppDelegate sharedInstance].playbackController];
     [self composeInterface];
 }
 
@@ -131,7 +131,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)updateUserInterface
 {
-    float volume = [self.track.asset volume];
+    float volume = [self.playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
 }
 
@@ -140,11 +140,11 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (IBAction)handlePlayState:(id)sender 
 {
     if (![self.playbackController paused]) {
-        [[self.track asset] stop];
+        [[self.playbackController.track asset] stop];
         [self.playbackController setPaused:YES];
     }
     else {
-        [[self.track asset] play];
+        [[self.playbackController.track asset] play];
         [self.playbackController setPaused:NO];
     }
 }
@@ -156,32 +156,32 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
-    if ([self.startSlider doubleValue] > (float)self.track.endTime.timeValue) {
-        self.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.track.duration.timeScale);
+    if ([self.startSlider doubleValue] > (float)self.playbackController.track.endTime.timeValue) {
+        self.playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.playbackController.track.duration.timeScale);
     }
     else {
-        [self.startSlider setFloatValue:(float)self.track.startTime.timeValue];
+        [self.startSlider setFloatValue:(float)self.playbackController.track.startTime.timeValue];
     }
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender {
-    if ([self.endSlider doubleValue] > (float)self.track.startTime.timeValue) {
-        self.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.track.duration.timeScale);
+    if ([self.endSlider doubleValue] > (float)self.playbackController.track.startTime.timeValue) {
+        self.playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.playbackController.track.duration.timeScale);
     }
     else {
-        [self.endSlider setFloatValue:(float)self.track.startTime.timeValue];
+        [self.endSlider setFloatValue:(float)self.playbackController.track.startTime.timeValue];
     }
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
 {
     NSTimeInterval ti = [self.progressBar doubleValue];
-    [self.playbackController setCurrentTime:QTMakeTime((long)ti, self.track.duration.timeScale)];
+    [self.playbackController setCurrentTime:QTMakeTime((long)ti, self.playbackController.track.duration.timeScale)];
 }
 
 - (IBAction)setFloatForVolume:(id)sender {
     float newValue = [sender floatValue];
-    [self.track.asset setVolume:newValue];
+    [self.playbackController.track.asset setVolume:newValue];
     [self updateUserInterface];
 }
 

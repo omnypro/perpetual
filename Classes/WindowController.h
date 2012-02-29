@@ -39,7 +39,6 @@
 
 - (IBAction)handlePlayState:(id)sender;
 - (IBAction)incrementLoopCount:(id)sender;
-- (IBAction)openFile:(id)sender;
 - (IBAction)setFloatForStartSlider:(id)sender;
 - (IBAction)setFloatForEndSlider:(id)sender;
 - (IBAction)setTimeForCurrentTime:(id)sender;
