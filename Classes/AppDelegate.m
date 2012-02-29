@@ -10,6 +10,7 @@
 
 #import "INAppStoreWindow.h"
 #import "NSString+base64.h"
+#import "WindowController.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudio.h>
@@ -17,6 +18,10 @@
 #import <WebKit/WebKit.h>
 
 NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
+
+@interface AppDelegate ()
+@property (nonatomic, retain) WindowController *windowController;
+@end
 
 @implementation AppDelegate
 
@@ -68,17 +73,15 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)awakeFromNib
 {
-    // Set us up as the delegate of the webView for relevant events.
-    [[self coverWebView] setUIDelegate:self];
-    [[self coverWebView] setFrameLoadDelegate:self];
-    [[self coverWebView] setEditingDelegate:self];
-
     // Load our blank cover, since we obviously have no audio to play.
     [self injectCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [self setWindowController:[WindowController windowController]];
+    [[self windowController] showWindow:self];
+    
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
     [self setLoopInfiniteCount:31];
