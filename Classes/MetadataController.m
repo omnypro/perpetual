@@ -8,6 +8,7 @@
 
 #import "MetadataController.h"
 
+#import "AppDelegate.h"
 #import "NSString+base64.h"
 #import "WindowController.h"
 
@@ -26,7 +27,7 @@
     NSString *artist = nil;
     NSString *album = nil;
     
-    WindowController *ui = [WindowController windowController];
+    WindowController *ui = [AppDelegate sharedInstance].windowController;
     AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     for (NSString *format in [asset availableMetadataFormats]) {
         for (AVMetadataItem *item in [asset metadataForFormat:format]) {
