@@ -29,11 +29,6 @@
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
-+ (PlaybackController *)playbackController
-{
-    return [[PlaybackController alloc] init];
-}
-
 - (void)updateLoopCount:(NSUInteger)count
 {
     WindowController *ui = [AppDelegate sharedInstance].windowController;

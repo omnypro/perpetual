@@ -10,8 +10,6 @@
 
 @interface MetadataController : NSObject
 
-+ (MetadataController *)metadataController;
-
 - (void)fetchMetadataForURL:(NSURL *)fileURL;
 
 @end

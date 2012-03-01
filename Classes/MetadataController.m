@@ -16,11 +16,6 @@
 
 @implementation MetadataController
 
-+ (MetadataController *)metadataController
-{
-    return [[MetadataController alloc] init];
-}
-
 - (void)fetchMetadataForURL:(NSURL *)fileURL
 {
     NSString *title = nil;

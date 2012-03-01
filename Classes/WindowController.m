@@ -51,11 +51,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize loopCountLabel = _loopCountLabel;
 @synthesize loopCountStepper = _loopCountStepper;
 
-+ (WindowController *)windowController
-{
-    return [[WindowController alloc] initWithWindowNibName:@"Window"];
-}
-
 - (void)windowDidLoad
 {
     [super windowDidLoad];

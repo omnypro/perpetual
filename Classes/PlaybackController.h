@@ -19,8 +19,6 @@
 @property (assign) NSUInteger loopCount;
 @property (assign) NSUInteger loopInfiniteCount;
 
-+ (PlaybackController *)playbackController;
-
 - (void)updateLoopCount:(NSUInteger)count;
 - (IBAction)openFile:(id)sender;
 

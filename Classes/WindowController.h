@@ -33,8 +33,6 @@
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 
-+ (WindowController *)windowController;
-
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier;
 
 - (IBAction)handlePlayState:(id)sender;
