@@ -20,6 +20,6 @@
 @property (assign) NSUInteger loopInfiniteCount;
 
 - (void)updateLoopCount:(NSUInteger)count;
-- (IBAction)openFile:(id)sender;
+- (BOOL)openURL:(NSURL *)filename;
 
 @end

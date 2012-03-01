@@ -16,8 +16,9 @@
 
 @property (nonatomic, readonly, retain) WindowController *windowController;
 @property (nonatomic, readonly, retain) PlaybackController *playbackController;
-@property (nonatomic, readonly, retain) Track *track;
 
 + (AppDelegate *)sharedInstance;
+
+- (IBAction)openFile:(id)sender;
 
 @end

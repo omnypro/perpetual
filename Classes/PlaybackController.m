@@ -16,7 +16,6 @@
 @property (nonatomic, retain) Track *track;
 
 - (void)loadTrack;
-- (BOOL)performOpen:(NSString *)filename;
 @end
 
 @implementation PlaybackController
@@ -81,7 +80,7 @@
 
 # pragma mark File Handling
 
-- (BOOL)performOpen:(NSURL *)fileURL
+- (BOOL)openURL:(NSURL *)fileURL
 {
     if (fileURL == nil) {
         return NO; // Make me smarter.
@@ -100,32 +99,6 @@
     [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
     [self loadTrack];
     return YES;
-}
-
-- (IBAction)openFile:(id)sender 
-{
-    void(^handler)(NSInteger);
-    
-    NSOpenPanel *panel = [NSOpenPanel openPanel];
-    
-    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
-    
-    handler = ^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSString *filePath = [[panel URLs] objectAtIndex:0];
-            if (![self performOpen:filePath]) {
-                NSLog(@"Could not load track.");
-                return;
-            }
-        }
-    };
-    
-    [panel beginSheetModalForWindow:[[AppDelegate sharedInstance].windowController window] completionHandler:handler];
-}
-
-- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
-{
-    return [self performOpen:[NSURL fileURLWithPath:filename]];
 }
 
 @end

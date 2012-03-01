@@ -14,8 +14,8 @@
 @property (nonatomic, readonly) QTMovie *asset;
 @property (nonatomic, readonly) NSURL *assetURL;
 @property (nonatomic, readonly) QTTime duration;
-@property (nonatomic, readonly) QTTime startTime;
-@property (nonatomic, readonly) QTTime endTime;
+@property (nonatomic) QTTime startTime;
+@property (nonatomic) QTTime endTime;
 
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *artist;

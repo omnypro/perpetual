@@ -32,17 +32,45 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self setWindowController:[WindowController windowController]];
+	WindowController *windowController = [[WindowController alloc] init];
+    [self setWindowController:windowController];
     [self.windowController showWindow:self];
 
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
-    [self setPlaybackController:[PlaybackController playbackController]];
+	PlaybackController *playbackController = [[PlaybackController alloc] init];
+    [self setPlaybackController:playbackController];
     [self.playbackController setLoopInfiniteCount:31];
     [self.playbackController updateLoopCount:10];
     
     // Set the max value of the loop counter.
     [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
+}
+
+- (IBAction)openFile:(id)sender 
+{
+    void(^handler)(NSInteger);
+    
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    
+    handler = ^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *filePath = [[panel URLs] objectAtIndex:0];
+            if (![self.playbackController openURL:filePath]) {
+                NSLog(@"Could not load track.");
+                return;
+            }
+        }
+    };
+    
+    [panel beginSheetModalForWindow:[[AppDelegate sharedInstance].windowController window] completionHandler:handler];
+}
+
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+	return [self.playbackController openURL:[NSURL fileURLWithPath:filename]];
 }
 
 @end
