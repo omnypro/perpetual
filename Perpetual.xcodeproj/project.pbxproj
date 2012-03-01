@@ -19,7 +19,6 @@
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
 		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
-		93FC81E214FE1B87004CE24F /* MetadataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81E114FE1B86004CE24F /* MetadataController.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
@@ -49,8 +48,6 @@
 		93FC81A914FE0A48004CE24F /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		93FC81DD14FE16F1004CE24F /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		93FC81DE14FE16F1004CE24F /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
-		93FC81E014FE1B86004CE24F /* MetadataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataController.h; sourceTree = "<group>"; };
-		93FC81E114FE1B86004CE24F /* MetadataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataController.m; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,8 +124,6 @@
 				93C0A96F14FBA51C00D63507 /* WindowController.m */,
 				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
 				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
-				93FC81E014FE1B86004CE24F /* MetadataController.h */,
-				93FC81E114FE1B86004CE24F /* MetadataController.m */,
 				93FC81DD14FE16F1004CE24F /* Track.h */,
 				93FC81DE14FE16F1004CE24F /* Track.m */,
 			);
@@ -295,7 +290,6 @@
 				93C0A97014FBA51C00D63507 /* WindowController.m in Sources */,
 				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
-				93FC81E214FE1B87004CE24F /* MetadataController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
