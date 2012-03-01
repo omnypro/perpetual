@@ -12,7 +12,7 @@
 
 @interface PlaybackController : NSObject
 
-@property (nonatomic, readonly, retain) Track *track;
+@property (nonatomic, readonly, strong) Track *track;
 
 @property (assign) BOOL paused;
 @property (assign) QTTime currentTime;

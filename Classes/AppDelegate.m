@@ -16,8 +16,8 @@
 NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface AppDelegate ()
-@property (nonatomic, retain) WindowController *windowController;
-@property (nonatomic, retain) PlaybackController *playbackController;
+@property (nonatomic, strong) WindowController *windowController;
+@property (nonatomic, strong) PlaybackController *playbackController;
 @end
 
 @implementation AppDelegate

@@ -14,8 +14,8 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {}
 
-@property (nonatomic, readonly, retain) WindowController *windowController;
-@property (nonatomic, readonly, retain) PlaybackController *playbackController;
+@property (nonatomic, readonly, strong) WindowController *windowController;
+@property (nonatomic, readonly, strong) PlaybackController *playbackController;
 
 + (AppDelegate *)sharedInstance;
 

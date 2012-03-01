@@ -13,7 +13,7 @@
 #import "WindowController.h"
 
 @interface PlaybackController ()
-@property (nonatomic, retain) Track *track;
+@property (nonatomic, strong) Track *track;
 
 - (void)loadTrack;
 @end

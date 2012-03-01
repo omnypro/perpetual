@@ -18,7 +18,7 @@
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface WindowController () <NSWindowDelegate>
-@property (nonatomic, retain) PlaybackController *playbackController;
+@property (nonatomic, strong) PlaybackController *playbackController;
 
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
