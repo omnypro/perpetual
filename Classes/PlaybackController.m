@@ -9,7 +9,6 @@
 #import "PlaybackController.h"
 
 #import "AppDelegate.h"
-#import "MetadataController.h"
 #import "Track.h"
 #import "WindowController.h"
 
@@ -73,9 +72,8 @@
     [ui.endSlider setFloatValue:self.track.duration.timeValue];
     [ui.startSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
     [ui.endSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
-    
-    // Fetch all of the metadata.
-    [[MetadataController metadataController] fetchMetadataForURL:self.track.assetURL];
+    ui.trackTitle.stringValue = self.track.title;
+	ui.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", self.track.albumName, self.track.artist];
     
     // Start the timer loop.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
