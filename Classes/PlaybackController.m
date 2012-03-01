@@ -73,6 +73,7 @@
     [ui.endSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
     ui.trackTitle.stringValue = self.track.title;
 	ui.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", self.track.albumName, self.track.artist];
+	[ui layoutCoverArtWithIdentifier:[self.track.imageDataURI absoluteString]];
     
     // Start the timer loop.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
