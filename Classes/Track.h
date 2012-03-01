@@ -11,11 +11,16 @@
 
 @interface Track : NSObject
 
-@property (retain) QTMovie *asset;
-@property (retain) NSURL *assetURL;
-@property (assign) QTTime duration;
-@property (assign) QTTime startTime;
-@property (assign) QTTime endTime;
+@property (nonatomic, readonly) QTMovie *asset;
+@property (nonatomic, readonly) NSURL *assetURL;
+@property (nonatomic, readonly) QTTime duration;
+@property (nonatomic, readonly) QTTime startTime;
+@property (nonatomic, readonly) QTTime endTime;
+
+@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly) NSString *artist;
+@property (nonatomic, readonly) NSString *albumName;
+@property (nonatomic, readonly) NSURL *imageDataURI;
 
 - (id)initWithFileURL:(NSURL *)fileURL;
 
