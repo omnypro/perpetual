@@ -217,27 +217,27 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
-    if ([self.startSlider doubleValue] > (float)self.playbackController.track.endTime.timeValue) {
-        self.playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], self.playbackController.track.duration.timeScale);
+    if ([self.startSlider doubleValue] > (float)[AppDelegate sharedInstance].playbackController.track.endTime.timeValue) {
+        [AppDelegate sharedInstance].playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], [AppDelegate sharedInstance].playbackController.track.duration.timeScale);
     }
     else {
-        [self.startSlider setFloatValue:(float)self.playbackController.track.startTime.timeValue];
+        [self.startSlider setFloatValue:(float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue];
     }
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender {
-    if ([self.endSlider doubleValue] > (float)self.playbackController.track.startTime.timeValue) {
-        self.playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], self.playbackController.track.duration.timeScale);
+    if ([self.endSlider doubleValue] > (float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue) {
+        [AppDelegate sharedInstance].playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], [AppDelegate sharedInstance].playbackController.track.duration.timeScale);
     }
     else {
-        [self.endSlider setFloatValue:(float)self.playbackController.track.startTime.timeValue];
+        [self.endSlider setFloatValue:(float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue];
     }
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
 {
     NSTimeInterval ti = [self.progressBar doubleValue];
-    [self.playbackController setCurrentTime:QTMakeTime((long)ti, self.playbackController.track.duration.timeScale)];
+    [[AppDelegate sharedInstance].playbackController setCurrentTime:QTMakeTime((long)ti, [AppDelegate sharedInstance].playbackController.track.duration.timeScale)];
 }
 
 - (IBAction)setFloatForVolume:(id)sender {
