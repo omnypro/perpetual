@@ -72,9 +72,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
     // Add the filename to the recently opened menu (hopefully).
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
     
-    // Bring the window to the foreground (if needed).
-    [[AppDelegate sharedInstance].windowController showWindow:self];
-    
     // Play the funky music right boy.
     [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
     [self loadTrack];

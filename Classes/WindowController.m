@@ -218,8 +218,11 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     PlaybackController *object = [notification object];
     if ([object isKindOfClass:[PlaybackController class]]) {      
         [self layoutInitialInterface:[object track]];
+        [self showWindow:self];
+        [self.play setEnabled:TRUE];
     }
 }
+
 
 #pragma mark IBAction Methods
 
