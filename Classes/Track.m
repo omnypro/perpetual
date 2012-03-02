@@ -34,7 +34,6 @@
     
     NSError *err = nil;
     _asset = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
-    // _asset = [[QTMovie alloc] initWithURL:fileURL error:&err];
     if (self.asset == nil) {
         NSLog(@"%@", err);
         return nil;
