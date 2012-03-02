@@ -163,7 +163,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)updateUserInterface
 {
-    float volume = [self.playbackController.track.asset volume];
+    float volume = [[AppDelegate sharedInstance].playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
 }
 
@@ -242,7 +242,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForVolume:(id)sender {
     float newValue = [sender floatValue];
-    [self.playbackController.track.asset setVolume:newValue];
+    [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateUserInterface];
 }
 
