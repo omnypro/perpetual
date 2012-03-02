@@ -15,6 +15,7 @@
 NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
+NSString *const PlaybackDidLoopNotification = @"com.revyver.perpetual.PlaybackDidLoopNotification";
 
 @interface PlaybackController ()
 @property (nonatomic, strong) Track *track;
@@ -31,32 +32,15 @@ NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDi
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
-- (void)updateLoopCount:(NSUInteger)count
-{
-    WindowController *ui = [AppDelegate sharedInstance].windowController;
-    
-    // Sets the property and updates the label.
-    self.loopCount = count;
-    if (self.loopCount < self.loopInfiniteCount) {
-        [ui.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d", self.loopCount]];
-    }
-    else {
-        [ui.loopCountLabel setStringValue:@"∞"];
-    }
-    
-    // Finally, update the stepper so it's snychronized.
-    [ui.loopCountStepper setIntegerValue:self.loopCount];
-}
-
 - (void)checkTime:(NSTimer *)timer
 {
     self.currentTime = [self.track.asset currentTime];
     
-    if (self.currentTime.timeValue >= self.track.endTime.timeValue && self.track.startTime.timeValue < self.track.endTime.timeValue && [self loopCount] > 0) {
+    if (self.currentTime.timeValue >= self.track.endTime.timeValue && self.track.startTime.timeValue < self.track.endTime.timeValue && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
-            [self updateLoopCount:self.loopCount - 1];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidLoopNotification object:self userInfo:nil];
         }
-        [self setCurrentTime:self.track.startTime];
+        self.currentTime = self.track.startTime;
     }
 }
 
@@ -65,11 +49,11 @@ NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDi
     // Is this really needed?
     self.paused = YES;
      
-    // Start the timer loop.
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
-    
     // Broadcast a notification to tell the UI to update.
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
+    
+    // Start the timer loop.
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];    
 }
 
 # pragma mark File Handling

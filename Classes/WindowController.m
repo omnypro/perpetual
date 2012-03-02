@@ -20,6 +20,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
 
+- (void)playbackDidLoop:(NSNotification *)notification;
 - (void)trackWasLoaded:(NSNotification *)notification;
 
 - (void)composeInterface;
@@ -67,7 +68,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // Register notifications for our playback services.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidLoop:) name:PlaybackDidLoopNotification object:nil];
     
     [self composeInterface];
 }
@@ -166,6 +168,24 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 }
 
 #pragma mark Notification Observers
+
+- (void)playbackDidLoop:(NSNotification *)notification
+{
+    PlaybackController *object = [notification object];
+    if ([object isKindOfClass:[PlaybackController class]]) {
+        // Decrement the loop count by one, then update the label.
+        object.loopCount = object.loopCount - 1;
+        if (object.loopCount < object.loopInfiniteCount) {
+            [self.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d", object.loopCount]];
+        }
+        else {
+            [self.loopCountLabel setStringValue:@"∞"];
+        }
+        
+        // Finally, update the stepper so it's snychronized.
+        [self.loopCountStepper setIntegerValue:object.loopCount];
+    }
+}
 
 - (void)trackWasLoaded:(NSNotification *)notification
 {
