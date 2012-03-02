@@ -12,6 +12,10 @@
 #import "Track.h"
 #import "WindowController.h"
 
+NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
+NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
+NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
+
 @interface PlaybackController ()
 @property (nonatomic, strong) Track *track;
 

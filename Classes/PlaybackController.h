@@ -10,6 +10,10 @@
 
 @class Track;
 
+extern NSString *const TrackWasLoadedNotification;
+extern NSString *const PlaybackDidStartNotification;
+extern NSString *const PlaybackDidStopNotification;
+
 @interface PlaybackController : NSObject
 
 @property (nonatomic, readonly, strong) Track *track;

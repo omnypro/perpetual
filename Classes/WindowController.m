@@ -60,6 +60,11 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
+
+    // Register notifications for our playback services.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];    
     
     [self composeInterface];
 }

@@ -35,7 +35,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 	WindowController *windowController = [[WindowController alloc] init];
     [self setWindowController:windowController];
     [self.windowController showWindow:self];
-
+  
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
 	PlaybackController *playbackController = [[PlaybackController alloc] init];
