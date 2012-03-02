@@ -12,6 +12,7 @@
 
 extern NSString *const PlaybackDidStartNotification;
 extern NSString *const PlaybackDidStopNotification;
+extern NSString *const PlaybackHasProgressedNotification;
 extern NSString *const TrackLoopCountChangedNotification;
 extern NSString *const TrackWasLoadedNotification;
 
@@ -26,5 +27,7 @@ extern NSString *const TrackWasLoadedNotification;
 
 - (void)updateLoopCount:(NSUInteger)count;
 - (BOOL)openURL:(NSURL *)filename;
+- (void)play;
+- (void)stop;
 
 @end

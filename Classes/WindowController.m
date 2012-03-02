@@ -20,6 +20,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
 
+- (void)playbackHasProgressed:(NSNotification *)notification;
 - (void)trackLoopCountChanged:(NSNotification *)notification;
 - (void)trackWasLoaded:(NSNotification *)notification;
 
@@ -68,6 +69,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // Register notifications for our playback services.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
     
@@ -170,6 +172,29 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 #pragma mark Notification Observers
 
+- (void)playbackHasProgressed:(NSNotification *)notification
+{
+    PlaybackController *object = [notification object];
+    if ([object isKindOfClass:[PlaybackController class]]) {
+        // Get the system calendar.
+        NSCalendar *sysCalendar = [NSCalendar currentCalendar];
+        
+        // Create 2 NSDate objects whose difference is the NSTimeInterval 
+        // we want to convert.
+        NSDate *date1 = [[NSDate alloc] init];
+        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.currentTime.timeValue/object.track.duration.timeScale sinceDate:date1];
+        
+        // Get get the appropriate minutes/seconds conversation and place it
+        // into our currentTime label.
+        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
+        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
+
+        // Finally, update our progress bar's... progress.
+        [self.progressBar setFloatValue:(float)object.currentTime.timeValue];
+    }    
+}
+
 - (void)trackLoopCountChanged:(NSNotification *)notification
 {
     PlaybackController *object = [notification object];
@@ -201,12 +226,10 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
     if (![playbackController paused]) {
-        [[playbackController.track asset] stop];
-        [playbackController setPaused:YES];
+        [playbackController stop];
     }
     else {
-        [[playbackController.track asset] play];
-        [playbackController setPaused:NO];
+        [playbackController play];
     }
 }
 

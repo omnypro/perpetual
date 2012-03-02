@@ -14,6 +14,7 @@
 
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
+NSString *const PlaybackHasProgressedNotification = @"com.revyver.perpetual.PlaybackHasProgressedNotification";
 NSString *const TrackLoopCountChangedNotification = @"com.revyver.perpetual.TrackLoopCountChangedNotification";
 NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
 
@@ -47,7 +48,12 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
         }
         self.currentTime = self.track.startTime;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackHasProgressedNotification object:self userInfo:nil];
 }
+
+
+# pragma mark File Handling
 
 - (void)loadTrack
 {
@@ -60,8 +66,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
     // Start the timer loop.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];    
 }
-
-# pragma mark File Handling
 
 - (BOOL)openURL:(NSURL *)fileURL
 {
@@ -82,6 +86,24 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
     [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
     [self loadTrack];
     return YES;
+}
+
+
+# pragma mark Playback Handling
+
+- (void)play
+{
+    [self.track.asset play];
+    self.paused = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStartNotification object:self userInfo:nil];
+}
+
+
+- (void)stop
+{
+    [self.track.asset stop];
+    self.paused = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStopNotification object:self userInfo:nil];
 }
 
 @end
