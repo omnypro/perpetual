@@ -53,7 +53,7 @@
 				<string key="NSWindowClass">INAppStoreWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMinSize">{480, 400}</string>
+				<string key="NSWindowContentMinSize">{480, 420}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -406,7 +406,7 @@
 					<reference key="NSNextKeyView" ref="635918068"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{480, 422}</string>
+				<string key="NSMinSize">{480, 442}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">Window</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
