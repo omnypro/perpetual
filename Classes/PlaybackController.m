@@ -10,7 +10,6 @@
 
 #import "AppDelegate.h"
 #import "Track.h"
-#import "WindowController.h"
 
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
@@ -43,7 +42,7 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
         if (self.loopCount < self.loopInfiniteCount) {
             [self updateLoopCount:self.loopCount - 1];
         }
-        [self.track.asset playAtTime:self.track.startTime];
+        self.track.asset.currentTime = self.track.startTime;
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackHasProgressedNotification object:self userInfo:nil];
