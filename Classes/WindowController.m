@@ -13,6 +13,7 @@
 #import "PlaybackController.h"
 #import "Track.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <WebKit/WebKit.h>
 
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
@@ -181,17 +182,17 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
         
         // Create 2 NSDate objects whose difference is the NSTimeInterval 
         // we want to convert.
-//        NSDate *date1 = [[NSDate alloc] init];
-//        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.currentTime.timeValue/object.track.duration.timeScale sinceDate:date1];
-//        
-//        // Get get the appropriate minutes/seconds conversation and place it
-//        // into our currentTime label.
-//        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-//        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
-//        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
+        NSDate *date1 = [[NSDate alloc] init];
+        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.track.asset.currentTime sinceDate:date1];
+
+        // Get get the appropriate minutes/seconds conversation and place it
+        // into our currentTime label.
+        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
+        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
 
         // Finally, update our progress bar's... progress.
-        [self.progressBar setFloatValue:object.currentTime];
+        [self.progressBar setFloatValue:object.track.asset.currentTime];
     }    
 }
 
@@ -240,31 +241,31 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
-//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-//    if ([self.startSlider doubleValue] > (float)playbackController.track.endTime.timeValue) {
-//        playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], playbackController.track.duration.timeScale);
-//    }
-//    else {
-//        [self.startSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
-//    }
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if (self.startSlider.doubleValue > playbackController.track.endTime) {
+        playbackController.track.startTime = self.startSlider.doubleValue;
+    }
+    else {
+        self.startSlider.doubleValue = playbackController.track.startTime;
+    }
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender 
 {
-//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-//    if ([self.endSlider doubleValue] > (float)playbackController.track.startTime.timeValue) {
-//        playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], playbackController.track.duration.timeScale);
-//    }
-//    else {
-//        [self.endSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
-//    }
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if (self.endSlider.doubleValue > playbackController.track.startTime) {
+        playbackController.track.endTime = self.endSlider.doubleValue;
+    }
+    else {
+        self.endSlider.doubleValue = playbackController.track.startTime;
+    }
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
 {
-//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-//    NSTimeInterval ti = [self.progressBar doubleValue];
-//    [playbackController setCurrentTime:QTMakeTime((long)ti, playbackController.track.duration.timeScale)];
+    NSTimeInterval interval = self.progressBar.doubleValue;
+    AVAudioPlayer *asset = [AppDelegate sharedInstance].playbackController.track.asset;
+    asset.currentTime = interval;
 }
 
 - (IBAction)setFloatForVolume:(id)sender 

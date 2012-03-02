@@ -21,7 +21,6 @@ extern NSString *const TrackWasLoadedNotification;
 @property (nonatomic, readonly, strong) Track *track;
 
 @property (assign) BOOL paused;
-@property (assign) NSTimeInterval currentTime;
 @property (assign) NSUInteger loopCount;
 @property (assign) NSUInteger loopInfiniteCount;
 

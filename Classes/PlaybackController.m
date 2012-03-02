@@ -29,7 +29,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 @synthesize track = _track;
 
 @synthesize paused = _paused;
-@synthesize currentTime = _currentTime;
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
@@ -39,16 +38,14 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 }
 
 - (void)checkTime:(NSTimer *)timer
-{
-    self.currentTime = [self.track.asset currentTime];
-    
-    if (self.currentTime >= self.track.endTime && self.track.startTime < self.track.endTime && self.loopCount > 0) {
+{   
+    if (self.track.asset.currentTime >= self.track.endTime && self.track.startTime < self.track.endTime && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
             [self updateLoopCount:self.loopCount - 1];
         }
-        self.currentTime = self.track.startTime;
+        [self.track.asset playAtTime:self.track.startTime];
     }
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackHasProgressedNotification object:self userInfo:nil];
 }
 
