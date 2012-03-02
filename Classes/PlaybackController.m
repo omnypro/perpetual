@@ -12,10 +12,10 @@
 #import "Track.h"
 #import "WindowController.h"
 
-NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
-NSString *const PlaybackDidLoopNotification = @"com.revyver.perpetual.PlaybackDidLoopNotification";
+NSString *const TrackLoopCountChangedNotification = @"com.revyver.perpetual.TrackLoopCountChangedNotification";
+NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
 
 @interface PlaybackController ()
 @property (nonatomic, strong) Track *track;
@@ -32,13 +32,18 @@ NSString *const PlaybackDidLoopNotification = @"com.revyver.perpetual.PlaybackDi
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
+- (void)updateLoopCount:(NSUInteger)count {  
+    self.loopCount = count;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TrackLoopCountChangedNotification object:self userInfo:nil];
+}
+
 - (void)checkTime:(NSTimer *)timer
 {
     self.currentTime = [self.track.asset currentTime];
     
     if (self.currentTime.timeValue >= self.track.endTime.timeValue && self.track.startTime.timeValue < self.track.endTime.timeValue && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidLoopNotification object:self userInfo:nil];
+            [self updateLoopCount:self.loopCount - 1];
         }
         self.currentTime = self.track.startTime;
     }

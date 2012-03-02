@@ -20,7 +20,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
 
-- (void)playbackDidLoop:(NSNotification *)notification;
+- (void)trackLoopCountChanged:(NSNotification *)notification;
 - (void)trackWasLoaded:(NSNotification *)notification;
 
 - (void)composeInterface;
@@ -66,10 +66,10 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [[self window] setAllowsConcurrentViewDrawing:YES];
 
     // Register notifications for our playback services.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidLoop:) name:PlaybackDidLoopNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
     
     [self composeInterface];
 }
@@ -167,14 +167,14 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [self.volumeControl setFloatValue:volume];
 }
 
+
 #pragma mark Notification Observers
 
-- (void)playbackDidLoop:(NSNotification *)notification
+- (void)trackLoopCountChanged:(NSNotification *)notification
 {
     PlaybackController *object = [notification object];
     if ([object isKindOfClass:[PlaybackController class]]) {
-        // Decrement the loop count by one, then update the label.
-        object.loopCount = object.loopCount - 1;
+        // Update the labels.
         if (object.loopCount < object.loopInfiniteCount) {
             [self.loopCountLabel setStringValue:[NSString stringWithFormat:@"x%d", object.loopCount]];
         }

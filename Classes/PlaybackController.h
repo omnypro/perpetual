@@ -10,10 +10,10 @@
 
 @class Track;
 
-extern NSString *const TrackWasLoadedNotification;
 extern NSString *const PlaybackDidStartNotification;
 extern NSString *const PlaybackDidStopNotification;
-extern NSString *const PlaybackDidLoopNotification;
+extern NSString *const TrackLoopCountChangedNotification;
+extern NSString *const TrackWasLoadedNotification;
 
 @interface PlaybackController : NSObject
 
@@ -24,6 +24,7 @@ extern NSString *const PlaybackDidLoopNotification;
 @property (assign) NSUInteger loopCount;
 @property (assign) NSUInteger loopInfiniteCount;
 
+- (void)updateLoopCount:(NSUInteger)count;
 - (BOOL)openURL:(NSURL *)filename;
 
 @end
