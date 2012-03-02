@@ -27,7 +27,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
-- (void)updateUserInterface;
+- (void)updateVolumeSlider;
 @end
 
 @implementation WindowController
@@ -161,7 +161,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
-- (void)updateUserInterface
+- (void)updateVolumeSlider
 {
     float volume = [[AppDelegate sharedInstance].playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
@@ -243,7 +243,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (IBAction)setFloatForVolume:(id)sender {
     float newValue = [sender floatValue];
     [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
-    [self updateUserInterface];
+    [self updateVolumeSlider];
 }
 
 
