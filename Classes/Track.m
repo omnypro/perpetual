@@ -15,7 +15,6 @@
 @implementation Track
 
 @synthesize asset = _asset;
-@synthesize assetURL = _assetURL;
 @synthesize duration = _duration;
 @synthesize startTime = _startTime;
 @synthesize endTime = _endTime;
@@ -40,7 +39,6 @@
         return nil;
     }
     
-    _assetURL = fileURL;
     _duration = [self.asset duration];
     _startTime = QTMakeTime(0.0, self.duration.timeScale);
     _endTime = self.duration;
