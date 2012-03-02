@@ -33,14 +33,14 @@
     }
     
     NSError *err = nil;
-    _asset = [[QTMovie alloc] initWithURL:fileURL error:&err];
+    _asset = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
     if (self.asset == nil) {
         NSLog(@"%@", err);
         return nil;
     }
     
     _duration = [self.asset duration];
-    _startTime = QTMakeTime(0.0, self.duration.timeScale);
+    _startTime = 0.0;
     _endTime = self.duration;
 	
     AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
@@ -71,8 +71,6 @@
 			}
         }
     }
-    
-
     
     return self;
 }

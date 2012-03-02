@@ -10,7 +10,6 @@
 
 #import "AppDelegate.h"
 #import "Track.h"
-#import "WindowController.h"
 
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
@@ -29,7 +28,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 @synthesize track = _track;
 
 @synthesize paused = _paused;
-@synthesize currentTime = _currentTime;
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
@@ -39,16 +37,14 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 }
 
 - (void)checkTime:(NSTimer *)timer
-{
-    self.currentTime = [self.track.asset currentTime];
-    
-    if (self.currentTime.timeValue >= self.track.endTime.timeValue && self.track.startTime.timeValue < self.track.endTime.timeValue && self.loopCount > 0) {
+{   
+    if (self.track.asset.currentTime >= self.track.endTime && self.track.startTime < self.track.endTime && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
             [self updateLoopCount:self.loopCount - 1];
         }
-        self.currentTime = self.track.startTime;
+        self.track.asset.currentTime = self.track.startTime;
     }
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackHasProgressedNotification object:self userInfo:nil];
 }
 
@@ -57,9 +53,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 
 - (void)loadTrack
 {
-    // Is this really needed?
-    self.paused = YES;
-     
     // Broadcast a notification to tell the UI to update.
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
     
@@ -79,9 +72,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
     // Add the filename to the recently opened menu (hopefully).
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
     
-    // Bring the window to the foreground (if needed).
-    [[AppDelegate sharedInstance].windowController showWindow:self];
-    
     // Play the funky music right boy.
     [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
     [self loadTrack];
@@ -94,7 +84,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 - (void)play
 {
     [self.track.asset play];
-    self.paused = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStartNotification object:self userInfo:nil];
 }
 
@@ -102,7 +91,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 - (void)stop
 {
     [self.track.asset stop];
-    self.paused = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStopNotification object:self userInfo:nil];
 }
 
