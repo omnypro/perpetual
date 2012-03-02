@@ -25,6 +25,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
+- (void)layoutInitialInterface:(id)sender;
 - (void)updateUserInterface;
 @end
 
@@ -120,6 +121,29 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [[self webView] setEditingDelegate:self];    
 }
 
+- (void)layoutInitialInterface:(Track *)track
+{
+    // Compose the initial user interface.
+    // Set the max value of the progress bar to the duration of the track.
+    self.progressBar.maxValue = track.duration.timeValue;
+    
+    // Set the slider attributes.
+    self.startSlider.maxValue = track.duration.timeValue;
+    self.startSlider.floatValue = 0.f;
+    self.startSlider.numberOfTickMarks = (int)track.duration.timeValue / track.duration.timeScale;
+    self.endSlider.maxValue = track.duration.timeValue;
+    self.endSlider.floatValue = track.duration.timeValue;
+    self.endSlider.numberOfTickMarks = (int)track.duration.timeValue / track.duration.timeScale;
+    
+    // Set the track title, artist, and album using the derived metadata.
+    self.trackTitle.stringValue = track.title;
+    self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
+    
+    // Load the cover art using the derived data URI.
+    [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];                
+}
+
+
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
 {
     NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
@@ -146,24 +170,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)trackWasLoaded:(NSNotification *)notification
 {
     PlaybackController *object = [notification object];
-    
     if ([object isKindOfClass:[PlaybackController class]]) {      
-        // Compose the initial user interface.
-        self.progressBar.maxValue = object.track.duration.timeValue;
-        
-        self.startSlider.maxValue = object.track.duration.timeValue;
-        self.startSlider.floatValue = 0.f;
-        self.startSlider.numberOfTickMarks = (int)object.track.duration.timeValue / object.track.duration.timeScale;
-        
-        self.endSlider.maxValue = object.track.duration.timeValue;
-        self.endSlider.floatValue = object.track.duration.timeValue;
-        self.endSlider.numberOfTickMarks = (int)object.track.duration.timeValue / object.track.duration.timeScale;
-        
-        self.trackTitle.stringValue = object.track.title;
-        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", object.track.albumName, object.track.artist];
-        
-        // Load the cover art using the derived data URI.
-        [self layoutCoverArtWithIdentifier:[object.track.imageDataURI absoluteString]];                
+        [self layoutInitialInterface:[object track]];
     }
 }
 
