@@ -20,6 +20,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
 
+- (void)trackWasLoaded:(NSNotification *)notification;
+
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
@@ -137,6 +139,32 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     float volume = [self.playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
+}
+
+#pragma mark Notification Observers
+
+- (void)trackWasLoaded:(NSNotification *)notification
+{
+    PlaybackController *object = [notification object];
+    
+    if ([object isKindOfClass:[PlaybackController class]]) {      
+        // Compose the initial user interface.
+        self.progressBar.maxValue = object.track.duration.timeValue;
+        
+        self.startSlider.maxValue = object.track.duration.timeValue;
+        self.startSlider.floatValue = 0.f;
+        self.startSlider.numberOfTickMarks = (int)object.track.duration.timeValue / object.track.duration.timeScale;
+        
+        self.endSlider.maxValue = object.track.duration.timeValue;
+        self.endSlider.floatValue = object.track.duration.timeValue;
+        self.endSlider.numberOfTickMarks = (int)object.track.duration.timeValue / object.track.duration.timeScale;
+        
+        self.trackTitle.stringValue = object.track.title;
+        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", object.track.albumName, object.track.artist];
+        
+        // Load the cover art using the derived data URI.
+        [self layoutCoverArtWithIdentifier:[object.track.imageDataURI absoluteString]];                
+    }
 }
 
 #pragma mark IBAction Methods

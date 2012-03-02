@@ -64,23 +64,12 @@ NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDi
 {
     // Is this really needed?
     self.paused = YES;
-    
-    // Compose the initial user interface.
-    // ???: Should we be doing this in the playback controller?
-    WindowController *ui = [AppDelegate sharedInstance].windowController;
-    [ui.progressBar setMaxValue:self.track.duration.timeValue];
-    [ui.startSlider setMaxValue:self.track.duration.timeValue];
-    [ui.startSlider setFloatValue:0.0];
-    [ui.endSlider setMaxValue:self.track.duration.timeValue];
-    [ui.endSlider setFloatValue:self.track.duration.timeValue];
-    [ui.startSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
-    [ui.endSlider setNumberOfTickMarks:(int)self.track.duration.timeValue / self.track.duration.timeScale];
-    ui.trackTitle.stringValue = self.track.title;
-	ui.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", self.track.albumName, self.track.artist];
-	[ui layoutCoverArtWithIdentifier:[self.track.imageDataURI absoluteString]];
-    
+     
     // Start the timer loop.
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
+    
+    // Broadcast a notification to tell the UI to update.
+    [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
 }
 
 # pragma mark File Handling
