@@ -129,15 +129,15 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     // Compose the initial user interface.
     // Set the max value of the progress bar to the duration of the track.
-    self.progressBar.maxValue = track.duration.timeValue;
+    self.progressBar.maxValue = track.duration;
     
     // Set the slider attributes.
-    self.startSlider.maxValue = track.duration.timeValue;
+    self.startSlider.maxValue = track.duration;
     self.startSlider.floatValue = 0.f;
-    self.startSlider.numberOfTickMarks = (int)track.duration.timeValue / track.duration.timeScale;
-    self.endSlider.maxValue = track.duration.timeValue;
-    self.endSlider.floatValue = track.duration.timeValue;
-    self.endSlider.numberOfTickMarks = (int)track.duration.timeValue / track.duration.timeScale;
+    self.startSlider.numberOfTickMarks = track.duration; // SECONDS. OMG. >_<
+    self.endSlider.maxValue = track.duration;
+    self.endSlider.floatValue = track.duration;
+    self.endSlider.numberOfTickMarks = track.duration; // THOSE ARE SECONDS. AHMAGAD!! (╯°□°）╯︵ ┻━┻
     
     // Set the track title, artist, and album using the derived metadata.
     self.trackTitle.stringValue = track.title;
@@ -181,17 +181,17 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
         
         // Create 2 NSDate objects whose difference is the NSTimeInterval 
         // we want to convert.
-        NSDate *date1 = [[NSDate alloc] init];
-        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.currentTime.timeValue/object.track.duration.timeScale sinceDate:date1];
-        
-        // Get get the appropriate minutes/seconds conversation and place it
-        // into our currentTime label.
-        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
-        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
+//        NSDate *date1 = [[NSDate alloc] init];
+//        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.currentTime.timeValue/object.track.duration.timeScale sinceDate:date1];
+//        
+//        // Get get the appropriate minutes/seconds conversation and place it
+//        // into our currentTime label.
+//        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
+//        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
+//        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
 
         // Finally, update our progress bar's... progress.
-        [self.progressBar setFloatValue:(float)object.currentTime.timeValue];
+        [self.progressBar setFloatValue:object.currentTime];
     }    
 }
 
@@ -224,12 +224,12 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)handlePlayState:(id)sender 
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (![playbackController paused]) {
-        [playbackController stop];
+    Track *track = [AppDelegate sharedInstance].playbackController.track;
+    if (track.asset.playing) {
+        [track.asset stop];
     }
     else {
-        [playbackController play];
+        [track.asset play];
     }
 }
 
@@ -240,31 +240,31 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if ([self.startSlider doubleValue] > (float)playbackController.track.endTime.timeValue) {
-        playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], playbackController.track.duration.timeScale);
-    }
-    else {
-        [self.startSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
-    }
+//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+//    if ([self.startSlider doubleValue] > (float)playbackController.track.endTime.timeValue) {
+//        playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], playbackController.track.duration.timeScale);
+//    }
+//    else {
+//        [self.startSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
+//    }
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender 
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if ([self.endSlider doubleValue] > (float)playbackController.track.startTime.timeValue) {
-        playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], playbackController.track.duration.timeScale);
-    }
-    else {
-        [self.endSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
-    }
+//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+//    if ([self.endSlider doubleValue] > (float)playbackController.track.startTime.timeValue) {
+//        playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], playbackController.track.duration.timeScale);
+//    }
+//    else {
+//        [self.endSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
+//    }
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    NSTimeInterval ti = [self.progressBar doubleValue];
-    [playbackController setCurrentTime:QTMakeTime((long)ti, playbackController.track.duration.timeScale)];
+//    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+//    NSTimeInterval ti = [self.progressBar doubleValue];
+//    [playbackController setCurrentTime:QTMakeTime((long)ti, playbackController.track.duration.timeScale)];
 }
 
 - (IBAction)setFloatForVolume:(id)sender 

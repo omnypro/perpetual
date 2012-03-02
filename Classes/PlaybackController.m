@@ -42,7 +42,7 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 {
     self.currentTime = [self.track.asset currentTime];
     
-    if (self.currentTime.timeValue >= self.track.endTime.timeValue && self.track.startTime.timeValue < self.track.endTime.timeValue && self.loopCount > 0) {
+    if (self.currentTime >= self.track.endTime && self.track.startTime < self.track.endTime && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
             [self updateLoopCount:self.loopCount - 1];
         }
@@ -57,9 +57,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 
 - (void)loadTrack
 {
-    // Is this really needed?
-    self.paused = YES;
-     
     // Broadcast a notification to tell the UI to update.
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
     
@@ -94,7 +91,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 - (void)play
 {
     [self.track.asset play];
-    self.paused = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStartNotification object:self userInfo:nil];
 }
 
@@ -102,7 +98,6 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 - (void)stop
 {
     [self.track.asset stop];
-    self.paused = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStopNotification object:self userInfo:nil];
 }
 

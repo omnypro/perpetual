@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
-#import <QTKit/QTKit.h>
+#import <Cocoa/Cocoa.h>
 
 @class Track;
 
@@ -21,7 +21,7 @@ extern NSString *const TrackWasLoadedNotification;
 @property (nonatomic, readonly, strong) Track *track;
 
 @property (assign) BOOL paused;
-@property (assign) QTTime currentTime;
+@property (assign) NSTimeInterval currentTime;
 @property (assign) NSUInteger loopCount;
 @property (assign) NSUInteger loopInfiniteCount;
 
