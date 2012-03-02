@@ -240,30 +240,35 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)setFloatForStartSlider:(id)sender 
 {
-    if ([self.startSlider doubleValue] > (float)[AppDelegate sharedInstance].playbackController.track.endTime.timeValue) {
-        [AppDelegate sharedInstance].playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], [AppDelegate sharedInstance].playbackController.track.duration.timeScale);
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if ([self.startSlider doubleValue] > (float)playbackController.track.endTime.timeValue) {
+        playbackController.track.startTime = QTMakeTime((long)[self.startSlider doubleValue], playbackController.track.duration.timeScale);
     }
     else {
-        [self.startSlider setFloatValue:(float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue];
+        [self.startSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
     }
 }
 
-- (IBAction)setFloatForEndSlider:(id)sender {
-    if ([self.endSlider doubleValue] > (float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue) {
-        [AppDelegate sharedInstance].playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], [AppDelegate sharedInstance].playbackController.track.duration.timeScale);
+- (IBAction)setFloatForEndSlider:(id)sender 
+{
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if ([self.endSlider doubleValue] > (float)playbackController.track.startTime.timeValue) {
+        playbackController.track.endTime = QTMakeTime((long)[self.endSlider doubleValue], playbackController.track.duration.timeScale);
     }
     else {
-        [self.endSlider setFloatValue:(float)[AppDelegate sharedInstance].playbackController.track.startTime.timeValue];
+        [self.endSlider setFloatValue:(float)playbackController.track.startTime.timeValue];
     }
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
 {
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
     NSTimeInterval ti = [self.progressBar doubleValue];
-    [[AppDelegate sharedInstance].playbackController setCurrentTime:QTMakeTime((long)ti, [AppDelegate sharedInstance].playbackController.track.duration.timeScale)];
+    [playbackController setCurrentTime:QTMakeTime((long)ti, playbackController.track.duration.timeScale)];
 }
 
-- (IBAction)setFloatForVolume:(id)sender {
+- (IBAction)setFloatForVolume:(id)sender 
+{
     float newValue = [sender floatValue];
     [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateVolumeSlider];
