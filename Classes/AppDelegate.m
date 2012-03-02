@@ -58,7 +58,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *filePath = [[panel URLs] objectAtIndex:0];
-            if (![self.playbackController openURL:filePath]) {
+            if (![[AppDelegate sharedInstance].playbackController openURL:filePath]) {
                 NSLog(@"Could not load track.");
                 return;
             }
