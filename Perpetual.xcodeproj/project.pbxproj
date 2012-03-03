@@ -14,7 +14,11 @@
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
+		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
+		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
+		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
+		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
@@ -22,7 +26,7 @@
 		9AC739DF14EAEAB6000A57AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739DE14EAEAB6000A57AD /* main.m */; };
 		9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E114EAEAB6000A57AD /* Credits.rtf */; };
 		9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739E514EAEAB6000A57AD /* AppDelegate.m */; };
-		9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* MainMenu.xib */; };
+		9AC739E914EAEAB6000A57AD /* Menu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* Menu.xib */; };
 		9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE4EA5614EC59D6002EF094 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,8 +39,15 @@
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		939EF98F14FCA1DA00CDBA32 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Window.xib; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
+		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
+		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
+		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
+		93FC81A914FE0A48004CE24F /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
+		93FC81DD14FE16F1004CE24F /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
+		93FC81DE14FE16F1004CE24F /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9AC739CE14EAEAB6000A57AD /* Perpetual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perpetual.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +62,7 @@
 		9AC739E214EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		9AC739E414EAEAB6000A57AD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC739E514EAEAB6000A57AD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9AC739E814EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		9AC739E814EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Menu.xib; sourceTree = "<group>"; };
 		9AE4EA5614EC59D6002EF094 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -77,12 +88,22 @@
 		9309191E14F07F07000D82ED /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				939EF99114FCA1E900CDBA32 /* NIBs */,
 				9309192014F07F79000D82ED /* background.png */,
 				9309191414F07766000D82ED /* cover.css */,
 				307BADDA14F04EA50035E3AF /* cover.html */,
 				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		939EF99114FCA1E900CDBA32 /* NIBs */ = {
+			isa = PBXGroup;
+			children = (
+				9AC739E714EAEAB6000A57AD /* Menu.xib */,
+				939EF99014FCA1DA00CDBA32 /* Window.xib */,
+			);
+			name = NIBs;
 			sourceTree = "<group>";
 		};
 		93A6238714F0BDC600B907E3 /* Categories */ = {
@@ -99,6 +120,12 @@
 			children = (
 				9AC739E414EAEAB6000A57AD /* AppDelegate.h */,
 				9AC739E514EAEAB6000A57AD /* AppDelegate.m */,
+				93C0A96E14FBA51C00D63507 /* WindowController.h */,
+				93C0A96F14FBA51C00D63507 /* WindowController.m */,
+				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
+				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
+				93FC81DD14FE16F1004CE24F /* Track.h */,
+				93FC81DE14FE16F1004CE24F /* Track.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -153,7 +180,6 @@
 				93A6238714F0BDC600B907E3 /* Categories */,
 				93A623F714F0C88B00B907E3 /* Classes */,
 				9AC739D914EAEAB6000A57AD /* Supporting Files */,
-				9AC739E714EAEAB6000A57AD /* MainMenu.xib */,
 			);
 			name = Perpetual;
 			sourceTree = "<group>";
@@ -225,11 +251,12 @@
 			files = (
 				9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */,
 				9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */,
-				9AC739E914EAEAB6000A57AD /* MainMenu.xib in Resources */,
+				9AC739E914EAEAB6000A57AD /* Menu.xib in Resources */,
 				9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */,
 				307BADDB14F04EA50035E3AF /* cover.html in Resources */,
 				9309191514F07766000D82ED /* cover.css in Resources */,
 				9309192114F07F79000D82ED /* background.png in Resources */,
+				939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,12 +287,24 @@
 				9AC739DF14EAEAB6000A57AD /* main.m in Sources */,
 				9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */,
 				93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */,
+				93C0A97014FBA51C00D63507 /* WindowController.m in Sources */,
+				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
+				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		939EF99014FCA1DA00CDBA32 /* Window.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				939EF98F14FCA1DA00CDBA32 /* en */,
+			);
+			name = Window.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -282,12 +321,13 @@
 			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
-		9AC739E714EAEAB6000A57AD /* MainMenu.xib */ = {
+		9AC739E714EAEAB6000A57AD /* Menu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9AC739E814EAEAB6000A57AD /* en */,
 			);
-			name = MainMenu.xib;
+			name = Menu.xib;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
