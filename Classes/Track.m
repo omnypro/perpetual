@@ -34,6 +34,7 @@
     
     NSError *err = nil;
     _asset = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
+    [self.asset prepareToPlay];
     if (self.asset == nil) {
         NSLog(@"%@", err);
         return nil;
