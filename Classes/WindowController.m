@@ -21,15 +21,15 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
 
-- (void)playbackHasProgressed:(NSNotification *)notification;
-- (void)trackLoopCountChanged:(NSNotification *)notification;
-- (void)trackWasLoaded:(NSNotification *)notification;
-
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
+
+- (void)playbackHasProgressed:(NSNotification *)notification;
+- (void)trackLoopCountChanged:(NSNotification *)notification;
+- (void)trackWasLoaded:(NSNotification *)notification;
 @end
 
 @implementation WindowController
