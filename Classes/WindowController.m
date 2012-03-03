@@ -102,7 +102,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // for that track.
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
-    NSSize controlSize = NSMakeSize(100.f, 32.f);
+    NSSize controlSize = NSMakeSize(64.f, 32.f);
     NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f), 
                                      NSMidY([titleBarView bounds]) - (controlSize.height / 2.f), 
                                      controlSize.width, 
@@ -110,8 +110,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
     [switcher setSegmentCount:2];
     [switcher setSegmentStyle:NSSegmentStyleTexturedRounded];
-    [switcher setLabel:@"Music" forSegment:0];
-    [switcher setLabel:@"Statistics" forSegment:1];
+    [switcher setImage:[NSImage imageNamed:@"MusicNoteTemplate"] forSegment:0];
+    [switcher setImage:[NSImage imageNamed:@"InfinityTemplate"] forSegment:1];
     [switcher setSelectedSegment:0];
     [switcher setEnabled:FALSE forSegment:1]; // Disables the statistics segment.
     [switcher setAutoresizingMask:NSViewMinXMargin|NSViewMaxXMargin|NSViewMinYMargin|NSViewMaxYMargin];
