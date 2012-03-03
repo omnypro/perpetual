@@ -228,12 +228,12 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (IBAction)handlePlayState:(id)sender 
 {
-    Track *track = [AppDelegate sharedInstance].playbackController.track;
-    if (track.asset.playing) {
-        [track.asset stop];
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if (playbackController.track.asset.playing) {
+        [playbackController stop];
     }
     else {
-        [track.asset play];
+        [playbackController play];
     }
 }
 
