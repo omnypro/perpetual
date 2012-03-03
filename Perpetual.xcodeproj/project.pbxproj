@@ -94,12 +94,9 @@
 		9309191E14F07F07000D82ED /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				9309192014F07F79000D82ED /* background.png */,
-				9309191414F07766000D82ED /* cover.css */,
-				307BADDA14F04EA50035E3AF /* cover.html */,
-				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
 				939EF99114FCA1E900CDBA32 /* NIBs */,
 				93B6278F1501E9DC00FFF08B /* Templates */,
+				93B627981501EA6D00FFF08B /* WebView */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -145,6 +142,17 @@
 				93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */,
 			);
 			path = Templates;
+			sourceTree = "<group>";
+		};
+		93B627981501EA6D00FFF08B /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				9309192014F07F79000D82ED /* background.png */,
+				9309191414F07766000D82ED /* cover.css */,
+				307BADDA14F04EA50035E3AF /* cover.html */,
+				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		9AC739C314EAEAB6000A57AD = {
