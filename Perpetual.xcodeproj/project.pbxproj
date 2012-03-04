@@ -31,7 +31,6 @@
 		9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E114EAEAB6000A57AD /* Credits.rtf */; };
 		9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739E514EAEAB6000A57AD /* AppDelegate.m */; };
 		9AC739E914EAEAB6000A57AD /* Menu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* Menu.xib */; };
-		9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE4EA5614EC59D6002EF094 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +82,6 @@
 			files = (
 				9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */,
 				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
-				9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */,
 				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
 				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
 				9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */,
