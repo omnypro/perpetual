@@ -48,8 +48,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize rangeTime = _rangeTime;
 
 // Sliders and Progress Bar
-@synthesize startSlider = _startSlider;
-@synthesize endSlider = _endSlider;
 @synthesize progressBar = _progressBar;
 @synthesize rangeSlider = _rangeSlider;
 
@@ -154,13 +152,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     self.rangeSlider.maxValue = track.duration;
     self.rangeSlider.doubleHiValue = track.duration;
     self.rangeSlider.numberOfTickMarks = track.duration;
-    
-    self.startSlider.maxValue = track.duration;
-    self.startSlider.floatValue = 0.f;
-    self.startSlider.numberOfTickMarks = track.duration; // SECONDS. OMG. >_<
-    self.endSlider.maxValue = track.duration;
-    self.endSlider.floatValue = track.duration;
-    self.endSlider.numberOfTickMarks = track.duration; // THOSE ARE SECONDS. AHMAGAD!! (╯°□°）╯︵ ┻━┻
     
     // Set the track title, artist, and album using the derived metadata.
     self.trackTitle.stringValue = track.title;
@@ -267,41 +258,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (IBAction)setFloatForSlider:(id)sender
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.rangeSlider.doubleLoValue > playbackController.track.endTime) {
-        playbackController.track.startTime = self.rangeSlider.doubleLoValue;
-    } 
-    else {
-        self.rangeSlider.doubleLoValue = playbackController.track.startTime;
-    }
-    
-    if (self.rangeSlider.doubleHiValue > playbackController.track.startTime) {
-        playbackController.track.endTime = self.rangeSlider.doubleHiValue;
-    } 
-    else {
-        self.rangeSlider.doubleHiValue = playbackController.track.endTime;
-    }
-}
-
-- (IBAction)setFloatForStartSlider:(id)sender 
-{
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.startSlider.doubleValue > playbackController.track.endTime) {
-        playbackController.track.startTime = self.startSlider.doubleValue;
-    }
-    else {
-        self.startSlider.doubleValue = playbackController.track.startTime;
-    }
-}
-
-- (IBAction)setFloatForEndSlider:(id)sender 
-{
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.endSlider.doubleValue > playbackController.track.startTime) {
-        playbackController.track.endTime = self.endSlider.doubleValue;
-    }
-    else {
-        self.endSlider.doubleValue = playbackController.track.startTime;
-    }
+    playbackController.track.startTime = self.rangeSlider.doubleLoValue;
+    playbackController.track.endTime = self.rangeSlider.doubleHiValue;
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender 
