@@ -24,7 +24,6 @@
 		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
-		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
 		9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */; };
 		9AC739DF14EAEAB6000A57AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739DE14EAEAB6000A57AD /* main.m */; };
@@ -82,7 +81,6 @@
 			files = (
 				9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */,
 				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
-				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
 				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
 				9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */,
 				351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */,
