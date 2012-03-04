@@ -329,16 +329,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 }
 
 
-//float delta = ... how much to make the window bigger or smaller ...;
-//NSRect frame = [window frame];
-//
-//frame.origin.y -= delta;
-//frame.size.height += delta;
-//
-//[window setFrame: frame
-//         display: YES
-//         animate: YES];
-
 #pragma mark NSWindow Delegate Methods
 
 - (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
