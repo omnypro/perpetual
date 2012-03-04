@@ -1,0 +1,1 @@
+../../SMDoubleSlider/SMDoubleSliderCell.h
