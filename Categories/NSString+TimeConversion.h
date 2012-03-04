@@ -10,4 +10,6 @@
 
 @interface NSString (TimeConversion)
 
++ (NSString *)convertIntervalToMinutesAndSeconds:(NSTimeInterval)interval;
+
 @end

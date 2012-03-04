@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "INAppStoreWindow.h"
+#import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
 #import "Track.h"
 
@@ -147,9 +148,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // Fill in rangeTime with the difference between the two slider's values.
     // Until we start saving people's slider positions, this will always
     // equal the duration of the song at launch.
-    NSTimeInterval startValue = self.startSlider.doubleValue;
-    NSTimeInterval endValue = self.endSlider.doubleValue;
-    self.rangeTime.stringValue = [NSString stringWithFormat:@"%f", endValue - startValue];
+    NSTimeInterval rangeValue = self.endSlider.doubleValue - self.startSlider.doubleValue;
+    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
     
     // Load the cover art using the derived data URI.
     [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
@@ -184,22 +184,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     PlaybackController *object = [notification object];
     if ([object isKindOfClass:[PlaybackController class]]) {
-        // Get the system calendar.
-        NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-
-        // Create 2 NSDate objects whose difference is the NSTimeInterval
-        // we want to convert.
-        NSDate *date1 = [[NSDate alloc] init];
-        NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.track.asset.currentTime sinceDate:date1];
-
-        // Get get the appropriate minutes/seconds conversation and place it
-        // into our currentTime label.
-        unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
-        NSDateComponents *conversionInfo = [sysCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
-        [self.currentTime setStringValue:[NSString stringWithFormat:@"%02d:%02d", [conversionInfo minute], [conversionInfo second]]];
-
-        // Finally, update our progress bar's... progress.
-        [self.progressBar setFloatValue:object.track.asset.currentTime];
+        self.currentTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:object.track.asset.currentTime];
+        self.progressBar.floatValue = object.track.asset.currentTime;
     }
 }
 
