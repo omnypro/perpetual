@@ -18,6 +18,7 @@
 #import <WebKit/WebKit.h>
 
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
+NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
@@ -74,6 +75,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:RangeDidChangeNotification object:nil];
 
     [self composeInterface];
 }
@@ -189,6 +191,13 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     }
 }
 
+- (void)rangeDidChange:(NSNotification *)notification
+{
+    WindowController *object = [notification object];
+    NSTimeInterval rangeValue = object.endSlider.doubleValue - object.startSlider.doubleValue;
+    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
+}
+
 - (void)trackLoopCountChanged:(NSNotification *)notification
 {
     PlaybackController *object = [notification object];
@@ -244,6 +253,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     else {
         self.startSlider.doubleValue = playbackController.track.startTime;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
 }
 
 - (IBAction)setFloatForEndSlider:(id)sender
@@ -255,6 +266,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     else {
         self.endSlider.doubleValue = playbackController.track.startTime;
     }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender
