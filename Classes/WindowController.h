@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class SMDoubleSlider;
 @class WebView;
 
 @interface WindowController : NSWindowController 
@@ -25,6 +26,7 @@
 @property (weak) IBOutlet NSSlider *startSlider;
 @property (weak) IBOutlet NSSlider *endSlider;
 @property (weak) IBOutlet NSLevelIndicator *progressBar;
+@property (weak) IBOutlet SMDoubleSlider *rangeSlider;
 
 // Lower Toolbar
 @property (weak) IBOutlet NSButton *open;

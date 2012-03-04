@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "INAppStoreWindow.h"
 #import "PlaybackController.h"
+#import "SMDoubleSlider.h"
 #import "Track.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -49,6 +50,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize startSlider = _startSlider;
 @synthesize endSlider = _endSlider;
 @synthesize progressBar = _progressBar;
+@synthesize rangeSlider = _rangeSlider;
 
 // Lower Toolbar
 @synthesize open = _openFile;
