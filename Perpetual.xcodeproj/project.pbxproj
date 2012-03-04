@@ -20,6 +20,7 @@
 		93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */; };
 		93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */; };
 		93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */; };
+		93B8C2A315040A4D00FF710E /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 93B8C2A215040A4D00FF710E /* icon.icns */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
 		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
@@ -49,6 +50,7 @@
 		93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MusicNoteTemplate.pdf; sourceTree = "<group>"; };
 		93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = BarGraphTemplate.pdf; sourceTree = "<group>"; };
 		93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = InfinityTemplate.pdf; sourceTree = "<group>"; };
+		93B8C2A215040A4D00FF710E /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				939EF99114FCA1E900CDBA32 /* NIBs */,
 				93B6278F1501E9DC00FFF08B /* Templates */,
 				93B627981501EA6D00FFF08B /* WebView */,
+				93B8C2A215040A4D00FF710E /* icon.icns */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */,
 				93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */,
 				93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */,
+				93B8C2A315040A4D00FF710E /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
