@@ -192,7 +192,7 @@
 							<string key="NSFrame">{{401, 122}, {71, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="643572839"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:360</string>
 							<string key="NSAntiCompressionPriority">{250, 750}</string>
 							<bool key="NSEnabled">YES</bool>
@@ -210,10 +210,10 @@
 						<object class="NSLevelIndicator" id="78093735">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">290</int>
-							<string key="NSFrame">{{17, 70}, {445, 16}}</string>
+							<string key="NSFrame">{{17, 75}, {445, 16}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="82662738"/>
+							<reference key="NSNextKeyView" ref="414249737"/>
 							<string key="NSReuseIdentifierKey">_NS:2200</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSLevelIndicatorCell" key="NSCell" id="631480082">
@@ -223,31 +223,6 @@
 								<reference key="NSControlView" ref="78093735"/>
 								<double key="NSMaxValue">100</double>
 								<int key="NSIndicatorStyle">1</int>
-							</object>
-						</object>
-						<object class="NSSlider" id="643572839">
-							<reference key="NSNextResponder" ref="1006"/>
-							<int key="NSvFlags">290</int>
-							<string key="NSFrame">{{8, 85}, {463, 26}}</string>
-							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="78093735"/>
-							<string key="NSReuseIdentifierKey">_NS:3905</string>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSSliderCell" key="NSCell" id="59971367">
-								<int key="NSCellFlags">-2079981824</int>
-								<int key="NSCellFlags2">0</int>
-								<string key="NSContents"/>
-								<string key="NSCellIdentifier">_NS:3905</string>
-								<reference key="NSControlView" ref="643572839"/>
-								<double key="NSMaxValue">100</double>
-								<double key="NSMinValue">0.0</double>
-								<double key="NSValue">0.0</double>
-								<double key="NSAltIncValue">0.0</double>
-								<int key="NSNumberOfTickMarks">2</int>
-								<int key="NSTickMarkPosition">0</int>
-								<bool key="NSAllowsTickMarkValuesOnly">YES</bool>
-								<bool key="NSVertical">NO</bool>
 							</object>
 						</object>
 						<object class="NSButton" id="506839449">
@@ -374,10 +349,10 @@
 								<reference key="NSTextColor" ref="416759859"/>
 							</object>
 						</object>
-						<object class="NSCustomView" id="82662738">
+						<object class="NSCustomView" id="414249737">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{10, 57}, {459, 31}}</string>
+							<string key="NSFrame">{{10, 52}, {459, 31}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="506839449"/>
@@ -550,25 +525,9 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">startSlider</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="643572839"/>
-					</object>
-					<int key="connectionID">186</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">setFloatForStartSlider:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="643572839"/>
-					</object>
-					<int key="connectionID">199</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">rangeSlider</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="82662738"/>
+						<reference key="destination" ref="414249737"/>
 					</object>
 					<int key="connectionID">224</int>
 				</object>
@@ -650,12 +609,11 @@
 							<reference ref="506839449"/>
 							<reference ref="623270775"/>
 							<reference ref="78093735"/>
-							<reference ref="643572839"/>
 							<reference ref="931343585"/>
 							<reference ref="875496680"/>
 							<reference ref="352294061"/>
 							<reference ref="129364307"/>
-							<reference ref="82662738"/>
+							<reference ref="414249737"/>
 						</array>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -801,21 +759,8 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">180</int>
-						<reference key="object" ref="643572839"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="59971367"/>
-						</array>
-						<reference key="parent" ref="1006"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">181</int>
-						<reference key="object" ref="59971367"/>
-						<reference key="parent" ref="643572839"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">223</int>
-						<reference key="object" ref="82662738"/>
+						<reference key="object" ref="414249737"/>
 						<reference key="parent" ref="1006"/>
 					</object>
 				</array>
@@ -842,8 +787,6 @@
 				<string key="149.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="177.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="178.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="180.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="181.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="184.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="185.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="195.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

@@ -129,10 +129,11 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     self.rangeSlider.autoresizingMask = NSViewWidthSizable;
     self.rangeSlider.minValue = 0.f;
     self.rangeSlider.maxValue = 1.f;
-    self.rangeSlider.floatLoValue = 0.f;
-    self.rangeSlider.floatHiValue = 1.f;
+    self.rangeSlider.doubleLoValue = 0.f;
+    self.rangeSlider.doubleHiValue = 1.f;
     self.rangeSlider.numberOfTickMarks = 2;
     self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
+    [self.rangeSlider setAction:@selector(setFloatForSlider:)];
     [self.rangeSlider.cell setControlSize:NSSmallControlSize];
 }
 
@@ -151,8 +152,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     
     // Set the slider attributes.
     self.rangeSlider.maxValue = track.duration;
-    self.rangeSlider.floatLoValue = 0.f;
-    self.rangeSlider.floatHiValue = track.duration;
+    self.rangeSlider.doubleHiValue = track.duration;
     self.rangeSlider.numberOfTickMarks = track.duration;
     
     self.startSlider.maxValue = track.duration;
@@ -262,6 +262,24 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (IBAction)incrementLoopCount:(id)sender 
 {
     [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
+}
+
+- (IBAction)setFloatForSlider:(id)sender
+{
+    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    if (self.rangeSlider.doubleLoValue > playbackController.track.endTime) {
+        playbackController.track.startTime = self.rangeSlider.doubleLoValue;
+    } 
+    else {
+        self.rangeSlider.doubleLoValue = playbackController.track.startTime;
+    }
+    
+    if (self.rangeSlider.doubleHiValue > playbackController.track.startTime) {
+        playbackController.track.endTime = self.rangeSlider.doubleHiValue;
+    } 
+    else {
+        self.rangeSlider.doubleHiValue = playbackController.track.endTime;
+    }
 }
 
 - (IBAction)setFloatForStartSlider:(id)sender 
