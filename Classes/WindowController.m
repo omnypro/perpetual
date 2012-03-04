@@ -28,10 +28,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
-
-- (void)playbackHasProgressed:(NSNotification *)notification;
-- (void)trackLoopCountChanged:(NSNotification *)notification;
-- (void)trackWasLoaded:(NSNotification *)notification;
 @end
 
 @implementation WindowController
