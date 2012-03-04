@@ -165,6 +165,8 @@
 				DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
+			wrapsLines = 0;
 		};
 		9AC739CF14EAEAB6000A57AD /* Products */ = {
 			isa = PBXGroup;
@@ -251,7 +253,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Afonso Wilsson";
+				ORGANIZATIONNAME = "Revyver, Inc.";
 			};
 			buildConfigurationList = 9AC739C814EAEAB6000A57AD /* Build configuration list for PBXProject "Perpetual" */;
 			compatibilityVersion = "Xcode 3.2";
