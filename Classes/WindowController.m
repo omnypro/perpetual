@@ -25,6 +25,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
+- (void)layoutTitleBarWindowResizeControls;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
@@ -33,6 +34,9 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @implementation WindowController
 
 @synthesize playbackController = _playbackController;
+
+// Window
+@synthesize collapsed = _collapsed;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -87,6 +91,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     // window.backgroundColor
 
     [self layoutTitleBarSegmentedControls];
+    [self layoutTitleBarWindowResizeControls];
     [self layoutWebView];
 
     // Load our blank cover, since we obviously have no audio to play.
@@ -102,8 +107,8 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
     NSSize controlSize = NSMakeSize(64.f, 32.f);
-    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f),
-                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f),
+    NSRect controlFrame = NSMakeRect(NSMidX(titleBarView.bounds) - (controlSize.width / 2.f),
+                                     NSMidY(titleBarView.bounds) - 17.0f,
                                      controlSize.width,
                                      controlSize.height);
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
@@ -116,6 +121,27 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [switcher setAutoresizingMask:NSViewMinXMargin|NSViewMaxXMargin|NSViewMinYMargin|NSViewMaxYMargin];
     [[switcher cell] setTrackingMode:NSSegmentSwitchTrackingSelectOne];
     [titleBarView addSubview:switcher];
+}
+
+- (void)layoutTitleBarWindowResizeControls
+{
+    self.collapsed = NO;
+
+    INAppStoreWindow *window = (INAppStoreWindow *)[self window];
+    NSView *titleBarView = [window titleBarView];
+    NSSize controlSize = NSMakeSize(16.f, 16.f);
+    NSRect controlFrame = NSMakeRect(NSMaxX(titleBarView.bounds) - (controlSize.width + 7.f),
+                                     NSMidY(titleBarView.bounds) - (controlSize.height / 2.f),
+                                     controlSize.width,
+                                     controlSize.height);
+    NSButton *resizer = [[NSButton alloc] initWithFrame:controlFrame];
+    [resizer setAction:@selector(toggleWindowHeight:)];
+    [resizer setAutoresizingMask:NSViewMinXMargin];
+    [resizer setBezelStyle:NSTexturedSquareBezelStyle];
+    [resizer setBordered:FALSE];
+    [resizer setButtonType:NSToggleButton];
+    [resizer setImage:[NSImage imageNamed:@"InfinityTemplate"]];
+    [titleBarView addSubview:resizer];
 }
 
 - (void)layoutWebView
@@ -280,6 +306,38 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [self updateVolumeSlider];
 }
 
+- (IBAction)toggleWindowHeight:(id)sender
+{
+    float delta = 250.f;
+    NSRect window = [self.window frame];
+    NSRect webView = [self.webView frame];
+
+    if (!self.collapsed) {
+        window.origin.y += delta;
+        window.size.height -= delta;
+        webView.origin.y += delta;
+        self.collapsed = YES;
+    }
+    else {
+        window.origin.y -= delta;
+        window.size.height += delta;
+        webView.origin.y -= delta;
+        self.collapsed = NO;
+    }
+    [self.webView setFrame:webView];
+    [self.window setFrame:window display:YES animate:YES];
+}
+
+
+//float delta = ... how much to make the window bigger or smaller ...;
+//NSRect frame = [window frame];
+//
+//frame.origin.y -= delta;
+//frame.size.height += delta;
+//
+//[window setFrame: frame
+//         display: YES
+//         animate: YES];
 
 #pragma mark NSWindow Delegate Methods
 

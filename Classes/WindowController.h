@@ -12,6 +12,9 @@
 
 @interface WindowController : NSWindowController
 
+// Window
+@property (assign) BOOL collapsed;
+
 // Cover and Statistics Display
 @property (weak) IBOutlet WebView *webView;
 
@@ -41,5 +44,6 @@
 - (IBAction)setFloatForEndSlider:(id)sender;
 - (IBAction)setTimeForCurrentTime:(id)sender;
 - (IBAction)setFloatForVolume:(id)sender;
+- (IBAction)toggleWindowHeight:(id)sender;
 
 @end

@@ -132,7 +132,7 @@
 									<int key="NSColorSpace">6</int>
 									<string key="NSCatalogName">System</string>
 									<string key="NSColorName">controlTextColor</string>
-									<object class="NSColor" key="NSColor" id="229380345">
+									<object class="NSColor" key="NSColor" id="633879186">
 										<int key="NSColorSpace">3</int>
 										<bytes key="NSWhite">MAA</bytes>
 									</object>
@@ -885,7 +885,7 @@
 				<string key="178.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="180.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="180.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="180.IBViewIntegration.shadowColor" ref="229380345"/>
+				<reference key="180.IBViewIntegration.shadowColor" ref="633879186"/>
 				<real value="0.0" key="180.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="180.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="181.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -947,6 +947,7 @@
 						<string key="setFloatForStartSlider:">id</string>
 						<string key="setFloatForVolume:">id</string>
 						<string key="setTimeForCurrentTime:">id</string>
+						<string key="toggleWindowHeight:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="handlePlayState:">
@@ -971,6 +972,10 @@
 						</object>
 						<object class="IBActionInfo" key="setTimeForCurrentTime:">
 							<string key="name">setTimeForCurrentTime:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleWindowHeight:">
+							<string key="name">toggleWindowHeight:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
