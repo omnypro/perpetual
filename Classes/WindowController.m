@@ -124,7 +124,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)layoutRangeSlider;
 {
     self.rangeSlider.allowsTickMarkValuesOnly = YES;
-    self.rangeSlider.autoresizingMask = NSViewWidthSizable;
     self.rangeSlider.minValue = 0.f;
     self.rangeSlider.maxValue = 1.f;
     self.rangeSlider.doubleLoValue = 0.f;
