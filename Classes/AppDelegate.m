@@ -35,26 +35,26 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 	WindowController *windowController = [[WindowController alloc] init];
     [self setWindowController:windowController];
     [self.windowController showWindow:self];
-  
+
     // Basic implementation of the default loop count.
     // Infinity = 31 until further notice.
 	PlaybackController *playbackController = [[PlaybackController alloc] init];
     [self setPlaybackController:playbackController];
     [self.playbackController setLoopInfiniteCount:31];
     [self.playbackController updateLoopCount:10];
-    
+
     // Set the max value of the loop counter.
     [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
 }
 
-- (IBAction)openFile:(id)sender 
+- (IBAction)openFile:(id)sender
 {
     void(^handler)(NSInteger);
-    
+
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    
+
     [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
-    
+
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *filePath = [[panel URLs] objectAtIndex:0];
@@ -64,7 +64,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
             }
         }
     };
-    
+
     [panel beginSheetModalForWindow:[[AppDelegate sharedInstance].windowController window] completionHandler:handler];
 }
 

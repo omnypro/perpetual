@@ -31,7 +31,7 @@
         NSLog(@"Could not initialize track.");
         return nil;
     }
-    
+
     NSError *err = nil;
     _asset = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
     [self.asset prepareToPlay];
@@ -39,11 +39,11 @@
         NSLog(@"%@", err);
         return nil;
     }
-    
+
     _duration = [self.asset duration];
     _startTime = 0.0;
     _endTime = self.duration;
-	
+
     AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     for (NSString *format in [asset availableMetadataFormats]) {
         for (AVMetadataItem *item in [asset metadataForFormat:format]) {
@@ -72,7 +72,7 @@
 			}
         }
     }
-    
+
     return self;
 }
 

@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "Track.h"
 
-NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification"; 
+NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification";
 NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
 NSString *const PlaybackHasProgressedNotification = @"com.revyver.perpetual.PlaybackHasProgressedNotification";
 NSString *const TrackLoopCountChangedNotification = @"com.revyver.perpetual.TrackLoopCountChangedNotification";
@@ -31,13 +31,13 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
-- (void)updateLoopCount:(NSUInteger)count {  
+- (void)updateLoopCount:(NSUInteger)count {
     self.loopCount = count;
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackLoopCountChangedNotification object:self userInfo:nil];
 }
 
 - (void)checkTime:(NSTimer *)timer
-{   
+{
     if (self.track.asset.currentTime >= self.track.endTime && self.track.startTime < self.track.endTime && self.loopCount > 0) {
         if (self.loopCount < self.loopInfiniteCount) {
             [self updateLoopCount:self.loopCount - 1];
@@ -55,9 +55,9 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 {
     // Broadcast a notification to tell the UI to update.
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
-    
+
     // Start the timer loop.
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];    
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkTime:) userInfo:nil repeats:YES];
 }
 
 - (BOOL)openURL:(NSURL *)fileURL
@@ -65,13 +65,13 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
     if (fileURL == nil) {
         return NO; // Make me smarter.
     }
-    
+
     // Stop the music there's a track playing.
     [[self.track asset] stop];
-    
+
     // Add the filename to the recently opened menu (hopefully).
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
-    
+
     // Play the funky music right boy.
     [self setTrack:[[Track alloc] initWithFileURL:fileURL]];
     [self loadTrack];

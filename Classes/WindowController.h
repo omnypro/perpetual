@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @class WebView;
 
-@interface WindowController : NSWindowController 
+@interface WindowController : NSWindowController
 
 // Cover and Statistics Display
 @property (weak) IBOutlet WebView *webView;

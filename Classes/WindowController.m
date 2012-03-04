@@ -58,7 +58,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 @synthesize loopCountStepper = _loopCountStepper;
 
 - (id)init
-{	
+{
 	return [super initWithWindowNibName:@"Window"];
 }
 
@@ -73,7 +73,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
-    
+
     [self composeInterface];
 }
 
@@ -97,15 +97,15 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)layoutTitleBarSegmentedControls
 {
     // - NOOP -
-    // Implements a very crude NSSegmentedControl, used to switch between the 
-    // album view of the track currently opened and the listening statistics 
+    // Implements a very crude NSSegmentedControl, used to switch between the
+    // album view of the track currently opened and the listening statistics
     // for that track.
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
     NSSize controlSize = NSMakeSize(64.f, 32.f);
-    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f), 
-                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f), 
-                                     controlSize.width, 
+    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f),
+                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f),
+                                     controlSize.width,
                                      controlSize.height);
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
     [switcher setSegmentCount:2];
@@ -123,7 +123,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 {
     // Set us up as the delegate of the WebView for relevant events.
     // UIDelegate and FrameLoadDelegate are set in Interface Builder.
-    [[self webView] setEditingDelegate:self];    
+    [[self webView] setEditingDelegate:self];
 }
 
 - (void)layoutInitialInterface:(Track *)track
@@ -131,7 +131,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // Compose the initial user interface.
     // Set the max value of the progress bar to the duration of the track.
     self.progressBar.maxValue = track.duration;
-    
+
     // Set the slider attributes.
     self.startSlider.maxValue = track.duration;
     self.startSlider.floatValue = 0.f;
@@ -139,13 +139,13 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     self.endSlider.maxValue = track.duration;
     self.endSlider.floatValue = track.duration;
     self.endSlider.numberOfTickMarks = track.duration; // THOSE ARE SECONDS. AHMAGAD!! (╯°□°）╯︵ ┻━┻
-    
+
     // Set the track title, artist, and album using the derived metadata.
     self.trackTitle.stringValue = track.title;
     self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
-    
+
     // Load the cover art using the derived data URI.
-    [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];                
+    [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
 }
 
 
@@ -159,7 +159,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
         NSLog(@"%@", err);
         return;
     }
-    
+
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
@@ -179,8 +179,8 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     if ([object isKindOfClass:[PlaybackController class]]) {
         // Get the system calendar.
         NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-        
-        // Create 2 NSDate objects whose difference is the NSTimeInterval 
+
+        // Create 2 NSDate objects whose difference is the NSTimeInterval
         // we want to convert.
         NSDate *date1 = [[NSDate alloc] init];
         NSDate *date2 = [[NSDate alloc] initWithTimeInterval:object.track.asset.currentTime sinceDate:date1];
@@ -193,7 +193,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
         // Finally, update our progress bar's... progress.
         [self.progressBar setFloatValue:object.track.asset.currentTime];
-    }    
+    }
 }
 
 - (void)trackLoopCountChanged:(NSNotification *)notification
@@ -207,7 +207,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
         else {
             [self.loopCountLabel setStringValue:@"∞"];
         }
-        
+
         // Finally, update the stepper so it's snychronized.
         [self.loopCountStepper setIntegerValue:object.loopCount];
     }
@@ -216,7 +216,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 - (void)trackWasLoaded:(NSNotification *)notification
 {
     PlaybackController *object = [notification object];
-    if ([object isKindOfClass:[PlaybackController class]]) {      
+    if ([object isKindOfClass:[PlaybackController class]]) {
         [self layoutInitialInterface:[object track]];
         [self showWindow:self];
         [self.play setEnabled:TRUE];
@@ -226,7 +226,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 #pragma mark IBAction Methods
 
-- (IBAction)handlePlayState:(id)sender 
+- (IBAction)handlePlayState:(id)sender
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
     if (playbackController.track.asset.playing) {
@@ -237,12 +237,12 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     }
 }
 
-- (IBAction)incrementLoopCount:(id)sender 
+- (IBAction)incrementLoopCount:(id)sender
 {
     [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
-- (IBAction)setFloatForStartSlider:(id)sender 
+- (IBAction)setFloatForStartSlider:(id)sender
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
     if (self.startSlider.doubleValue > playbackController.track.endTime) {
@@ -253,7 +253,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     }
 }
 
-- (IBAction)setFloatForEndSlider:(id)sender 
+- (IBAction)setFloatForEndSlider:(id)sender
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
     if (self.endSlider.doubleValue > playbackController.track.startTime) {
@@ -264,14 +264,14 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     }
 }
 
-- (IBAction)setTimeForCurrentTime:(id)sender 
+- (IBAction)setTimeForCurrentTime:(id)sender
 {
     NSTimeInterval interval = self.progressBar.doubleValue;
     AVAudioPlayer *asset = [AppDelegate sharedInstance].playbackController.track.asset;
     asset.currentTime = interval;
 }
 
-- (IBAction)setFloatForVolume:(id)sender 
+- (IBAction)setFloatForVolume:(id)sender
 {
     float newValue = [sender floatValue];
     [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
