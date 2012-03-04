@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "ApplicationController.h"
 
 #import "INAppStoreWindow.h"
 #import "PlaybackController.h"
@@ -15,17 +15,17 @@
 
 NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
-@interface AppDelegate ()
+@interface ApplicationController ()
 @property (nonatomic, strong) WindowController *windowController;
 @property (nonatomic, strong) PlaybackController *playbackController;
 @end
 
-@implementation AppDelegate
+@implementation ApplicationController
 
 @synthesize windowController = _windowController;
 @synthesize playbackController = _playbackController;
 
-+ (AppDelegate *)sharedInstance
++ (ApplicationController *)sharedInstance
 {
     return [NSApp delegate];
 }
@@ -58,14 +58,14 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *filePath = [[panel URLs] objectAtIndex:0];
-            if (![[AppDelegate sharedInstance].playbackController openURL:filePath]) {
+            if (![[ApplicationController sharedInstance].playbackController openURL:filePath]) {
                 NSLog(@"Could not load track.");
                 return;
             }
         }
     };
 
-    [panel beginSheetModalForWindow:[[AppDelegate sharedInstance].windowController window] completionHandler:handler];
+    [panel beginSheetModalForWindow:[[ApplicationController sharedInstance].windowController window] completionHandler:handler];
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename

@@ -56,7 +56,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{480, 420}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="WebView" id="635918068">
@@ -187,7 +187,6 @@
 							<int key="NSvFlags">291</int>
 							<string key="NSFrame">{{401, 112}, {71, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:360</string>
 							<string key="NSAntiCompressionPriority">{250, 750}</string>
 							<bool key="NSEnabled">YES</bool>
@@ -349,7 +348,6 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{480, 420}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="635918068"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -361,7 +359,7 @@
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="1063380496">
-				<string key="NSClassName">AppDelegate</string>
+				<string key="NSClassName">ApplicationController</string>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">

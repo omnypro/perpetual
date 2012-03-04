@@ -12,12 +12,12 @@
 @class Track;
 @class WindowController;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate> {}
+@interface ApplicationController : NSObject <NSApplicationDelegate> {}
 
 @property (nonatomic, readonly, strong) WindowController *windowController;
 @property (nonatomic, readonly, strong) PlaybackController *playbackController;
 
-+ (AppDelegate *)sharedInstance;
++ (ApplicationController *)sharedInstance;
 
 - (IBAction)openFile:(id)sender;
 

@@ -8,7 +8,6 @@
 
 #import "PlaybackController.h"
 
-#import "AppDelegate.h"
 #import "Track.h"
 
 NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification";

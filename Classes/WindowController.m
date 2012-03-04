@@ -8,7 +8,7 @@
 
 #import "WindowController.h"
 
-#import "AppDelegate.h"
+#import "ApplicationController.h"
 #import "INAppStoreWindow.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
@@ -186,7 +186,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)updateVolumeSlider
 {
-    float volume = [[AppDelegate sharedInstance].playbackController.track.asset volume];
+    float volume = [[ApplicationController sharedInstance].playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
 }
 
@@ -240,7 +240,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (IBAction)handlePlayState:(id)sender
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
     if (playbackController.track.asset.playing) {
         [playbackController stop];
     }
@@ -251,12 +251,12 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (IBAction)incrementLoopCount:(id)sender
 {
-    [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
+    [[ApplicationController sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
 - (IBAction)setFloatForSlider:(id)sender
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
     playbackController.track.startTime = self.rangeSlider.doubleLoValue;
     playbackController.track.endTime = self.rangeSlider.doubleHiValue;
     [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
@@ -265,14 +265,14 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (IBAction)setTimeForCurrentTime:(id)sender
 {
     NSTimeInterval interval = self.progressBar.doubleValue;
-    AVAudioPlayer *asset = [AppDelegate sharedInstance].playbackController.track.asset;
+    AVAudioPlayer *asset = [ApplicationController sharedInstance].playbackController.track.asset;
     asset.currentTime = interval;
 }
 
 - (IBAction)setFloatForVolume:(id)sender
 {
     float newValue = [sender floatValue];
-    [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
+    [[ApplicationController sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateVolumeSlider];
 }
 
