@@ -161,7 +161,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     // Fill in rangeTime with the difference between the two slider's values.
     // Until we start saving people's slider positions, this will always
     // equal the duration of the song at launch.
-    NSTimeInterval rangeValue = self.endSlider.doubleValue - self.startSlider.doubleValue;
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 
     // Load the cover art using the derived data URI.
@@ -204,8 +204,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)rangeDidChange:(NSNotification *)notification
 {
-    WindowController *object = [notification object];
-    NSTimeInterval rangeValue = object.endSlider.doubleValue - object.startSlider.doubleValue;
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 }
 
