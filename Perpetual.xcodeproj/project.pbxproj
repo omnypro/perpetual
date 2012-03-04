@@ -100,6 +100,28 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		9394227515038D9200440F23 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				93FC81DD14FE16F1004CE24F /* Track.h */,
+				93FC81DE14FE16F1004CE24F /* Track.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9394227715038D9B00440F23 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9AC739E414EAEAB6000A57AD /* ApplicationController.h */,
+				9AC739E514EAEAB6000A57AD /* ApplicationController.m */,
+				93C0A96E14FBA51C00D63507 /* WindowController.h */,
+				93C0A96F14FBA51C00D63507 /* WindowController.m */,
+				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
+				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		939EF99114FCA1E900CDBA32 /* NIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,14 +145,8 @@
 		93A623F714F0C88B00B907E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9AC739E414EAEAB6000A57AD /* ApplicationController.h */,
-				9AC739E514EAEAB6000A57AD /* ApplicationController.m */,
-				93C0A96E14FBA51C00D63507 /* WindowController.h */,
-				93C0A96F14FBA51C00D63507 /* WindowController.m */,
-				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
-				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
-				93FC81DD14FE16F1004CE24F /* Track.h */,
-				93FC81DE14FE16F1004CE24F /* Track.m */,
+				9394227515038D9200440F23 /* Models */,
+				9394227715038D9B00440F23 /* Controllers */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
