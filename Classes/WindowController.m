@@ -132,7 +132,6 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     self.rangeSlider.numberOfTickMarks = 2;
     self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
     [self.rangeSlider setAction:@selector(setFloatForSlider:)];
-    [self.rangeSlider.cell setControlSize:NSSmallControlSize];
 }
 
 - (void)layoutWebView
