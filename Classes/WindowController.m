@@ -24,6 +24,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
+- (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
@@ -90,6 +91,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     // window.backgroundColor
 
     [self layoutTitleBarSegmentedControls];
+    [self layoutRangeSlider];
     [self layoutWebView];
 
     // Load our blank cover, since we obviously have no audio to play.
@@ -121,6 +123,19 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     [titleBarView addSubview:switcher];
 }
 
+- (void)layoutRangeSlider;
+{
+    self.rangeSlider.allowsTickMarkValuesOnly = YES;
+    self.rangeSlider.autoresizingMask = NSViewWidthSizable;
+    self.rangeSlider.minValue = 0.f;
+    self.rangeSlider.maxValue = 1.f;
+    self.rangeSlider.floatLoValue = 0.f;
+    self.rangeSlider.floatHiValue = 1.f;
+    self.rangeSlider.numberOfTickMarks = 2;
+    self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
+    [self.rangeSlider.cell setControlSize:NSSmallControlSize];
+}
+
 - (void)layoutWebView
 {
     // Set us up as the delegate of the WebView for relevant events.
@@ -135,6 +150,11 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
     self.progressBar.maxValue = track.duration;
     
     // Set the slider attributes.
+    self.rangeSlider.maxValue = track.duration;
+    self.rangeSlider.floatLoValue = 0.f;
+    self.rangeSlider.floatHiValue = track.duration;
+    self.rangeSlider.numberOfTickMarks = track.duration;
+    
     self.startSlider.maxValue = track.duration;
     self.startSlider.floatValue = 0.f;
     self.startSlider.numberOfTickMarks = track.duration; // SECONDS. OMG. >_<

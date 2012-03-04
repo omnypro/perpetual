@@ -213,7 +213,7 @@
 							<string key="NSFrame">{{17, 70}, {445, 16}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="146422445"/>
+							<reference key="NSNextKeyView" ref="82662738"/>
 							<string key="NSReuseIdentifierKey">_NS:2200</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSLevelIndicatorCell" key="NSCell" id="631480082">
@@ -316,7 +316,6 @@
 							<string key="NSFrame">{{281, 5}, {194, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:779</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="874367526">
@@ -375,10 +374,10 @@
 								<reference key="NSTextColor" ref="416759859"/>
 							</object>
 						</object>
-						<object class="NSCustomView" id="146422445">
+						<object class="NSCustomView" id="82662738">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{10, 36}, {460, 31}}</string>
+							<string key="NSFrame">{{10, 57}, {459, 31}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="506839449"/>
@@ -569,7 +568,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">rangeSlider</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="146422445"/>
+						<reference key="destination" ref="82662738"/>
 					</object>
 					<int key="connectionID">224</int>
 				</object>
@@ -656,7 +655,7 @@
 							<reference ref="875496680"/>
 							<reference ref="352294061"/>
 							<reference ref="129364307"/>
-							<reference ref="146422445"/>
+							<reference ref="82662738"/>
 						</array>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -816,7 +815,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">223</int>
-						<reference key="object" ref="146422445"/>
+						<reference key="object" ref="82662738"/>
 						<reference key="parent" ref="1006"/>
 					</object>
 				</array>
