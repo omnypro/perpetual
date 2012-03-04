@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class SMDoubleSlider;
 @class WebView;
 
 @interface WindowController : NSWindowController
@@ -22,9 +23,8 @@
 @property (weak) IBOutlet NSTextField *rangeTime;
 
 // Sliders and Progress Bar
-@property (weak) IBOutlet NSSlider *startSlider;
-@property (weak) IBOutlet NSSlider *endSlider;
 @property (weak) IBOutlet NSLevelIndicator *progressBar;
+@property (weak) IBOutlet SMDoubleSlider *rangeSlider;
 
 // Lower Toolbar
 @property (weak) IBOutlet NSButton *open;
@@ -37,8 +37,7 @@
 
 - (IBAction)handlePlayState:(id)sender;
 - (IBAction)incrementLoopCount:(id)sender;
-- (IBAction)setFloatForStartSlider:(id)sender;
-- (IBAction)setFloatForEndSlider:(id)sender;
+- (IBAction)setFloatForSlider:(id)sender;
 - (IBAction)setTimeForCurrentTime:(id)sender;
 - (IBAction)setFloatForVolume:(id)sender;
 

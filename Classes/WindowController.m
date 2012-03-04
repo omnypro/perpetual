@@ -12,6 +12,7 @@
 #import "INAppStoreWindow.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
+#import "SMDoubleSlider.h"
 #import "Track.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -25,6 +26,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
+- (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
@@ -48,9 +50,8 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @synthesize rangeTime = _rangeTime;
 
 // Sliders and Progress Bar
-@synthesize startSlider = _startSlider;
-@synthesize endSlider = _endSlider;
 @synthesize progressBar = _progressBar;
+@synthesize rangeSlider = _rangeSlider;
 
 // Lower Toolbar
 @synthesize open = _openFile;
@@ -91,6 +92,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     // window.backgroundColor
 
     [self layoutTitleBarSegmentedControls];
+    [self layoutRangeSlider];
     [self layoutWebView];
 
     // Load our blank cover, since we obviously have no audio to play.
@@ -122,6 +124,18 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [titleBarView addSubview:switcher];
 }
 
+- (void)layoutRangeSlider;
+{
+    self.rangeSlider.allowsTickMarkValuesOnly = YES;
+    self.rangeSlider.minValue = 0.f;
+    self.rangeSlider.maxValue = 1.f;
+    self.rangeSlider.doubleLoValue = 0.f;
+    self.rangeSlider.doubleHiValue = 1.f;
+    self.rangeSlider.numberOfTickMarks = 2;
+    self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
+    [self.rangeSlider setAction:@selector(setFloatForSlider:)];
+}
+
 - (void)layoutWebView
 {
     // Set us up as the delegate of the WebView for relevant events.
@@ -136,12 +150,9 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     self.progressBar.maxValue = track.duration;
 
     // Set the slider attributes.
-    self.startSlider.maxValue = track.duration;
-    self.startSlider.floatValue = 0.f;
-    self.startSlider.numberOfTickMarks = track.duration;
-    self.endSlider.maxValue = track.duration;
-    self.endSlider.floatValue = track.duration;
-    self.endSlider.numberOfTickMarks = track.duration;
+    self.rangeSlider.maxValue = track.duration;
+    self.rangeSlider.doubleHiValue = track.duration;
+    self.rangeSlider.numberOfTickMarks = track.duration;
 
     // Set the track title, artist, and album using the derived metadata.
     self.trackTitle.stringValue = track.title;
@@ -244,29 +255,11 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
-- (IBAction)setFloatForStartSlider:(id)sender
+- (IBAction)setFloatForSlider:(id)sender
 {
     PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.startSlider.doubleValue > playbackController.track.endTime) {
-        playbackController.track.startTime = self.startSlider.doubleValue;
-    }
-    else {
-        self.startSlider.doubleValue = playbackController.track.startTime;
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
-}
-
-- (IBAction)setFloatForEndSlider:(id)sender
-{
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.endSlider.doubleValue > playbackController.track.startTime) {
-        playbackController.track.endTime = self.endSlider.doubleValue;
-    }
-    else {
-        self.endSlider.doubleValue = playbackController.track.startTime;
-    }
-
+    playbackController.track.startTime = self.rangeSlider.doubleLoValue;
+    playbackController.track.endTime = self.rangeSlider.doubleHiValue;
     [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
 }
 
