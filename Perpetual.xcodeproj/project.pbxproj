@@ -9,25 +9,27 @@
 /* Begin PBXBuildFile section */
 		307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 307BADD814F04DEF0035E3AF /* WebKit.framework */; };
 		307BADDB14F04EA50035E3AF /* cover.html in Resources */ = {isa = PBXBuildFile; fileRef = 307BADDA14F04EA50035E3AF /* cover.html */; };
-		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; };
+		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		9309191514F07766000D82ED /* cover.css in Resources */ = {isa = PBXBuildFile; fileRef = 9309191414F07766000D82ED /* cover.css */; };
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
+		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
+		93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */; };
+		93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */; };
+		93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
 		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
-		9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A31AA3314EBF3FD00382B2F /* AudioToolbox.framework */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
 		9AC739DD14EAEAB6000A57AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739DB14EAEAB6000A57AD /* InfoPlist.strings */; };
 		9AC739DF14EAEAB6000A57AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739DE14EAEAB6000A57AD /* main.m */; };
 		9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E114EAEAB6000A57AD /* Credits.rtf */; };
 		9AC739E614EAEAB6000A57AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739E514EAEAB6000A57AD /* AppDelegate.m */; };
 		9AC739E914EAEAB6000A57AD /* Menu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* Menu.xib */; };
-		9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE4EA5614EC59D6002EF094 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,11 +39,16 @@
 		9309191414F07766000D82ED /* cover.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = cover.css; sourceTree = "<group>"; };
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
+		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9395B6AF14EB8D91002999D9 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		939EF98F14FCA1DA00CDBA32 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Window.xib; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
+		93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MusicNoteTemplate.pdf; sourceTree = "<group>"; };
+		93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = BarGraphTemplate.pdf; sourceTree = "<group>"; };
+		93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = InfinityTemplate.pdf; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
@@ -73,11 +80,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */,
-				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
-				9AE4EA5714EC59D6002EF094 /* QTKit.framework in Frameworks */,
-				9A31AA3414EBF3FD00382B2F /* AudioToolbox.framework in Frameworks */,
-				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
 				9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */,
+				9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */,
+				307BADD914F04DEF0035E3AF /* WebKit.framework in Frameworks */,
 				351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,10 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				939EF99114FCA1E900CDBA32 /* NIBs */,
-				9309192014F07F79000D82ED /* background.png */,
-				9309191414F07766000D82ED /* cover.css */,
-				307BADDA14F04EA50035E3AF /* cover.html */,
-				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
+				93B6278F1501E9DC00FFF08B /* Templates */,
+				93B627981501EA6D00FFF08B /* WebView */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -111,6 +114,8 @@
 			children = (
 				93A6238414F0B65200B907E3 /* NSString+base64.h */,
 				93A6238514F0B65200B907E3 /* NSString+base64.m */,
+				938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */,
+				938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -128,6 +133,27 @@
 				93FC81DE14FE16F1004CE24F /* Track.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		93B6278F1501E9DC00FFF08B /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */,
+				93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */,
+				93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		93B627981501EA6D00FFF08B /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				9309192014F07F79000D82ED /* background.png */,
+				9309191414F07766000D82ED /* cover.css */,
+				307BADDA14F04EA50035E3AF /* cover.html */,
+				9A041EBC14EAEBA2009AC43F /* cover.jpg */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		9AC739C314EAEAB6000A57AD = {
@@ -257,6 +283,9 @@
 				9309191514F07766000D82ED /* cover.css in Resources */,
 				9309192114F07F79000D82ED /* background.png in Resources */,
 				939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */,
+				93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */,
+				93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */,
+				93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +319,7 @@
 				93C0A97014FBA51C00D63507 /* WindowController.m in Sources */,
 				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
+				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
