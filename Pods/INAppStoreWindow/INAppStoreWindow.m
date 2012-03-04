@@ -19,6 +19,7 @@
 
 #define IN_RUNNING_LION (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6)
 #define IN_COMPILING_LION __MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+#define IN_COMPILING_MOUNTAIN __MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
 
 /** -----------------------------------------
  - There are 2 sets of colors, one for an active (key) state and one for an inactivate state
@@ -46,10 +47,15 @@
 #define IN_COLOR_NOTMAIN_BOTTOM_L [NSColor colorWithDeviceWhite:0.655 alpha:1.0]
 
 /** Corner clipping radius **/
+#if IN_COMPILING_MOUNTAIN
+const CGFloat INCornerClipRadius = 6.0;
+#else
 const CGFloat INCornerClipRadius = 4.0;
+#endif
+
 const CGFloat INButtonTopOffset = 3.0;
 
-NS_INLINE CGFloat INMidHeight(NSRect aRect) {
+NS_INLINE CGFloat INMidHeight(NSRect aRect){
     return (aRect.size.height * (CGFloat)0.5);
 }
 
@@ -101,9 +107,9 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
     [[self clippingPathWithRect:drawingRect cornerRadius:INCornerClipRadius] addClip];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startColor endingColor:endColor];
     [gradient drawInRect:drawingRect angle:90];
-#if !__has_feature(objc_arc)
+    #if !__has_feature(objc_arc)
     [gradient release];
-#endif
+    #endif
     if (IN_RUNNING_LION && drawsAsMainWindow) {
         static CGImageRef noisePattern = nil;
         if (noisePattern == nil) noisePattern = createNoiseImageRef(128, 128, 0.015);
@@ -119,18 +125,18 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
     if ([(INAppStoreWindow *)[self window] showsBaselineSeparator]) {
         NSColor *bottomColor = nil;
         if (IN_RUNNING_LION) {
-            bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM_L : IN_COLOR_NOTMAIN_BOTTOM_L;
+          bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM_L : IN_COLOR_NOTMAIN_BOTTOM_L;
         } else {
-            bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM : IN_COLOR_NOTMAIN_BOTTOM;
+          bottomColor = drawsAsMainWindow ? IN_COLOR_MAIN_BOTTOM : IN_COLOR_NOTMAIN_BOTTOM;
         }
         NSRect bottomRect = NSMakeRect(0.0, NSMinY(drawingRect), NSWidth(drawingRect), 1.0);
         [bottomColor set];
         NSRectFill(bottomRect);
         
         if (IN_RUNNING_LION) {
-            bottomRect.origin.y += 1.0;
-            [[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
-            [[NSBezierPath bezierPathWithRect:bottomRect] fill];
+          bottomRect.origin.y += 1.0;
+          [[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
+          [[NSBezierPath bezierPathWithRect:bottomRect] fill];
         }
     }
 }
@@ -199,11 +205,11 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-#if !__has_feature(objc_arc)
+    #if !__has_feature(objc_arc)
     [_titleBarView release];
 	[_windowMenuTitle release];
     [super dealloc];    
-#endif
+    #endif
 }
 
 #pragma mark -
@@ -269,12 +275,12 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
 {
     if ((_titleBarView != newTitleBarView) && newTitleBarView) {
         [_titleBarView removeFromSuperview];
-#if __has_feature(objc_arc)
+        #if __has_feature(objc_arc)
         _titleBarView = newTitleBarView;
-#else
+        #else
         [_titleBarView release];
         _titleBarView = [newTitleBarView retain];
-#endif
+        #endif
         // Configure the view properties and add it as a subview of the theme frame
         NSView *themeFrame = [[self contentView] superview];
         NSView *firstSubview = [[themeFrame subviews] objectAtIndex:0];
@@ -327,6 +333,7 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
 		[self _recalculateFrameForTitleBarView];
 		[self _layoutTrafficLightsAndContent];
 		[self _displayWindowAndTitlebar];
+        [self _setupTrafficLightsTrackingArea];
 	}
 }
 
@@ -364,6 +371,7 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
     if ( _centerTrafficLightButtons != centerTrafficLightButtons ) {
         _centerTrafficLightButtons = centerTrafficLightButtons;
         [self _layoutTrafficLightsAndContent];
+        [self _setupTrafficLightsTrackingArea];
     }
 }
 
@@ -390,13 +398,13 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
     [nc addObserver:self selector:@selector(_setupTrafficLightsTrackingArea) name:NSWindowDidBecomeKeyNotification object:self];
     [nc addObserver:self selector:@selector(_displayWindowAndTitlebar) name:NSApplicationDidBecomeActiveNotification object:nil];
     [nc addObserver:self selector:@selector(_displayWindowAndTitlebar) name:NSApplicationDidResignActiveNotification object:nil];
-#if IN_COMPILING_LION
+    #if IN_COMPILING_LION
     if (IN_RUNNING_LION) {
         [nc addObserver:self selector:@selector(_setupTrafficLightsTrackingArea) name:NSWindowDidExitFullScreenNotification object:nil];
         [nc addObserver:self selector:@selector(windowWillEnterFullScreen:) name:NSWindowWillEnterFullScreenNotification object:nil];
         [nc addObserver:self selector:@selector(windowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:nil];
     }
-#endif
+    #endif
     [self _createTitlebarView];
     [self _layoutTrafficLightsAndContent];
     [self _setupTrafficLightsTrackingArea];
@@ -429,7 +437,7 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
     [minimize setFrame:minimizeFrame];
     [zoom setFrame:zoomFrame];
     
-#if IN_COMPILING_LION
+    #if IN_COMPILING_LION
     // Set the frame of the FullScreen button in Lion if available
     if ( IN_RUNNING_LION ) {
         NSButton *fullScreen = [self standardWindowButton:NSWindowFullScreenButton];        
@@ -447,7 +455,7 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
             [fullScreen setFrame:fullScreenFrame];
         }
     }
-#endif
+    #endif
     
     // Reposition the content view
     NSView *contentView = [self contentView];    
@@ -488,11 +496,11 @@ static CGImageRef createNoiseImageRef(NSUInteger width, NSUInteger height, CGFlo
 - (void)_createTitlebarView
 {
     // Create the title bar view
-#if __has_feature(objc_arc)
+    #if __has_feature(objc_arc)
     self.titleBarView = [[INTitlebarView alloc] initWithFrame:NSZeroRect];
-#else
+    #else
     self.titleBarView = [[[INTitlebarView alloc] initWithFrame:NSZeroRect] autorelease];
-#endif
+    #endif
 }
 
 - (void)_hideTitleBarView:(BOOL)hidden 
