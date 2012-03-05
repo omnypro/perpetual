@@ -69,6 +69,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
+    [[self window] registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
 
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
