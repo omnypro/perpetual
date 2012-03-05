@@ -40,7 +40,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
     // Kill the application if it's over EXPIREAFTERDAYS days old.
     [self checkFreshness];
 
-	WindowController *windowController = [[WindowController alloc] init];
+    WindowController *windowController = [[WindowController alloc] init];
     [self setWindowController:windowController];
     [self.windowController showWindow:self];
 
