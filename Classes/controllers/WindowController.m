@@ -89,11 +89,17 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     window.titleBarHeight = 40.f;
     window.trafficLightButtonsLeftMargin = 7.f;
-    // window.backgroundColor
 
     [self layoutTitleBarSegmentedControls];
     [self layoutRangeSlider];
     [self layoutWebView];
+
+    // Make all of our text labels look pretty.
+    [[self.trackTitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.trackSubtitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.currentTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.rangeTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleRaised];
 
     // Load our blank cover, since we obviously have no audio to play.
     [self layoutCoverArtWithIdentifier:@"cover.jpg"];
