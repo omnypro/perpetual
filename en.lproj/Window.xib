@@ -350,7 +350,7 @@
 						</object>
 						<object class="NSCustomView" id="475103628">
 							<reference key="NSNextResponder" ref="1006"/>
-							<int key="NSvFlags">298</int>
+							<int key="NSvFlags">290</int>
 							<string key="NSFrame">{{7, 43}, {465, 27}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>

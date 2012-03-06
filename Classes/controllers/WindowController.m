@@ -153,6 +153,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [resizer setBordered:FALSE];
     [resizer setButtonType:NSToggleButton];
     [resizer setImage:[NSImage imageNamed:@"InfinityTemplate"]];
+    [[resizer cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [titleBarView addSubview:resizer];
 }
 
