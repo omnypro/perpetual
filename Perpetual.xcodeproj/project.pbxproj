@@ -24,6 +24,7 @@
 		93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */; };
 		93B8C2A315040A4D00FF710E /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 93B8C2A215040A4D00FF710E /* icon.icns */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
+		93E06E931506B25500156BEF /* NSGradient+Style.m in Sources */ = {isa = PBXBuildFile; fileRef = 93E06E921506B25500156BEF /* NSGradient+Style.m */; };
 		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
@@ -59,6 +60,8 @@
 		93B8C2A215040A4D00FF710E /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
+		93E06E911506B25500156BEF /* NSGradient+Style.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSGradient+Style.h"; sourceTree = "<group>"; };
+		93E06E921506B25500156BEF /* NSGradient+Style.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSGradient+Style.m"; sourceTree = "<group>"; };
 		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
 		93FC81A914FE0A48004CE24F /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		93FC81DD14FE16F1004CE24F /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
@@ -158,6 +161,8 @@
 				938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */,
 				931DC86E1504B0D900D44887 /* NSColor+Hex.h */,
 				931DC86F1504B0D900D44887 /* NSColor+Hex.m */,
+				93E06E911506B25500156BEF /* NSGradient+Style.h */,
+				93E06E921506B25500156BEF /* NSGradient+Style.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				933D2A461505EAC100D92718 /* TooltipWindow.m in Sources */,
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
+				93E06E931506B25500156BEF /* NSGradient+Style.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
