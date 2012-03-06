@@ -202,7 +202,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)layoutTooltips 
 {
-    self.timeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0, 0, 50, 17) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    self.timeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0, 0, 50, 20) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
 }
 
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
@@ -243,9 +243,15 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
     
-    [self.timeTooltip setString:@"Hello!"];
-    float y = self.window.frame.origin.y + self.rangeSlider.frame.origin.y + 24;
-    NSLog(@"%@", self.timeTooltip);
+    NSTimeInterval timeValue;
+    if (self.rangeSlider.trackingLoKnob) {
+        timeValue = self.rangeSlider.doubleLoValue;
+    }
+    else {
+        timeValue = self.rangeSlider.doubleHiValue;
+    }
+    [self.timeTooltip setString:[NSString convertIntervalToMinutesAndSeconds:timeValue]];
+    float y = self.window.frame.origin.y + self.rangeSlider.frame.origin.y - 24;
     [self.timeTooltip updatePosition:y];
     [self.timeTooltip show];
 }

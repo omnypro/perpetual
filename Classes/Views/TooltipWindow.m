@@ -8,6 +8,8 @@
 
 #import "TooltipWindow.h"
 
+#import "NSColor+Hex.h"
+
 @implementation TooltipWindow
 
 @synthesize time = _time;
@@ -16,22 +18,24 @@
 {
     self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag];
     if (self) {
-        self.alphaValue = 0.90;
-        self.backgroundColor = [NSColor colorWithDeviceRed:1.0 green:0.90 blue:0.75 alpha:1.0];
+        self.alphaValue = 0.75;
+        self.backgroundColor = [NSColor blackColor];
         self.hasShadow = YES;
         self.level = NSStatusWindowLevel;
         self.opaque = NO;
         [self ignoresMouseEvents];
         
-        self.time = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 64, 24)];
+        self.time = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 64, 14)];
         self.time.editable = NO;
         self.time.selectable = NO;
         self.time.bezeled = NO;
         self.time.bordered = NO;
         self.time.drawsBackground = NO;
+        self.time.font = [NSFont fontWithName:@"HelveticaNeue-Bold" size:10];
+        self.time.textColor = [NSColor whiteColor];
         self.time.alignment = NSCenterTextAlignment;
         self.time.stringValue = @"00:00";
-        
+
         [[self contentView] addSubview:self.time];
         [self hide];        
     }
@@ -46,7 +50,7 @@
 - (void)show
 {
     [self orderFront:nil];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(hide) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(hide) userInfo:nil repeats:NO];
 }
 
 - (void)updatePosition:(float)y
