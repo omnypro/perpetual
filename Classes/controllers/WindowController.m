@@ -8,10 +8,11 @@
 
 #import "WindowController.h"
 
-#import "AppDelegate.h"
+#import "ApplicationController.h"
 #import "INAppStoreWindow.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
+#import "SMDoubleSlider.h"
 #import "Track.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -26,6 +27,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutTitleBarWindowResizeControls;
+- (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
 - (void)updateVolumeSlider;
@@ -48,9 +50,8 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @synthesize rangeTime = _rangeTime;
 
 // Sliders and Progress Bar
-@synthesize startSlider = _startSlider;
-@synthesize endSlider = _endSlider;
 @synthesize progressBar = _progressBar;
+@synthesize rangeSlider = _rangeSlider;
 
 // Lower Toolbar
 @synthesize open = _openFile;
@@ -92,6 +93,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
     [self layoutTitleBarSegmentedControls];
     [self layoutTitleBarWindowResizeControls];
+    [self layoutRangeSlider];
     [self layoutWebView];
 
     // Load our blank cover, since we obviously have no audio to play.
@@ -144,6 +146,18 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [titleBarView addSubview:resizer];
 }
 
+- (void)layoutRangeSlider
+{
+    self.rangeSlider.allowsTickMarkValuesOnly = YES;
+    self.rangeSlider.minValue = 0.f;
+    self.rangeSlider.maxValue = 1.f;
+    self.rangeSlider.doubleLoValue = 0.f;
+    self.rangeSlider.doubleHiValue = 1.f;
+    self.rangeSlider.numberOfTickMarks = 2;
+    self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
+    [self.rangeSlider setAction:@selector(setFloatForSlider:)];
+}
+
 - (void)layoutWebView
 {
     // Set us up as the delegate of the WebView for relevant events.
@@ -158,12 +172,9 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     self.progressBar.maxValue = track.duration;
 
     // Set the slider attributes.
-    self.startSlider.maxValue = track.duration;
-    self.startSlider.floatValue = 0.f;
-    self.startSlider.numberOfTickMarks = track.duration;
-    self.endSlider.maxValue = track.duration;
-    self.endSlider.floatValue = track.duration;
-    self.endSlider.numberOfTickMarks = track.duration;
+    self.rangeSlider.maxValue = track.duration;
+    self.rangeSlider.doubleHiValue = track.duration;
+    self.rangeSlider.numberOfTickMarks = track.duration;
 
     // Set the track title, artist, and album using the derived metadata.
     self.trackTitle.stringValue = track.title;
@@ -172,13 +183,12 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     // Fill in rangeTime with the difference between the two slider's values.
     // Until we start saving people's slider positions, this will always
     // equal the duration of the song at launch.
-    NSTimeInterval rangeValue = self.endSlider.doubleValue - self.startSlider.doubleValue;
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 
     // Load the cover art using the derived data URI.
     [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
 }
-
 
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
 {
@@ -197,7 +207,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)updateVolumeSlider
 {
-    float volume = [[AppDelegate sharedInstance].playbackController.track.asset volume];
+    float volume = [[ApplicationController sharedInstance].playbackController.track.asset volume];
     [self.volumeControl setFloatValue:volume];
 }
 
@@ -215,8 +225,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (void)rangeDidChange:(NSNotification *)notification
 {
-    WindowController *object = [notification object];
-    NSTimeInterval rangeValue = object.endSlider.doubleValue - object.startSlider.doubleValue;
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 }
 
@@ -252,7 +261,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (IBAction)handlePlayState:(id)sender
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
+    PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
     if (playbackController.track.asset.playing) {
         [playbackController stop];
     }
@@ -263,46 +272,28 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 - (IBAction)incrementLoopCount:(id)sender
 {
-    [[AppDelegate sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
+    [[ApplicationController sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
-- (IBAction)setFloatForStartSlider:(id)sender
+- (IBAction)setFloatForSlider:(id)sender
 {
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.startSlider.doubleValue > playbackController.track.endTime) {
-        playbackController.track.startTime = self.startSlider.doubleValue;
-    }
-    else {
-        self.startSlider.doubleValue = playbackController.track.startTime;
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
-}
-
-- (IBAction)setFloatForEndSlider:(id)sender
-{
-    PlaybackController *playbackController = [AppDelegate sharedInstance].playbackController;
-    if (self.endSlider.doubleValue > playbackController.track.startTime) {
-        playbackController.track.endTime = self.endSlider.doubleValue;
-    }
-    else {
-        self.endSlider.doubleValue = playbackController.track.startTime;
-    }
-
+    PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
+    playbackController.track.startTime = self.rangeSlider.doubleLoValue;
+    playbackController.track.endTime = self.rangeSlider.doubleHiValue;
     [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender
 {
     NSTimeInterval interval = self.progressBar.doubleValue;
-    AVAudioPlayer *asset = [AppDelegate sharedInstance].playbackController.track.asset;
+    AVAudioPlayer *asset = [ApplicationController sharedInstance].playbackController.track.asset;
     asset.currentTime = interval;
 }
 
 - (IBAction)setFloatForVolume:(id)sender
 {
     float newValue = [sender floatValue];
-    [[AppDelegate sharedInstance].playbackController.track.asset setVolume:newValue];
+    [[ApplicationController sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateVolumeSlider];
 }
 
