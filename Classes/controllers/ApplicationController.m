@@ -13,11 +13,16 @@
 #import "Track.h"
 #import "WindowController.h"
 
+// All builds should expire in 4 weeks time.
+#define EXPIREAFTERDAYS 28
+
 NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 @interface ApplicationController ()
 @property (nonatomic, strong) WindowController *windowController;
 @property (nonatomic, strong) PlaybackController *playbackController;
+
+- (void)checkFreshness;
 @end
 
 @implementation ApplicationController
@@ -32,7 +37,10 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	WindowController *windowController = [[WindowController alloc] init];
+    // Kill the application if it's over EXPIREAFTERDAYS days old.
+    [self checkFreshness];
+
+    WindowController *windowController = [[WindowController alloc] init];
     [self setWindowController:windowController];
     [self.windowController showWindow:self];
 
@@ -45,6 +53,24 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
     // Set the max value of the loop counter.
     [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
+}
+
+- (void)checkFreshness
+{
+#if EXPIREAFTERDAYS
+    NSString* compileDateString = [NSString stringWithUTF8String:__DATE__];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [formatter setDateFormat:@"MMM dd yyyy"];
+    NSDate *compileDate = [formatter dateFromString:compileDateString];
+    NSDate *expireDate = [compileDate dateByAddingTimeInterval:(60*60*24*EXPIREAFTERDAYS)];
+
+    if ([expireDate earlierDate:[NSDate date]] == expireDate) {
+        // TODO: Run an alert or whatever.
+        [NSApp terminate:self];
+    }
+#endif
 }
 
 - (IBAction)openFile:(id)sender

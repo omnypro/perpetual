@@ -12,6 +12,7 @@
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		9309191514F07766000D82ED /* cover.css in Resources */ = {isa = PBXBuildFile; fileRef = 9309191414F07766000D82ED /* cover.css */; };
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
+		931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 931DC86F1504B0D900D44887 /* NSColor+Hex.m */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		933D2A461505EAC100D92718 /* TooltipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 933D2A451505EAC100D92718 /* TooltipWindow.m */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
@@ -40,6 +41,8 @@
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9309191414F07766000D82ED /* cover.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = cover.css; sourceTree = "<group>"; };
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		931DC86E1504B0D900D44887 /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
+		931DC86F1504B0D900D44887 /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		933D2A441505EAC100D92718 /* TooltipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TooltipWindow.h; path = Views/TooltipWindow.h; sourceTree = "<group>"; };
 		933D2A451505EAC100D92718 /* TooltipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TooltipWindow.m; path = Views/TooltipWindow.m; sourceTree = "<group>"; };
@@ -153,6 +156,8 @@
 				93A6238514F0B65200B907E3 /* NSString+base64.m */,
 				938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */,
 				938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */,
+				931DC86E1504B0D900D44887 /* NSColor+Hex.h */,
+				931DC86F1504B0D900D44887 /* NSColor+Hex.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				933D2A461505EAC100D92718 /* TooltipWindow.m in Sources */,
+				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +428,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -442,7 +448,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
