@@ -155,14 +155,14 @@
 		93A6238714F0BDC600B907E3 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				93A6238414F0B65200B907E3 /* NSString+base64.h */,
-				93A6238514F0B65200B907E3 /* NSString+base64.m */,
-				938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */,
-				938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */,
 				931DC86E1504B0D900D44887 /* NSColor+Hex.h */,
 				931DC86F1504B0D900D44887 /* NSColor+Hex.m */,
 				93E06E911506B25500156BEF /* NSGradient+Style.h */,
 				93E06E921506B25500156BEF /* NSGradient+Style.m */,
+				93A6238414F0B65200B907E3 /* NSString+base64.h */,
+				93A6238514F0B65200B907E3 /* NSString+base64.m */,
+				938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */,
+				938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
