@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSTextField *time;
 
-- (void)show;
 - (void)hide;
+- (void)show;
 - (void)updatePosition:(float)y;
 - (void)setString:(NSString *)stringValue;
 

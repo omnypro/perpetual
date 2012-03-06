@@ -13,6 +13,7 @@
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
 #import "SMDoubleSlider.h"
+#import "TooltipWindow.h"
 #import "Track.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -30,6 +31,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
+- (void)layoutTooltips;
 - (void)updateVolumeSlider;
 @end
 
@@ -52,6 +54,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 // Sliders and Progress Bar
 @synthesize progressBar = _progressBar;
 @synthesize rangeSlider = _rangeSlider;
+@synthesize timeTooltip = _timeTooltip;
 
 // Lower Toolbar
 @synthesize open = _openFile;
@@ -94,6 +97,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [self layoutTitleBarWindowResizeControls];
     [self layoutRangeSlider];
     [self layoutWebView];
+    [self layoutTooltips];
 
     // Make all of our text labels look pretty.
     [[self.trackTitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
@@ -196,6 +200,11 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
 }
 
+- (void)layoutTooltips 
+{
+    self.timeTooltip = [[TooltipWindow alloc] initWithContentRect:NSMakeRect(0, 0, 50, 17) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+}
+
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
 {
     NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
@@ -233,6 +242,12 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
+    
+    [self.timeTooltip setString:@"Hello!"];
+    float y = self.window.frame.origin.y + self.rangeSlider.frame.origin.y + 24;
+    NSLog(@"%@", self.timeTooltip);
+    [self.timeTooltip updatePosition:y];
+    [self.timeTooltip show];
 }
 
 - (void)trackLoopCountChanged:(NSNotification *)notification

@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class SMDoubleSlider;
+@class TooltipWindow;
 @class WebView;
 
 @interface WindowController : NSWindowController
@@ -28,6 +29,7 @@
 // Sliders and Progress Bar
 @property (weak) IBOutlet NSLevelIndicator *progressBar;
 @property (weak) IBOutlet SMDoubleSlider *rangeSlider;
+@property (nonatomic, strong) TooltipWindow *timeTooltip;
 
 // Lower Toolbar
 @property (weak) IBOutlet NSButton *open;
