@@ -13,6 +13,7 @@
 		9309191514F07766000D82ED /* cover.css in Resources */ = {isa = PBXBuildFile; fileRef = 9309191414F07766000D82ED /* cover.css */; };
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
+		933D2A461505EAC100D92718 /* TooltipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 933D2A451505EAC100D92718 /* TooltipWindow.m */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
@@ -40,6 +41,8 @@
 		9309191414F07766000D82ED /* cover.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = cover.css; sourceTree = "<group>"; };
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		933D2A441505EAC100D92718 /* TooltipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TooltipWindow.h; path = Views/TooltipWindow.h; sourceTree = "<group>"; };
+		933D2A451505EAC100D92718 /* TooltipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TooltipWindow.m; path = Views/TooltipWindow.m; sourceTree = "<group>"; };
 		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
 		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -103,6 +106,15 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		933D2A421505EA7F00D92718 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				933D2A441505EAC100D92718 /* TooltipWindow.h */,
+				933D2A451505EAC100D92718 /* TooltipWindow.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		9394227515038D9200440F23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +162,7 @@
 			children = (
 				9394227515038D9200440F23 /* Models */,
 				9394227715038D9B00440F23 /* Controllers */,
+				933D2A421505EA7F00D92718 /* Views */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -342,6 +355,7 @@
 				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
+				933D2A461505EAC100D92718 /* TooltipWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
