@@ -113,3 +113,8 @@ footer div {
     width: 0;
     height: 0; }
 .clearfix:after { clear: both; }
+
+.fb-like {
+    float: right;
+    text-align: right;
+    width: 48px; }
