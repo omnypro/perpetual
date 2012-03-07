@@ -10,7 +10,7 @@
 body {
     background: #f7f7f7 url('../images/furley_bg.png');
     color: #333;
-    margin-top: 36px; }
+    margin-top: 48px; }
 
 header,
 #site,
@@ -93,6 +93,7 @@ button:active, button:hover { -webkit-linear-gradient(#69D344, #4C8B36); }
 footer {
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    padding: 10px 12px 6px;
     position: absolute;
     top: 0;
     width: 100%; }
