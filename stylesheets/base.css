@@ -45,10 +45,11 @@ form {
     background: #fff;
     border-radius: 6px;
     border: 1px solid #eee;
-    padding: 0 12px 12px;
+    padding: 12px;
     margin: 0 -12px 12px;
 }
 form p { color: #333; }
+form img { border-radius: 4px; }
 label { display: none; }
 input {
     float: left;
