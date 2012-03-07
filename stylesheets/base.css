@@ -4,20 +4,36 @@
     box-sizing: border-box;
 
     font-family: "Helvetica Neue", Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
+    -webkit-font-smoothing: antialiased; }
 
 body {
     background: #f7f7f7;
-}
+    color: #333;
+    margin-top: 24px; }
+
+header,
+#site,
+footer {
+    margin: 0 auto;
+    padding: 12px;
+    width: 540px; }
+
+header { text-shadow: 0 1px 0 #fff; }
+header h1 {
+    display: inline-block;
+    margin: 0; }
+header span {
+    color: #999;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 6px;
+    vertical-align: 4px; }
+
 
 #site {
     background: #fff;
     border-radius: 6px;
     border: 1px solid #eee;
-    margin: 24px auto;
-    padding: 12px;
-    width: 540px;
 }
 label { display: none; }
 input {
@@ -60,10 +76,7 @@ button:active {
     background: #000;
 }
 
-footer {
-    margin: 0 auto;
-    width: 540px;
-}
+footer { }
 
 .clearfix:before,
 .clearfix:after {
