@@ -154,6 +154,7 @@ footer > div {
         width: 320px; }
     footer div, footer a { display: block; }
     .twitter-follow-button,
+    .twitter-share-button,
     .fb-like {
         display: block;
         float: none;
