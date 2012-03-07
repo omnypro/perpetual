@@ -123,3 +123,34 @@ footer > div {
     float: right;
     text-align: right;
     width: 76px; }
+
+
+@media only screen and (max-width: 320px) {
+
+    body { margin-top: 24px; }
+    header,
+    #site,
+    footer {
+        margin: 0 auto;
+        padding: 12px;
+        width: 320px; }
+    form img {
+        border-radius: 4px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        width: 294px; }
+    input { width: 50%; }
+    button {
+        font-size: 12px;
+        width: 50%; }
+
+    footer {
+        border-radius: 6px;
+        border: 1px solid #eee;
+        position: relative;
+        text-align: center; }
+    footer div {
+        width: 320px; }
+    footer div, footer a { display: block; }
+
+}
