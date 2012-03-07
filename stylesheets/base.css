@@ -1,3 +1,12 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
 body {
     background: #f7f7f7;
 }
@@ -5,4 +14,21 @@ body {
 #site {
     background: #fff;
     border-radius: 6px;
+    border: 1px solid #eee;
+    margin: 24px auto;
+    padding: 12px;
+    width: 540px;
+}
+label { display: none; }
+input {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 24px;
+    padding: 6px;
+    width: 100%;
+}
+
+footer {
+    margin: 0 auto;
+    width: 540px;
 }
