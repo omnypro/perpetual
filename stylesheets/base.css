@@ -4,10 +4,11 @@
     box-sizing: border-box;
 
     font-family: "Helvetica Neue", Helvetica, sans-serif;
+    text-shadow: 0 1px 0 #fff;
     -webkit-font-smoothing: antialiased; }
 
 body {
-    background: #f7f7f7;
+    background: #f7f7f7 url('http://subtlepatterns.com/patterns/furley_bg.png');
     color: #333;
     margin-top: 24px; }
 
@@ -29,12 +30,25 @@ header span {
     margin: 0 6px;
     vertical-align: 4px; }
 
+h2 {
+    margin: 0;
+}
 
 #site {
+    border-top: 1px solid #ddd;
+}
+p {
+    color: #666;
+    font-size: 14px;
+    line-height: 18px; }
+form {
     background: #fff;
     border-radius: 6px;
     border: 1px solid #eee;
+    padding: 0 12px 12px;
+    margin: 0 -12px 12px;
 }
+form p { color: #333; }
 label { display: none; }
 input {
     float: left;
