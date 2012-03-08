@@ -290,9 +290,10 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     NSArray *files = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
     if ([files count] == 1) {
         NSString *filepath = [files lastObject];
-        if ([[filepath pathExtension] isEqualToString:@"m4a"])
+        if ([[filepath pathExtension] isEqualToString:@"m4a"]) {
             NSLog(@"OMG.");
-            return NSDragOperationEvery;
+            return NSDragOperationCopy;
+        }
     }
     return NSDragOperationNone;
 }
