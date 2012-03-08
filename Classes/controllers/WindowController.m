@@ -69,7 +69,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
-    [[self window] registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, NSFilenamesPboardType, nil]];
+    [[self window] registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
@@ -286,7 +286,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
 #pragma Drag Operation Methods
 
-- (NSDragOperation) draggingEntered:(id < NSDraggingInfo >)sender {
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
     NSArray *files = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
     if ([files count] == 1) {
         NSString *filepath = [files lastObject];
@@ -296,6 +296,16 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
         }
     }
     return NSDragOperationNone;
+}
+
+- (NSDragOperation)draggingExited:(id <NSDraggingInfo>)sender
+{
+    
+}
+
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
+{
+    
 }
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
