@@ -311,7 +311,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
     NSPasteboard *pasteboard = [sender draggingPasteboard];
-    if ([[pasteboard types] containsObject:NSFileContentsPboardType]) {
+    if ([[pasteboard types] containsObject:NSFilenamesPboardType]) {
         NSFileWrapper *fileContents = [pasteboard readFileWrapper];
         NSLog(@"%@", fileContents);
     }
