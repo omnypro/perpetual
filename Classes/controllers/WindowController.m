@@ -69,8 +69,8 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
-    [[self window] registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
-
+    [[self window] registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, NSFilenamesPboardType, nil]];
+    
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
@@ -281,6 +281,30 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     float newValue = [sender floatValue];
     [[ApplicationController sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateVolumeSlider];
+}
+
+
+#pragma Drag Operation Methods
+
+- (NSDragOperation) draggingEntered:(id < NSDraggingInfo >)sender {
+    NSArray *files = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
+    if ([files count] == 1) {
+        NSString *filepath = [files lastObject];
+        if ([[filepath pathExtension] isEqualToString:@"m4a"])
+            NSLog(@"OMG.");
+            return NSDragOperationEvery;
+    }
+    return NSDragOperationNone;
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    if ([[pasteboard types] containsObject:NSFileContentsPboardType]) {
+        NSFileWrapper *fileContents = [pasteboard readFileWrapper];
+        NSLog(@"%@", fileContents);
+    }
+    return YES;
 }
 
 
