@@ -10,4 +10,8 @@
 
 @interface AboutWindowController : NSWindowController
 
+@property (weak) IBOutlet NSButton *website;
+@property (weak) IBOutlet NSButton *facebook;
+@property (weak) IBOutlet NSButton *twitter;
+
 @end
