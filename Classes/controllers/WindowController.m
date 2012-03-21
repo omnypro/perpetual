@@ -29,6 +29,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
+- (void)resetInterface;
 - (void)updateVolumeSlider;
 
 - (void)playbackHasProgressed:(NSNotification *)notification;
@@ -178,7 +179,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     }
 }
 
-
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
 {
     NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
@@ -192,6 +192,13 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
+- (void)resetInterface
+{
+    self.trackTitle.stringValue = @"Untitled Song";
+    self.trackSubtitle.stringValue = @"Untitled Album / Untitled Artist";
+    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)updateVolumeSlider
@@ -239,6 +246,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     PlaybackController *object = [notification object];
     if ([object isKindOfClass:[PlaybackController class]]) {
+        [self resetInterface];
         [self layoutInitialInterface:[object track]];
         [self showWindow:self];
         [self.play setEnabled:TRUE];
