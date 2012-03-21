@@ -34,15 +34,22 @@
 
     NSError *err = nil;
     _asset = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
-    [self.asset prepareToPlay];
+
     if (self.asset == nil) {
-        NSLog(@"%@", err);
+        NSLog(@"%@", err.description);
         return nil;
+    }
+    else {
+        [self.asset prepareToPlay];
+        [self.asset setDelegate:self];
     }
 
     _duration = [self.asset duration];
     _startTime = 0.0;
     _endTime = self.duration;
+
+    // We should always have a title, so let's start with the file's name.
+    _title = fileURL.lastPathComponent;
 
     AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     for (NSString *format in [asset availableMetadataFormats]) {

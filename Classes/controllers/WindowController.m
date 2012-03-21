@@ -160,18 +160,22 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     self.rangeSlider.doubleHiValue = track.duration;
     self.rangeSlider.numberOfTickMarks = track.duration;
 
-    // Set the track title, artist, and album using the derived metadata.
-    self.trackTitle.stringValue = track.title;
-    self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
-
     // Fill in rangeTime with the difference between the two slider's values.
     // Until we start saving people's slider positions, this will always
     // equal the duration of the song at launch.
     NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 
+    // Set the track title, artist, and album using the derived metadata.
+    self.trackTitle.stringValue = track.title;
+    if (track.albumName && track.artist != nil) {
+        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
+    }
+
     // Load the cover art using the derived data URI.
-    [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
+    if (track.imageDataURI != nil) {
+        [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
+    }
 }
 
 
