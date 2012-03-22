@@ -71,7 +71,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [super windowDidLoad];
     [[self window] setAllowsConcurrentViewDrawing:YES];
     [[self window] registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
-    
+
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
@@ -299,35 +299,33 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 #pragma Drag Operation Methods
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-    NSArray *files = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
     if ([files count] == 1) {
         NSString *filepath = [files lastObject];
-        if ([[filepath pathExtension] isEqualToString:@"m4a"]) {
-            NSLog(@"OMG.");
+        if ([[filepath pathExtension] isEqualToString:@"m4a"] || [[filepath pathExtension] isEqualToString:@"mp3"]) {
             return NSDragOperationCopy;
         }
     }
     return NSDragOperationNone;
 }
 
-- (NSDragOperation)draggingExited:(id <NSDraggingInfo>)sender
-{
-    
-}
-
 - (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
 {
-    
+    return YES;
 }
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
     NSPasteboard *pasteboard = [sender draggingPasteboard];
     if ([[pasteboard types] containsObject:NSFilenamesPboardType]) {
-        NSFileWrapper *fileContents = [pasteboard readFileWrapper];
-        NSLog(@"%@", fileContents);
+        NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
+        if ([files count] == 1) {
+            [[[ApplicationController sharedInstance] playbackController] openURL:[NSURL fileURLWithPath:[files lastObject]]];
+            return YES;
+        }
     }
-    return YES;
+    return NO;
 }
 
 
