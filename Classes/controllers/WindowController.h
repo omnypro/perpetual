@@ -8,13 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ColorGradientView;
+@class PlayerFooterView;
 @class SMDoubleSlider;
 @class WebView;
 
 @interface WindowController : NSWindowController
 
-@property (weak) IBOutlet ColorGradientView *footerView;
+@property (weak) IBOutlet PlayerFooterView *footerView;
 
 // Cover and Statistics Display
 @property (weak) IBOutlet WebView *webView;

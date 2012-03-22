@@ -103,12 +103,12 @@
 						<object class="NSCustomView" id="1018697144">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">258</int>
-							<string key="NSFrameSize">{480, 30}</string>
+							<string key="NSFrameSize">{480, 32}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="506839449"/>
+							<reference key="NSNextKeyView" ref="818383529"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
-							<string key="NSClassName">ColorGradientView</string>
+							<string key="NSClassName">PlayerFooterView</string>
 						</object>
 						<object class="NSTextField" id="818383529">
 							<reference key="NSNextResponder" ref="1006"/>
@@ -223,7 +223,7 @@
 							<string key="NSFrame">{{16, 69}, {447, 16}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="1018697144"/>
+							<reference key="NSNextKeyView" ref="506839449"/>
 							<string key="NSReuseIdentifierKey">_NS:2200</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSLevelIndicatorCell" key="NSCell" id="631480082">
@@ -356,7 +356,10 @@
 								<string key="NSCellIdentifier">_NS:3944</string>
 								<reference key="NSControlView" ref="129364307"/>
 								<reference key="NSBackgroundColor" ref="421711720"/>
-								<reference key="NSTextColor" ref="416759859"/>
+								<object class="NSColor" key="NSTextColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MSAxIDEAA</bytes>
+								</object>
 							</object>
 						</object>
 						<object class="NSCustomView" id="475103628">
@@ -778,6 +781,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">223</int>
 						<reference key="object" ref="475103628"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="1006"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -850,19 +854,19 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">ColorGradientView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ColorGradientView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">INAppStoreWindow</string>
 					<string key="superclassName">NSWindow</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/INAppStoreWindow.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PlayerFooterView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PlayerFooterView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -907,7 +911,7 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="currentTime">NSTextField</string>
-						<string key="footerView">ColorGradientView</string>
+						<string key="footerView">PlayerFooterView</string>
 						<string key="loopCountLabel">NSTextField</string>
 						<string key="loopCountStepper">NSStepper</string>
 						<string key="open">NSButton</string>
@@ -927,7 +931,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="footerView">
 							<string key="name">footerView</string>
-							<string key="candidateClassName">ColorGradientView</string>
+							<string key="candidateClassName">PlayerFooterView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="loopCountLabel">
 							<string key="name">loopCountLabel</string>

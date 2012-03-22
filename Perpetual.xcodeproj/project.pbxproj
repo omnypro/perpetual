@@ -14,6 +14,7 @@
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
 		931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 931DC86F1504B0D900D44887 /* NSColor+Hex.m */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
+		9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9337A03B151B2943004108FE /* PlayerFooterView.m */; };
 		934181221512CDD2004A046C /* Perpetual.icns in Resources */ = {isa = PBXBuildFile; fileRef = 934181211512CDD2004A046C /* Perpetual.icns */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
@@ -44,6 +45,8 @@
 		931DC86E1504B0D900D44887 /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
 		931DC86F1504B0D900D44887 /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9337A03A151B2943004108FE /* PlayerFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerFooterView.h; path = Views/PlayerFooterView.h; sourceTree = "<group>"; };
+		9337A03B151B2943004108FE /* PlayerFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerFooterView.m; path = Views/PlayerFooterView.m; sourceTree = "<group>"; };
 		934181211512CDD2004A046C /* Perpetual.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Perpetual.icns; sourceTree = "<group>"; };
 		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
 		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 			children = (
 				93AE625B151B21DA0026F654 /* ColorGradientView.h */,
 				93AE625C151B21DA0026F654 /* ColorGradientView.m */,
+				9337A03A151B2943004108FE /* PlayerFooterView.h */,
+				9337A03B151B2943004108FE /* PlayerFooterView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
 				93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */,
+				9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

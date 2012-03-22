@@ -9,11 +9,11 @@
 #import "WindowController.h"
 
 #import "ApplicationController.h"
-#import "ColorGradientView.h"
 #import "INAppStoreWindow.h"
 #import "NSColor+Hex.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
+#import "PlayerFooterView.h"
 #import "SMDoubleSlider.h"
 #import "Track.h"
 
@@ -31,7 +31,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
-- (void)layoutFooter;
 - (void)resetInterface;
 - (void)updateVolumeSlider;
 
@@ -41,9 +40,10 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @end
 
 @implementation WindowController
-@synthesize footerView = _footerView;
 
 @synthesize playbackController = _playbackController;
+
+@synthesize footerView = _footerView;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -83,7 +83,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:RangeDidChangeNotification object:nil];
 
-    [self layoutFooter];
     [self composeInterface];
 }
 
@@ -197,12 +196,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
-}
-
-- (void)layoutFooter
-{
-    [self.footerView setStartingColor:[NSColor colorWithHex:@"#303030"]];
-    [self.footerView setEndingColor:[NSColor colorWithHex:@"#1f1f1f"]];
 }
 
 - (void)resetInterface
