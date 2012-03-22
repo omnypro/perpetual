@@ -39,10 +39,8 @@
         NSLog(@"%@", err.description);
         return nil;
     }
-    else {
-        [self.asset prepareToPlay];
-        [self.asset setDelegate:self];
-    }
+
+    [self.asset prepareToPlay];
 
     _duration = [self.asset duration];
     _startTime = 0.0;
