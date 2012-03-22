@@ -24,4 +24,9 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [self.view registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+}
+
 @end
