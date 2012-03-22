@@ -19,6 +19,7 @@
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
+		93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AE625C151B21DA0026F654 /* ColorGradientView.m */; };
 		93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */; };
 		93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */; };
 		93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */; };
@@ -51,6 +52,8 @@
 		939EF98F14FCA1DA00CDBA32 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Window.xib; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
+		93AE625B151B21DA0026F654 /* ColorGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorGradientView.h; path = Views/ColorGradientView.h; sourceTree = "<group>"; };
+		93AE625C151B21DA0026F654 /* ColorGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColorGradientView.m; path = Views/ColorGradientView.m; sourceTree = "<group>"; };
 		93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MusicNoteTemplate.pdf; sourceTree = "<group>"; };
 		93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = BarGraphTemplate.pdf; sourceTree = "<group>"; };
 		93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = InfinityTemplate.pdf; sourceTree = "<group>"; };
@@ -154,9 +157,19 @@
 			isa = PBXGroup;
 			children = (
 				9394227515038D9200440F23 /* Models */,
+				93AE6259151B21B50026F654 /* Views */,
 				9394227715038D9B00440F23 /* Controllers */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		93AE6259151B21B50026F654 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				93AE625B151B21DA0026F654 /* ColorGradientView.h */,
+				93AE625C151B21DA0026F654 /* ColorGradientView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		93B6278F1501E9DC00FFF08B /* Templates */ = {
@@ -348,6 +361,7 @@
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
+				93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
