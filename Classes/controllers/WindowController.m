@@ -29,6 +29,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)layoutInitialInterface:(id)sender;
+- (void)resetInterface;
 - (void)updateVolumeSlider;
 
 - (void)playbackHasProgressed:(NSNotification *)notification;
@@ -161,20 +162,23 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     self.rangeSlider.doubleHiValue = track.duration;
     self.rangeSlider.numberOfTickMarks = track.duration;
 
-    // Set the track title, artist, and album using the derived metadata.
-    self.trackTitle.stringValue = track.title;
-    self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
-
     // Fill in rangeTime with the difference between the two slider's values.
     // Until we start saving people's slider positions, this will always
     // equal the duration of the song at launch.
     NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
     self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
 
-    // Load the cover art using the derived data URI.
-    [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
-}
+    // Set the track title, artist, and album using the derived metadata.
+    self.trackTitle.stringValue = track.title;
+    if (track.albumName && track.artist != nil) {
+        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
+    }
 
+    // Load the cover art using the derived data URI.
+    if (track.imageDataURI != nil) {
+        [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
+    }
+}
 
 - (void)layoutCoverArtWithIdentifier:(NSString *)identifier
 {
@@ -189,6 +193,13 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
+- (void)resetInterface
+{
+    self.trackTitle.stringValue = @"Untitled Song";
+    self.trackSubtitle.stringValue = @"Untitled Album / Untitled Artist";
+    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)updateVolumeSlider
@@ -236,6 +247,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     PlaybackController *object = [notification object];
     if ([object isKindOfClass:[PlaybackController class]]) {
+        [self resetInterface];
         [self layoutInitialInterface:[object track]];
         [self showWindow:self];
         [self.play setEnabled:TRUE];
