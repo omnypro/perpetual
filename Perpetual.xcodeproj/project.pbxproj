@@ -15,6 +15,8 @@
 		931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 931DC86F1504B0D900D44887 /* NSColor+Hex.m */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		934181221512CDD2004A046C /* Perpetual.icns in Resources */ = {isa = PBXBuildFile; fileRef = 934181211512CDD2004A046C /* Perpetual.icns */; };
+		9342AD23151AF63B00087073 /* DropZoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9342AD21151AF63B00087073 /* DropZoneViewController.m */; };
+		9342AD2A151B048400087073 /* DropZone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9342AD2C151B048400087073 /* DropZone.xib */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
@@ -44,6 +46,9 @@
 		931DC86F1504B0D900D44887 /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		934181211512CDD2004A046C /* Perpetual.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Perpetual.icns; sourceTree = "<group>"; };
+		9342AD20151AF63B00087073 /* DropZoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropZoneViewController.h; path = Classes/Controllers/DropZoneViewController.h; sourceTree = SOURCE_ROOT; };
+		9342AD21151AF63B00087073 /* DropZoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropZoneViewController.m; path = Classes/Controllers/DropZoneViewController.m; sourceTree = SOURCE_ROOT; };
+		9342AD2B151B048400087073 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DropZone.xib; sourceTree = "<group>"; };
 		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
 		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -120,10 +125,12 @@
 			children = (
 				9AC739E414EAEAB6000A57AD /* ApplicationController.h */,
 				9AC739E514EAEAB6000A57AD /* ApplicationController.m */,
-				93C0A96E14FBA51C00D63507 /* WindowController.h */,
-				93C0A96F14FBA51C00D63507 /* WindowController.m */,
+				9342AD20151AF63B00087073 /* DropZoneViewController.h */,
+				9342AD21151AF63B00087073 /* DropZoneViewController.m */,
 				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
 				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
+				93C0A96E14FBA51C00D63507 /* WindowController.h */,
+				93C0A96F14FBA51C00D63507 /* WindowController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -133,6 +140,7 @@
 			children = (
 				9AC739E714EAEAB6000A57AD /* Menu.xib */,
 				939EF99014FCA1DA00CDBA32 /* Window.xib */,
+				9342AD2C151B048400087073 /* DropZone.xib */,
 			);
 			name = NIBs;
 			sourceTree = "<group>";
@@ -276,7 +284,7 @@
 		9AC739C514EAEAB6000A57AD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Revyver, Inc.";
 			};
 			buildConfigurationList = 9AC739C814EAEAB6000A57AD /* Build configuration list for PBXProject "Perpetual" */;
@@ -313,6 +321,7 @@
 				93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */,
 				93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */,
 				934181221512CDD2004A046C /* Perpetual.icns in Resources */,
+				9342AD2A151B048400087073 /* DropZone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,12 +357,22 @@
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
+				9342AD23151AF63B00087073 /* DropZoneViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		9342AD2C151B048400087073 /* DropZone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9342AD2B151B048400087073 /* en */,
+			);
+			name = DropZone.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		939EF99014FCA1DA00CDBA32 /* Window.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -414,7 +433,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -434,7 +453,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -445,7 +464,7 @@
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -460,7 +479,7 @@
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
