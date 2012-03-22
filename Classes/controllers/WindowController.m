@@ -104,7 +104,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [[self.trackSubtitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.currentTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.rangeTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleLowered];
 
     // Load our blank cover, since we obviously have no audio to play.
     [self layoutCoverArtWithIdentifier:@"cover.jpg"];
