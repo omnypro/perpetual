@@ -15,6 +15,7 @@
 @interface WindowController : NSWindowController
 
 @property (weak) IBOutlet PlayerFooterView *footerView;
+@property (weak) IBOutlet NSView *masterView;
 
 // Cover and Statistics Display
 @property (weak) IBOutlet WebView *webView;

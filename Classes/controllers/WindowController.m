@@ -13,6 +13,7 @@
 #import "NSColor+Hex.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
+#import "PlayerViewController.h"
 #import "PlayerFooterView.h"
 #import "SMDoubleSlider.h"
 #import "Track.h"
@@ -20,12 +21,15 @@
 #import <AVFoundation/AVFoundation.h>
 #import <WebKit/WebKit.h>
 
-NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
-NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
+NSString *const OLDWindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
+NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
+@property (nonatomic, strong) NSViewController *currentViewController;
+@property (nonatomic, strong) PlayerViewController *playerViewController;
 
+- (void)setupControllers;
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)layoutRangeSlider;
@@ -42,8 +46,11 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @implementation WindowController
 
 @synthesize playbackController = _playbackController;
+@synthesize currentViewController = _currentViewController;
+@synthesize playerViewController = _playerViewController;
 
 @synthesize footerView = _footerView;
+@synthesize masterView = _masterView;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -81,12 +88,23 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:RangeDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:OLDRangeDidChangeNotification object:nil];
 
+    [self setupControllers];
     [self composeInterface];
 }
 
 #pragma mark Window Compositioning
+
+- (void)setupControllers
+{
+    self.playerViewController = [[PlayerViewController alloc] initWithNibName:@"PlayerView" bundle:nil];
+    
+    self.currentViewController = self.playerViewController;
+    [self.currentViewController.view setFrame:self.masterView.bounds];
+    [self.currentViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [self.masterView addSubview:self.currentViewController.view];
+}
 
 - (void)composeInterface
 {
@@ -100,10 +118,6 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     [self layoutWebView];
 
     // Make all of our text labels look pretty.
-    [[self.trackTitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    [[self.trackSubtitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    [[self.currentTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    [[self.rangeTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleLowered];
 
     // Load our blank cover, since we obviously have no audio to play.
@@ -194,7 +208,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
         return;
     }
 
-    [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
+    [html replaceOccurrencesOfString:OLDWindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
@@ -281,7 +295,7 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
     playbackController.track.startTime = self.rangeSlider.doubleLoValue;
     playbackController.track.endTime = self.rangeSlider.doubleHiValue;
-    [[NSNotificationCenter defaultCenter] postNotificationName:RangeDidChangeNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OLDRangeDidChangeNotification object:self userInfo:nil];
 }
 
 - (IBAction)setTimeForCurrentTime:(id)sender

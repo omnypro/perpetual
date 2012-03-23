@@ -22,12 +22,15 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 @interface PlayerViewController ()
 @property (nonatomic, strong) PlaybackController *playbackController;
 
+- (void)composeInterface;
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
 - (void)resetInterface;
 @end
 
 @implementation PlayerViewController
+
+@synthesize playbackController = _playbackController;
 
 // Cover and Statistics Display
 @synthesize webView = _webView;
@@ -46,10 +49,22 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Initialization code here.
+        [self composeInterface];
     }
     
     return self;
+}
+
+- (void)composeInterface;
+{
+    // Make all of our text labels look pretty.    
+    [[self.trackTitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.trackSubtitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.currentTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [[self.rangeTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    
+    // Load our blank cover, since we obviously have no audio to play.
+    [self layoutCoverArtWithIdentifier:@"cover.jpg"];    
 }
 
 - (void)layoutRangeSlider;
