@@ -21,7 +21,7 @@
     [shadow setShadowOffset:NSMakeSize(0, -1)];
     [shadow setShadowBlurRadius:0];
     
-    NSBezierPath* path = [NSBezierPath bezierPathWithRect:NSMakeRect(0, 0, 480, 32)];
+    NSBezierPath* path = [NSBezierPath bezierPathWithRect:rect];
     [gradient drawInBezierPath: path angle: -90];
     
     NSRect borderRect = NSInsetRect([path bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
