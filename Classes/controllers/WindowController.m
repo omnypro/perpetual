@@ -10,19 +10,13 @@
 
 #import "ApplicationController.h"
 #import "INAppStoreWindow.h"
-#import "NSColor+Hex.h"
-#import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
 #import "PlayerViewController.h"
 #import "PlayerFooterView.h"
-#import "SMDoubleSlider.h"
 #import "Track.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <WebKit/WebKit.h>
-
-NSString *const OLDWindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
-NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
@@ -32,15 +26,9 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 - (void)setupControllers;
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
-- (void)layoutRangeSlider;
-- (void)layoutWebView;
-- (void)layoutInitialInterface:(id)sender;
-- (void)resetInterface;
 - (void)updateVolumeSlider;
 
-- (void)playbackHasProgressed:(NSNotification *)notification;
 - (void)trackLoopCountChanged:(NSNotification *)notification;
-- (void)trackWasLoaded:(NSNotification *)notification;
 @end
 
 @implementation WindowController
@@ -52,20 +40,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 @synthesize footerView = _footerView;
 @synthesize masterView = _masterView;
 
-// Cover and Statistics Display
-@synthesize webView = _webView;
-
-// Track Metadata Displays
-@synthesize trackTitle = _trackTitle;
-@synthesize trackSubtitle = _trackSubtitle;
-@synthesize currentTime = _currentTime;
-@synthesize rangeTime = _rangeTime;
-
-// Sliders and Progress Bar
-@synthesize progressBar = _progressBar;
-@synthesize rangeSlider = _rangeSlider;
-
-// Lower Toolbar
 @synthesize open = _openFile;
 @synthesize play = _play;
 @synthesize volumeControl = _volumeControl;
@@ -85,10 +59,7 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:OLDRangeDidChangeNotification object:nil];
 
     [self setupControllers];
     [self composeInterface];
@@ -99,7 +70,7 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 - (void)setupControllers
 {
     self.playerViewController = [[PlayerViewController alloc] initWithNibName:@"PlayerView" bundle:nil];
-    
+
     self.currentViewController = self.playerViewController;
     [self.currentViewController.view setFrame:self.masterView.bounds];
     [self.currentViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
@@ -114,14 +85,9 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
     window.trafficLightButtonsLeftMargin = 7.f;
 
     [self layoutTitleBarSegmentedControls];
-    [self layoutRangeSlider];
-    [self layoutWebView];
 
     // Make all of our text labels look pretty.
     [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleLowered];
-
-    // Load our blank cover, since we obviously have no audio to play.
-    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)layoutTitleBarSegmentedControls
@@ -149,76 +115,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
     [titleBarView addSubview:switcher];
 }
 
-- (void)layoutRangeSlider;
-{
-    self.rangeSlider.allowsTickMarkValuesOnly = YES;
-    self.rangeSlider.minValue = 0.f;
-    self.rangeSlider.maxValue = 1.f;
-    self.rangeSlider.doubleLoValue = 0.f;
-    self.rangeSlider.doubleHiValue = 1.f;
-    self.rangeSlider.numberOfTickMarks = 2;
-    self.rangeSlider.tickMarkPosition = NSTickMarkAbove;
-    [self.rangeSlider setAction:@selector(setFloatForSlider:)];
-}
-
-- (void)layoutWebView
-{
-    // Set us up as the delegate of the WebView for relevant events.
-    // UIDelegate and FrameLoadDelegate are set in Interface Builder.
-    [[self webView] setEditingDelegate:self];
-}
-
-- (void)layoutInitialInterface:(Track *)track
-{
-    // Compose the initial user interface.
-    // Set the max value of the progress bar to the duration of the track.
-    self.progressBar.maxValue = track.duration;
-
-    // Set the slider attributes.
-    self.rangeSlider.maxValue = track.duration;
-    self.rangeSlider.doubleHiValue = track.duration;
-    self.rangeSlider.numberOfTickMarks = track.duration;
-
-    // Fill in rangeTime with the difference between the two slider's values.
-    // Until we start saving people's slider positions, this will always
-    // equal the duration of the song at launch.
-    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
-    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
-
-    // Set the track title, artist, and album using the derived metadata.
-    self.trackTitle.stringValue = track.title;
-    if (track.albumName && track.artist != nil) {
-        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
-    }
-
-    // Load the cover art using the derived data URI.
-    if (track.imageDataURI != nil) {
-        [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
-    }
-}
-
-- (void)layoutCoverArtWithIdentifier:(NSString *)identifier
-{
-    NSURL *htmlFileURL = [[NSBundle mainBundle] URLForResource:@"cover" withExtension:@"html"];
-    NSError *err = nil;
-    NSMutableString *html = [NSMutableString stringWithContentsOfURL:htmlFileURL encoding:NSUTF8StringEncoding error:&err];
-    if (html == nil) {
-        // Do something with the error.
-        NSLog(@"%@", err);
-        return;
-    }
-
-    [html replaceOccurrencesOfString:OLDWindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
-    [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
-}
-
-- (void)resetInterface
-{
-    self.trackTitle.stringValue = @"Untitled Song";
-    self.trackSubtitle.stringValue = @"Untitled Album / Untitled Artist";
-    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
-}
-
 - (void)updateVolumeSlider
 {
     float volume = [[ApplicationController sharedInstance].playbackController.track.asset volume];
@@ -227,21 +123,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 
 
 #pragma mark Notification Observers
-
-- (void)playbackHasProgressed:(NSNotification *)notification
-{
-    PlaybackController *object = [notification object];
-    if ([object isKindOfClass:[PlaybackController class]]) {
-        self.currentTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:object.track.asset.currentTime];
-        self.progressBar.floatValue = object.track.asset.currentTime;
-    }
-}
-
-- (void)rangeDidChange:(NSNotification *)notification
-{
-    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
-    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
-}
 
 - (void)trackLoopCountChanged:(NSNotification *)notification
 {
@@ -257,17 +138,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 
         // Finally, update the stepper so it's snychronized.
         [self.loopCountStepper setIntegerValue:object.loopCount];
-    }
-}
-
-- (void)trackWasLoaded:(NSNotification *)notification
-{
-    PlaybackController *object = [notification object];
-    if ([object isKindOfClass:[PlaybackController class]]) {
-        [self resetInterface];
-        [self layoutInitialInterface:[object track]];
-        [self showWindow:self];
-        [self.play setEnabled:TRUE];
     }
 }
 
@@ -290,21 +160,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
     [[ApplicationController sharedInstance].playbackController updateLoopCount:[self.loopCountStepper intValue]];
 }
 
-- (IBAction)setFloatForSlider:(id)sender
-{
-    PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
-    playbackController.track.startTime = self.rangeSlider.doubleLoValue;
-    playbackController.track.endTime = self.rangeSlider.doubleHiValue;
-    [[NSNotificationCenter defaultCenter] postNotificationName:OLDRangeDidChangeNotification object:self userInfo:nil];
-}
-
-- (IBAction)setTimeForCurrentTime:(id)sender
-{
-    NSTimeInterval interval = self.progressBar.doubleValue;
-    AVAudioPlayer *asset = [ApplicationController sharedInstance].playbackController.track.asset;
-    asset.currentTime = interval;
-}
-
 - (IBAction)setFloatForVolume:(id)sender
 {
     float newValue = [sender floatValue];
@@ -318,29 +173,6 @@ NSString *const OLDRangeDidChangeNotification = @"com.revyver.perpetual.RangeDid
 - (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
 {
     return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -18);
-}
-
-
-#pragma mark WebView Delegate Methods
-
-- (NSUInteger)webView:(WebView *)webView dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
-{
-    return WebDragDestinationActionNone; // We shouldn't be able to drag things into the webView.
-}
-
-- (NSUInteger)webView:(WebView *)webView dragSourceActionMaskForPoint:(NSPoint)point
-{
-    return WebDragSourceActionNone; // We shouldn't be able to drag the artwork out of the webView.
-}
-
-- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
-{
-    return nil; // Disable the webView's contextual menu.
-}
-
-- (BOOL)webView:(WebView *)webView shouldChangeSelectedDOMRange:(DOMRange *)currentRange toDOMRange:(DOMRange *)proposedRange affinity:(NSSelectionAffinity)selectionAffinity stillSelecting:(BOOL)flag
-{
-    return NO; // Prevent the selection of content.
 }
 
 @end

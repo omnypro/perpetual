@@ -9,9 +9,11 @@
 #import "PlayerViewController.h"
 
 #import "ApplicationController.h"
+#import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
 #import "SMDoubleSlider.h"
 #import "Track.h"
+#import "WindowController.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <WebKit/WebKit.h>
@@ -20,51 +22,55 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
 NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface PlayerViewController ()
-@property (nonatomic, strong) PlaybackController *playbackController;
-
 - (void)composeInterface;
 - (void)layoutRangeSlider;
 - (void)layoutWebView;
+- (void)layoutInitialInterface:(Track *)track;
 - (void)resetInterface;
+
+- (void)playbackHasProgressed:(NSNotification *)notification;
+- (void)trackWasLoaded:(NSNotification *)notification;
 @end
 
 @implementation PlayerViewController
 
-@synthesize playbackController = _playbackController;
-
-// Cover and Statistics Display
 @synthesize webView = _webView;
-
-// Track Metadata Displays
 @synthesize trackTitle = _trackTitle;
 @synthesize trackSubtitle = _trackSubtitle;
 @synthesize currentTime = _currentTime;
 @synthesize rangeTime = _rangeTime;
-
-// Sliders and Progress Bar
 @synthesize progressBar = _progressBar;
 @synthesize rangeSlider = _rangeSlider;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)awakeFromNib
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self composeInterface];
-    }
-    
-    return self;
+    [super awakeFromNib];
+    [self composeInterface];
+}
+
+- (void)loadView
+{
+    [super loadView];
+
+    // Register notifications for our playback services.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackHasProgressed:) name:PlaybackHasProgressedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackWasLoaded:) name:TrackWasLoadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rangeDidChange:) name:RangeDidChangeNotification object:nil];
 }
 
 - (void)composeInterface;
 {
-    // Make all of our text labels look pretty.    
+    [self layoutRangeSlider];
+    [self layoutWebView];
+
+    // Make all of our text labels look pretty.
     [[self.trackTitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.trackSubtitle cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.currentTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
     [[self.rangeTime cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    
+
     // Load our blank cover, since we obviously have no audio to play.
-    [self layoutCoverArtWithIdentifier:@"cover.jpg"];    
+    [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
 
 - (void)layoutRangeSlider;
@@ -96,9 +102,38 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
         NSLog(@"%@", err);
         return;
     }
-    
+
     [html replaceOccurrencesOfString:WindowControllerHTMLImagePlaceholder withString:identifier options:0 range:NSMakeRange(0, html.length)];
     [self.webView.mainFrame loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
+- (void)layoutInitialInterface:(Track *)track
+{
+    // Compose the initial user interface.
+    // Set the max value of the progress bar to the duration of the track.
+    self.progressBar.maxValue = track.duration;
+
+    // Set the slider attributes.
+    self.rangeSlider.maxValue = track.duration;
+    self.rangeSlider.doubleHiValue = track.duration;
+    self.rangeSlider.numberOfTickMarks = track.duration;
+
+    // Fill in rangeTime with the difference between the two slider's values.
+    // Until we start saving people's slider positions, this will always
+    // equal the duration of the song at launch.
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
+    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
+
+    // Set the track title, artist, and album using the derived metadata.
+    self.trackTitle.stringValue = track.title;
+    if (track.albumName && track.artist != nil) {
+        self.trackSubtitle.stringValue = [NSString stringWithFormat:@"%@ / %@", track.albumName, track.artist];
+    }
+
+    // Load the cover art using the derived data URI.
+    if (track.imageDataURI != nil) {
+        [self layoutCoverArtWithIdentifier:[track.imageDataURI absoluteString]];
+    }
 }
 
 - (void)resetInterface
@@ -107,6 +142,37 @@ NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidCha
     self.trackSubtitle.stringValue = @"Untitled Album / Untitled Artist";
     [self layoutCoverArtWithIdentifier:@"cover.jpg"];
 }
+
+
+#pragma mark Notification Observers
+
+- (void)playbackHasProgressed:(NSNotification *)notification
+{
+    PlaybackController *object = [notification object];
+    if ([object isKindOfClass:[PlaybackController class]]) {
+        self.currentTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:object.track.asset.currentTime];
+        self.progressBar.floatValue = object.track.asset.currentTime;
+    }
+}
+
+- (void)rangeDidChange:(NSNotification *)notification
+{
+    NSTimeInterval rangeValue = self.rangeSlider.doubleHiValue - self.rangeSlider.doubleLoValue;
+    self.rangeTime.stringValue = [NSString convertIntervalToMinutesAndSeconds:rangeValue];
+}
+
+- (void)trackWasLoaded:(NSNotification *)notification
+{
+    PlaybackController *object = [notification object];
+    if ([object isKindOfClass:[PlaybackController class]]) {
+        [self resetInterface];
+        [self layoutInitialInterface:[object track]];
+
+        WindowController *windowController = [ApplicationController sharedInstance].windowController;
+        [windowController.play setEnabled:TRUE];
+    }
+}
+
 
 #pragma mark IBAction Methods
 
