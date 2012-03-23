@@ -106,7 +106,7 @@
 							<string key="NSFrameSize">{480, 32}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="818383529"/>
+							<reference key="NSNextKeyView" ref="506839449"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">PlayerFooterView</string>
 						</object>
@@ -223,7 +223,7 @@
 							<string key="NSFrame">{{16, 69}, {447, 16}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="506839449"/>
+							<reference key="NSNextKeyView" ref="1018697144"/>
 							<string key="NSReuseIdentifierKey">_NS:2200</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSLevelIndicatorCell" key="NSCell" id="631480082">
@@ -301,6 +301,7 @@
 							<string key="NSFrame">{{281, 5}, {194, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:779</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="874367526">
@@ -830,7 +831,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">226</int>
+			<int key="maxID">228</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
