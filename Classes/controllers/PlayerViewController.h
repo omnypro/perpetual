@@ -26,4 +26,9 @@
 @property (weak) IBOutlet NSLevelIndicator *progressBar;
 @property (weak) IBOutlet SMDoubleSlider *rangeSlider;
 
+- (void)layoutCoverArtWithIdentifier:(NSString *)identifier;
+
+- (IBAction)setFloatForSlider:(id)sender;
+- (IBAction)setTimeForCurrentTime:(id)sender;
+
 @end
