@@ -15,6 +15,8 @@
 		931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 931DC86F1504B0D900D44887 /* NSColor+Hex.m */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9337A03B151B2943004108FE /* PlayerFooterView.m */; };
+		9337A07A151C534A004108FE /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9337A078151C534A004108FE /* PlayerViewController.m */; };
+		9337A086151C53B3004108FE /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9337A084151C53B3004108FE /* PlayerView.xib */; };
 		934181221512CDD2004A046C /* Perpetual.icns in Resources */ = {isa = PBXBuildFile; fileRef = 934181211512CDD2004A046C /* Perpetual.icns */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
@@ -47,6 +49,9 @@
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9337A03A151B2943004108FE /* PlayerFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerFooterView.h; path = Views/PlayerFooterView.h; sourceTree = "<group>"; };
 		9337A03B151B2943004108FE /* PlayerFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerFooterView.m; path = Views/PlayerFooterView.m; sourceTree = "<group>"; };
+		9337A077151C534A004108FE /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
+		9337A078151C534A004108FE /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		9337A085151C53B3004108FE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PlayerView.xib; sourceTree = SOURCE_ROOT; };
 		934181211512CDD2004A046C /* Perpetual.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Perpetual.icns; sourceTree = "<group>"; };
 		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
 		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
@@ -126,10 +131,12 @@
 			children = (
 				9AC739E414EAEAB6000A57AD /* ApplicationController.h */,
 				9AC739E514EAEAB6000A57AD /* ApplicationController.m */,
-				93C0A96E14FBA51C00D63507 /* WindowController.h */,
-				93C0A96F14FBA51C00D63507 /* WindowController.m */,
 				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
 				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
+				9337A077151C534A004108FE /* PlayerViewController.h */,
+				9337A078151C534A004108FE /* PlayerViewController.m */,
+				93C0A96E14FBA51C00D63507 /* WindowController.h */,
+				93C0A96F14FBA51C00D63507 /* WindowController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -138,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC739E714EAEAB6000A57AD /* Menu.xib */,
+				9337A084151C53B3004108FE /* PlayerView.xib */,
 				939EF99014FCA1DA00CDBA32 /* Window.xib */,
 			);
 			name = NIBs;
@@ -331,6 +339,7 @@
 				93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */,
 				93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */,
 				934181221512CDD2004A046C /* Perpetual.icns in Resources */,
+				9337A086151C53B3004108FE /* PlayerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,12 +377,21 @@
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
 				93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */,
 				9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */,
+				9337A07A151C534A004108FE /* PlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		9337A084151C53B3004108FE /* PlayerView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9337A085151C53B3004108FE /* en */,
+			);
+			name = PlayerView.xib;
+			sourceTree = "<group>";
+		};
 		939EF99014FCA1DA00CDBA32 /* Window.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
