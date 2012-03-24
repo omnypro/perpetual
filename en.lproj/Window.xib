@@ -12,6 +12,8 @@
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSCustomView</string>
+			<string>NSViewController</string>
+			<string>NSPopover</string>
 			<string>NSButton</string>
 			<string>NSTextFieldCell</string>
 			<string>NSButtonCell</string>
@@ -58,6 +60,35 @@
 						<object class="NSCustomView" id="1018697144">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">258</int>
+							<array class="NSMutableArray" key="NSSubviews">
+								<object class="NSButton" id="453138252">
+									<reference key="NSNextResponder" ref="1018697144"/>
+									<int key="NSvFlags">268</int>
+									<string key="NSFrame">{{123, -2}, {82, 32}}</string>
+									<reference key="NSSuperview" ref="1018697144"/>
+									<reference key="NSWindow"/>
+									<string key="NSReuseIdentifierKey">_NS:9</string>
+									<bool key="NSEnabled">YES</bool>
+									<object class="NSButtonCell" key="NSCell" id="521610050">
+										<int key="NSCellFlags">67239424</int>
+										<int key="NSCellFlags2">134217728</int>
+										<string key="NSContents">Button</string>
+										<object class="NSFont" key="NSSupport" id="10541427">
+											<string key="NSName">LucidaGrande</string>
+											<double key="NSSize">13</double>
+											<int key="NSfFlags">1044</int>
+										</object>
+										<string key="NSCellIdentifier">_NS:9</string>
+										<reference key="NSControlView" ref="453138252"/>
+										<int key="NSButtonFlags">-2038284033</int>
+										<int key="NSButtonFlags2">129</int>
+										<string key="NSAlternateContents"/>
+										<string key="NSKeyEquivalent"/>
+										<int key="NSPeriodicDelay">200</int>
+										<int key="NSPeriodicInterval">25</int>
+									</object>
+								</object>
+							</array>
 							<string key="NSFrameSize">{480, 32}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
@@ -78,11 +109,7 @@
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents"/>
-								<object class="NSFont" key="NSSupport" id="10541427">
-									<string key="NSName">LucidaGrande</string>
-									<double key="NSSize">13</double>
-									<int key="NSfFlags">1044</int>
-								</object>
+								<reference key="NSSupport" ref="10541427"/>
 								<string key="NSCellIdentifier">_NS:22</string>
 								<reference key="NSControlView" ref="506839449"/>
 								<int key="NSButtonFlags">-2041822977</int>
@@ -210,6 +237,7 @@
 							<string key="NSFrame">{{0, 32}, {480, 388}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="1018697144"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">NSView</string>
 						</object>
@@ -217,7 +245,7 @@
 					<string key="NSFrameSize">{480, 420}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView"/>
+					<reference key="NSNextKeyView" ref="515283230"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{480, 442}</string>
@@ -227,6 +255,24 @@
 			</object>
 			<object class="NSCustomObject" id="1063380496">
 				<string key="NSClassName">ApplicationController</string>
+			</object>
+			<object class="NSViewController" id="223392986"/>
+			<object class="NSPopover" id="138089756">
+				<nil key="NSNextResponder"/>
+				<int key="NSAppearance">0</int>
+				<int key="NSBehavior">0</int>
+				<double key="NSContentWidth">0.0</double>
+				<double key="NSContentHeight">0.0</double>
+				<bool key="NSAnimates">YES</bool>
+			</object>
+			<object class="NSCustomView" id="651704634">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">268</int>
+				<string key="NSFrameSize">{306, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<string key="NSReuseIdentifierKey">_NS:9</string>
+				<string key="NSClassName">NSView</string>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -321,6 +367,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">loopPopover</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="138089756"/>
+					</object>
+					<int key="connectionID">240</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showLoopPopover:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="453138252"/>
+					</object>
+					<int key="connectionID">244</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="1005"/>
 						<reference key="destination" ref="1001"/>
@@ -334,6 +396,22 @@
 						<reference key="destination" ref="506839449"/>
 					</object>
 					<int key="connectionID">218</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="223392986"/>
+						<reference key="destination" ref="651704634"/>
+					</object>
+					<int key="connectionID">242</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">contentViewController</string>
+						<reference key="source" ref="138089756"/>
+						<reference key="destination" ref="223392986"/>
+					</object>
+					<int key="connectionID">235</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -457,6 +535,9 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">225</int>
 						<reference key="object" ref="1018697144"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="453138252"/>
+						</array>
 						<reference key="parent" ref="1006"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -464,6 +545,35 @@
 						<reference key="object" ref="515283230"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">233</int>
+						<reference key="object" ref="223392986"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Popover View Controller</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">234</int>
+						<reference key="object" ref="138089756"/>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">237</int>
+						<reference key="object" ref="453138252"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="521610050"/>
+						</array>
+						<reference key="parent" ref="1018697144"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">238</int>
+						<reference key="object" ref="521610050"/>
+						<reference key="parent" ref="453138252"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">241</int>
+						<reference key="object" ref="651704634"/>
+						<reference key="parent" ref="0"/>
 					</object>
 				</array>
 			</object>
@@ -490,12 +600,17 @@
 				<string key="217.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="225.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="230.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="233.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="234.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="237.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="238.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="241.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">232</int>
+			<int key="maxID">244</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -535,22 +650,13 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SMDoubleSlider</string>
-					<string key="superclassName">NSSlider</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SMDoubleSlider.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">WindowController</string>
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="handlePlayState:">id</string>
 						<string key="incrementLoopCount:">id</string>
-						<string key="setFloatForSlider:">id</string>
 						<string key="setFloatForVolume:">id</string>
-						<string key="setTimeForCurrentTime:">id</string>
+						<string key="showLoopPopover:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="handlePlayState:">
@@ -561,40 +667,26 @@
 							<string key="name">incrementLoopCount:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="setFloatForSlider:">
-							<string key="name">setFloatForSlider:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="setFloatForVolume:">
 							<string key="name">setFloatForVolume:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="setTimeForCurrentTime:">
-							<string key="name">setTimeForCurrentTime:</string>
+						<object class="IBActionInfo" key="showLoopPopover:">
+							<string key="name">showLoopPopover:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="currentTime">NSTextField</string>
 						<string key="footerView">PlayerFooterView</string>
 						<string key="loopCountLabel">NSTextField</string>
 						<string key="loopCountStepper">NSStepper</string>
+						<string key="loopPopover">NSPopover</string>
 						<string key="masterView">NSView</string>
 						<string key="open">NSButton</string>
 						<string key="play">NSButton</string>
-						<string key="progressBar">NSLevelIndicator</string>
-						<string key="rangeSlider">SMDoubleSlider</string>
-						<string key="rangeTime">NSTextField</string>
-						<string key="trackSubtitle">NSTextField</string>
-						<string key="trackTitle">NSTextField</string>
 						<string key="volumeControl">NSSlider</string>
-						<string key="webView">WebView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="currentTime">
-							<string key="name">currentTime</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="footerView">
 							<string key="name">footerView</string>
 							<string key="candidateClassName">PlayerFooterView</string>
@@ -606,6 +698,10 @@
 						<object class="IBToOneOutletInfo" key="loopCountStepper">
 							<string key="name">loopCountStepper</string>
 							<string key="candidateClassName">NSStepper</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="loopPopover">
+							<string key="name">loopPopover</string>
+							<string key="candidateClassName">NSPopover</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="masterView">
 							<string key="name">masterView</string>
@@ -619,33 +715,9 @@
 							<string key="name">play</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="progressBar">
-							<string key="name">progressBar</string>
-							<string key="candidateClassName">NSLevelIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="rangeSlider">
-							<string key="name">rangeSlider</string>
-							<string key="candidateClassName">SMDoubleSlider</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="rangeTime">
-							<string key="name">rangeTime</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="trackSubtitle">
-							<string key="name">trackSubtitle</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="trackTitle">
-							<string key="name">trackTitle</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="volumeControl">
 							<string key="name">volumeControl</string>
 							<string key="candidateClassName">NSSlider</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="webView">
-							<string key="name">webView</string>
-							<string key="candidateClassName">WebView</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

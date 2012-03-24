@@ -21,8 +21,11 @@
 @property (weak) IBOutlet NSTextField *loopCountLabel;
 @property (weak) IBOutlet NSStepper *loopCountStepper;
 
+@property (strong) IBOutlet NSPopover *loopPopover;
+
 - (IBAction)handlePlayState:(id)sender;
 - (IBAction)incrementLoopCount:(id)sender;
 - (IBAction)setFloatForVolume:(id)sender;
+- (IBAction)showLoopPopover:(id)sender;
 
 @end

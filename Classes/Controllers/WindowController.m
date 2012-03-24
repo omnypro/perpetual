@@ -46,6 +46,8 @@
 @synthesize loopCountLabel = _loopCountLabel;
 @synthesize loopCountStepper = _loopCountStepper;
 
+@synthesize loopPopover = _loopPopover;
+
 - (id)init
 {
 	return [super initWithWindowNibName:@"Window"];
@@ -88,6 +90,9 @@
 
     // Make all of our text labels look pretty.
     [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleLowered];
+
+    // Set the appearance of our loop selector popover.
+    [self.loopPopover setAppearance:NSPopoverAppearanceHUD];
 }
 
 - (void)layoutTitleBarSegmentedControls
@@ -165,6 +170,11 @@
     float newValue = [sender floatValue];
     [[ApplicationController sharedInstance].playbackController.track.asset setVolume:newValue];
     [self updateVolumeSlider];
+}
+
+- (IBAction)showLoopPopover:(id)sender
+{
+    [self.loopPopover showRelativeToRect:[sender bounds] ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 
