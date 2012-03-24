@@ -92,7 +92,7 @@
     [[self.loopCountLabel cell] setBackgroundStyle:NSBackgroundStyleLowered];
 
     // Set the appearance of our loop selector popover.
-    [self.loopPopover setAppearance:NSPopoverAppearanceHUD];
+    // [self.loopPopover setAppearance:NSPopoverAppearanceHUD];
 }
 
 - (void)layoutTitleBarSegmentedControls
