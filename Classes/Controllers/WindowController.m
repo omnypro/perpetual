@@ -81,7 +81,7 @@
 {
     // Customize INAppStoreWindow.
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
-    window.titleBarHeight = 40.f;
+    window.titleBarHeight = 35.f;
     window.trafficLightButtonsLeftMargin = 7.f;
 
     [self layoutTitleBarSegmentedControls];
@@ -99,8 +99,8 @@
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
     NSSize controlSize = NSMakeSize(64.f, 32.f);
-    NSRect controlFrame = NSMakeRect(NSMidX([titleBarView bounds]) - (controlSize.width / 2.f),
-                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f),
+    NSRect controlFrame = NSMakeRect(NSMaxX([titleBarView bounds]) - (controlSize.width + 7.f),
+                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f + 1.f),
                                      controlSize.width,
                                      controlSize.height);
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
