@@ -44,7 +44,7 @@
 					<object class="NSCustomView" id="586424923">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{8, 15}, {465, 27}}</string>
+						<string key="NSFrame">{{8, 10}, {465, 27}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1057131178"/>
@@ -54,10 +54,9 @@
 					<object class="NSLevelIndicator" id="1057131178">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{17, 41}, {447, 16}}</string>
+						<string key="NSFrame">{{17, 37}, {447, 16}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:2200</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSLevelIndicatorCell" key="NSCell" id="627067462">
@@ -72,7 +71,7 @@
 					<object class="NSTextField" id="628158590">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">291</int>
-						<string key="NSFrame">{{407, 78}, {66, 17}}</string>
+						<string key="NSFrame">{{407, 79}, {66, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="586424923"/>
@@ -108,7 +107,7 @@
 					<object class="NSTextField" id="499281336">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">291</int>
-						<string key="NSFrame">{{413, 97}, {60, 17}}</string>
+						<string key="NSFrame">{{413, 98}, {60, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="962119598"/>
@@ -135,7 +134,7 @@
 					<object class="NSTextField" id="758833664">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">294</int>
-						<string key="NSFrame">{{7, 94}, {400, 21}}</string>
+						<string key="NSFrame">{{7, 95}, {400, 21}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="499281336"/>
@@ -159,7 +158,7 @@
 					<object class="NSTextField" id="962119598">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">294</int>
-						<string key="NSFrame">{{7, 78}, {386, 17}}</string>
+						<string key="NSFrame">{{7, 79}, {386, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="628158590"/>
@@ -488,7 +487,6 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="currentTime">NSTextField</string>
-						<string key="currentTrackView">NSView</string>
 						<string key="progressBar">NSLevelIndicator</string>
 						<string key="rangeSlider">SMDoubleSlider</string>
 						<string key="rangeTime">NSTextField</string>
@@ -500,10 +498,6 @@
 						<object class="IBToOneOutletInfo" key="currentTime">
 							<string key="name">currentTime</string>
 							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="currentTrackView">
-							<string key="name">currentTrackView</string>
-							<string key="candidateClassName">NSView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="progressBar">
 							<string key="name">progressBar</string>

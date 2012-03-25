@@ -50,6 +50,8 @@
 				<string key="NSWindowClass">INAppStoreWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
+				<string key="NSWindowContentMaxSize">{480, 155}</string>
+				<string key="NSWindowContentMinSize">{480, 155}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -102,7 +104,7 @@
 							<string key="NSFrame">{{39, 5}, {26, 25}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="352294061"/>
+							<reference key="NSNextKeyView" ref="129364307"/>
 							<string key="NSReuseIdentifierKey">_NS:22</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="286530252">
@@ -130,6 +132,7 @@
 							<string key="NSFrame">{{281, 7}, {194, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:779</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="874367526">
@@ -174,7 +177,7 @@
 							<string key="NSFrame">{{59, 10}, {38, 20}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="1018697144"/>
+							<reference key="NSNextKeyView" ref="352294061"/>
 							<string key="NSReuseIdentifierKey">_NS:3944</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="769052920">
@@ -209,7 +212,7 @@
 							<string key="NSFrame">{{0, 35}, {480, 120}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="129364307"/>
+							<reference key="NSNextKeyView" ref="1018697144"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">NSView</string>
 						</object>
@@ -220,7 +223,8 @@
 					<reference key="NSNextKeyView" ref="515283230"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<string key="NSMinSize">{480, 177}</string>
+				<string key="NSMaxSize">{480, 177}</string>
 				<string key="NSFrameAutosaveName">Window</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
