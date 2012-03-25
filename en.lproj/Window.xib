@@ -11,18 +11,18 @@
 			<string key="NS.object.0">2182</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSCustomView</string>
+			<string>NSStepperCell</string>
 			<string>NSButton</string>
 			<string>NSTextFieldCell</string>
 			<string>NSButtonCell</string>
 			<string>NSSlider</string>
 			<string>NSSliderCell</string>
-			<string>NSStepperCell</string>
 			<string>NSCustomObject</string>
+			<string>NSCustomView</string>
 			<string>NSView</string>
 			<string>NSWindowTemplate</string>
-			<string>NSStepper</string>
 			<string>NSTextField</string>
+			<string>NSStepper</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -44,13 +44,12 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{196, 240}, {480, 420}}</string>
+				<string key="NSWindowRect">{{196, 240}, {480, 155}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Perpetual</string>
 				<string key="NSWindowClass">INAppStoreWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMinSize">{480, 420}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -58,7 +57,7 @@
 						<object class="NSCustomView" id="1018697144">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">258</int>
-							<string key="NSFrameSize">{480, 32}</string>
+							<string key="NSFrameSize">{480, 35}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="506839449"/>
@@ -68,7 +67,7 @@
 						<object class="NSButton" id="506839449">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{5, 3}, {26, 25}}</string>
+							<string key="NSFrame">{{5, 6}, {26, 25}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="623270775"/>
@@ -100,10 +99,10 @@
 						<object class="NSButton" id="623270775">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{39, 3}, {26, 25}}</string>
+							<string key="NSFrame">{{39, 5}, {26, 25}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="129364307"/>
+							<reference key="NSNextKeyView" ref="352294061"/>
 							<string key="NSReuseIdentifierKey">_NS:22</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="286530252">
@@ -128,7 +127,7 @@
 						<object class="NSSlider" id="875496680">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{281, 5}, {194, 21}}</string>
+							<string key="NSFrame">{{281, 7}, {194, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<string key="NSReuseIdentifierKey">_NS:779</string>
@@ -152,7 +151,7 @@
 						<object class="NSStepper" id="352294061">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{98, 2}, {19, 27}}</string>
+							<string key="NSFrame">{{98, 3}, {19, 27}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="875496680"/>
@@ -172,10 +171,10 @@
 						<object class="NSTextField" id="129364307">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{59, 8}, {38, 20}}</string>
+							<string key="NSFrame">{{59, 10}, {38, 20}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="352294061"/>
+							<reference key="NSNextKeyView" ref="1018697144"/>
 							<string key="NSReuseIdentifierKey">_NS:3944</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="769052920">
@@ -207,20 +206,20 @@
 						<object class="NSCustomView" id="515283230">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">274</int>
-							<string key="NSFrame">{{0, 32}, {480, 388}}</string>
+							<string key="NSFrame">{{0, 35}, {480, 120}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="129364307"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">NSView</string>
 						</object>
 					</array>
-					<string key="NSFrameSize">{480, 420}</string>
+					<string key="NSFrameSize">{480, 155}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView"/>
+					<reference key="NSNextKeyView" ref="515283230"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{480, 442}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">Window</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -241,35 +240,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">play</string>
+						<string key="label">footerView</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="623270775"/>
+						<reference key="destination" ref="1018697144"/>
 					</object>
-					<int key="connectionID">138</int>
+					<int key="connectionID">226</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">volumeControl</string>
+						<string key="label">masterView</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="875496680"/>
+						<reference key="destination" ref="515283230"/>
 					</object>
-					<int key="connectionID">197</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">setFloatForVolume:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="875496680"/>
-					</object>
-					<int key="connectionID">198</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">loopCountStepper</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="352294061"/>
-					</object>
-					<int key="connectionID">207</int>
+					<int key="connectionID">232</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -289,11 +272,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">open</string>
+						<string key="label">loopCountStepper</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="506839449"/>
+						<reference key="destination" ref="352294061"/>
 					</object>
-					<int key="connectionID">210</int>
+					<int key="connectionID">207</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">setFloatForVolume:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="875496680"/>
+					</object>
+					<int key="connectionID">198</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">volumeControl</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="875496680"/>
+					</object>
+					<int key="connectionID">197</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -305,19 +304,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">footerView</string>
+						<string key="label">play</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="1018697144"/>
+						<reference key="destination" ref="623270775"/>
 					</object>
-					<int key="connectionID">226</int>
+					<int key="connectionID">138</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">masterView</string>
+						<string key="label">open</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="515283230"/>
+						<reference key="destination" ref="506839449"/>
 					</object>
-					<int key="connectionID">232</int>
+					<int key="connectionID">210</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -385,50 +384,20 @@
 						<reference key="parent" ref="1005"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">130</int>
-						<reference key="object" ref="506839449"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="184134416"/>
-						</array>
+						<int key="objectID">217</int>
+						<reference key="object" ref="1063380496"/>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">225</int>
+						<reference key="object" ref="1018697144"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="1006"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">131</int>
-						<reference key="object" ref="184134416"/>
-						<reference key="parent" ref="506839449"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">132</int>
-						<reference key="object" ref="623270775"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="286530252"/>
-						</array>
-						<reference key="parent" ref="1006"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">133</int>
-						<reference key="object" ref="286530252"/>
-						<reference key="parent" ref="623270775"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">195</int>
-						<reference key="object" ref="875496680"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="874367526"/>
-						</array>
-						<reference key="parent" ref="1006"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">196</int>
-						<reference key="object" ref="874367526"/>
-						<reference key="parent" ref="875496680"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">202</int>
-						<reference key="object" ref="352294061"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="328672487"/>
-						</array>
+						<int key="objectID">230</int>
+						<reference key="object" ref="515283230"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="1006"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -445,25 +414,56 @@
 						<reference key="parent" ref="129364307"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">202</int>
+						<reference key="object" ref="352294061"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="328672487"/>
+						</array>
+						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">205</int>
 						<reference key="object" ref="328672487"/>
 						<reference key="parent" ref="352294061"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">217</int>
-						<reference key="object" ref="1063380496"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">225</int>
-						<reference key="object" ref="1018697144"/>
+						<int key="objectID">195</int>
+						<reference key="object" ref="875496680"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="874367526"/>
+						</array>
 						<reference key="parent" ref="1006"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">230</int>
-						<reference key="object" ref="515283230"/>
-						<array class="NSMutableArray" key="children"/>
+						<int key="objectID">196</int>
+						<reference key="object" ref="874367526"/>
+						<reference key="parent" ref="875496680"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">132</int>
+						<reference key="object" ref="623270775"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="286530252"/>
+						</array>
 						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">133</int>
+						<reference key="object" ref="286530252"/>
+						<reference key="parent" ref="623270775"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">130</int>
+						<reference key="object" ref="506839449"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="184134416"/>
+						</array>
+						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">131</int>
+						<reference key="object" ref="184134416"/>
+						<reference key="parent" ref="506839449"/>
 					</object>
 				</array>
 			</object>
@@ -535,22 +535,12 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SMDoubleSlider</string>
-					<string key="superclassName">NSSlider</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SMDoubleSlider.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">WindowController</string>
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="handlePlayState:">id</string>
 						<string key="incrementLoopCount:">id</string>
-						<string key="setFloatForSlider:">id</string>
 						<string key="setFloatForVolume:">id</string>
-						<string key="setTimeForCurrentTime:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="handlePlayState:">
@@ -561,40 +551,21 @@
 							<string key="name">incrementLoopCount:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="setFloatForSlider:">
-							<string key="name">setFloatForSlider:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="setFloatForVolume:">
 							<string key="name">setFloatForVolume:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="setTimeForCurrentTime:">
-							<string key="name">setTimeForCurrentTime:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="currentTime">NSTextField</string>
 						<string key="footerView">PlayerFooterView</string>
 						<string key="loopCountLabel">NSTextField</string>
 						<string key="loopCountStepper">NSStepper</string>
 						<string key="masterView">NSView</string>
 						<string key="open">NSButton</string>
 						<string key="play">NSButton</string>
-						<string key="progressBar">NSLevelIndicator</string>
-						<string key="rangeSlider">SMDoubleSlider</string>
-						<string key="rangeTime">NSTextField</string>
-						<string key="trackSubtitle">NSTextField</string>
-						<string key="trackTitle">NSTextField</string>
 						<string key="volumeControl">NSSlider</string>
-						<string key="webView">WebView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="currentTime">
-							<string key="name">currentTime</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="footerView">
 							<string key="name">footerView</string>
 							<string key="candidateClassName">PlayerFooterView</string>
@@ -619,33 +590,9 @@
 							<string key="name">play</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="progressBar">
-							<string key="name">progressBar</string>
-							<string key="candidateClassName">NSLevelIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="rangeSlider">
-							<string key="name">rangeSlider</string>
-							<string key="candidateClassName">SMDoubleSlider</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="rangeTime">
-							<string key="name">rangeTime</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="trackSubtitle">
-							<string key="name">trackSubtitle</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="trackTitle">
-							<string key="name">trackTitle</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="volumeControl">
 							<string key="name">volumeControl</string>
 							<string key="candidateClassName">NSSlider</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="webView">
-							<string key="name">webView</string>
-							<string key="candidateClassName">WebView</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

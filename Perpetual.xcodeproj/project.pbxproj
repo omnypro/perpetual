@@ -18,6 +18,7 @@
 		9337A07A151C534A004108FE /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9337A078151C534A004108FE /* PlayerViewController.m */; };
 		9337A086151C53B3004108FE /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9337A084151C53B3004108FE /* PlayerView.xib */; };
 		934181221512CDD2004A046C /* Perpetual.icns in Resources */ = {isa = PBXBuildFile; fileRef = 934181211512CDD2004A046C /* Perpetual.icns */; };
+		9354E628151FD67E007B6E39 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354E627151FD67D007B6E39 /* PlayerView.m */; };
 		938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */; };
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
@@ -53,6 +54,8 @@
 		9337A078151C534A004108FE /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		9337A085151C53B3004108FE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PlayerView.xib; sourceTree = SOURCE_ROOT; };
 		934181211512CDD2004A046C /* Perpetual.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Perpetual.icns; sourceTree = "<group>"; };
+		9354E626151FD67D007B6E39 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerView.h; path = Views/PlayerView.h; sourceTree = "<group>"; };
+		9354E627151FD67D007B6E39 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerView.m; path = Views/PlayerView.m; sourceTree = "<group>"; };
 		938212DD1503041E00EEBEC6 /* NSString+TimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeConversion.h"; sourceTree = "<group>"; };
 		938212DE1503041E00EEBEC6 /* NSString+TimeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeConversion.m"; sourceTree = "<group>"; };
 		9395B6AC14EB88A8002999D9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -181,6 +184,8 @@
 				93AE625C151B21DA0026F654 /* ColorGradientView.m */,
 				9337A03A151B2943004108FE /* PlayerFooterView.h */,
 				9337A03B151B2943004108FE /* PlayerFooterView.m */,
+				9354E626151FD67D007B6E39 /* PlayerView.h */,
+				9354E627151FD67D007B6E39 /* PlayerView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -378,6 +383,7 @@
 				93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */,
 				9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */,
 				9337A07A151C534A004108FE /* PlayerViewController.m in Sources */,
+				9354E628151FD67E007B6E39 /* PlayerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
