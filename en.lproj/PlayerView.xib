@@ -13,9 +13,9 @@
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSTextField</string>
 			<string>NSCustomObject</string>
-			<string>WebView</string>
-			<string>NSCustomView</string>
 			<string>NSLevelIndicatorCell</string>
+			<string>NSCustomView</string>
+			<string>WebView</string>
 			<string>NSLevelIndicator</string>
 			<string>NSTextFieldCell</string>
 		</array>
@@ -57,7 +57,6 @@
 						<string key="NSFrame">{{17, 46}, {447, 16}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:2200</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSLevelIndicatorCell" key="NSCell" id="627067462">
@@ -190,53 +189,53 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="NSClassName">NSView</string>
 					</object>
-					<object class="WebView" id="909005857">
-						<reference key="NSNextResponder" ref="1005"/>
-						<int key="NSvFlags">274</int>
-						<set class="NSMutableSet" key="NSDragTypes">
-							<string>Apple HTML pasteboard type</string>
-							<string>Apple PDF pasteboard type</string>
-							<string>Apple PICT pasteboard type</string>
-							<string>Apple URL pasteboard type</string>
-							<string>Apple Web Archive pasteboard type</string>
-							<string>NSColor pasteboard type</string>
-							<string>NSFilenamesPboardType</string>
-							<string>NSStringPboardType</string>
-							<string>NeXT RTFD pasteboard type</string>
-							<string>NeXT Rich Text Format v1.0 pasteboard type</string>
-							<string>NeXT TIFF v4.0 pasteboard type</string>
-							<string>WebURLsWithTitlesPboardType</string>
-							<string>public.png</string>
-							<string>public.url</string>
-							<string>public.url-name</string>
-						</set>
-						<string key="NSFrame">{{0, 120}, {480, 230}}</string>
-						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<string key="FrameName"/>
-						<string key="GroupName"/>
-						<object class="WebPreferences" key="Preferences">
-							<string key="Identifier"/>
-							<dictionary class="NSMutableDictionary" key="Values">
-								<integer value="12" key="WebKitDefaultFixedFontSize"/>
-								<integer value="12" key="WebKitDefaultFontSize"/>
-								<boolean value="NO" key="WebKitJavaEnabled"/>
-								<boolean value="NO" key="WebKitJavaScriptCanOpenWindowsAutomatically"/>
-								<integer value="1" key="WebKitMinimumFontSize"/>
-								<boolean value="YES" key="WebKitPluginsEnabled"/>
-							</dictionary>
-						</object>
-						<bool key="UseBackForwardList">NO</bool>
-						<bool key="AllowsUndo">YES</bool>
-					</object>
 				</array>
-				<string key="NSFrameSize">{480, 350}</string>
+				<string key="NSFrameSize">{480, 120}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="909005857"/>
 				<string key="NSClassName">NSView</string>
+			</object>
+			<object class="WebView" id="909005857">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">274</int>
+				<set class="NSMutableSet" key="NSDragTypes">
+					<string>Apple HTML pasteboard type</string>
+					<string>Apple PDF pasteboard type</string>
+					<string>Apple PICT pasteboard type</string>
+					<string>Apple URL pasteboard type</string>
+					<string>Apple Web Archive pasteboard type</string>
+					<string>NSColor pasteboard type</string>
+					<string>NSFilenamesPboardType</string>
+					<string>NSStringPboardType</string>
+					<string>NeXT RTFD pasteboard type</string>
+					<string>NeXT Rich Text Format v1.0 pasteboard type</string>
+					<string>NeXT TIFF v4.0 pasteboard type</string>
+					<string>WebURLsWithTitlesPboardType</string>
+					<string>public.png</string>
+					<string>public.url</string>
+					<string>public.url-name</string>
+				</set>
+				<string key="NSFrameSize">{480, 230}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
+				<string key="NSReuseIdentifierKey">_NS:9</string>
+				<string key="FrameName"/>
+				<string key="GroupName"/>
+				<object class="WebPreferences" key="Preferences">
+					<string key="Identifier"/>
+					<dictionary class="NSMutableDictionary" key="Values">
+						<integer value="12" key="WebKitDefaultFixedFontSize"/>
+						<integer value="12" key="WebKitDefaultFontSize"/>
+						<boolean value="NO" key="WebKitJavaEnabled"/>
+						<boolean value="NO" key="WebKitJavaScriptCanOpenWindowsAutomatically"/>
+						<integer value="1" key="WebKitMinimumFontSize"/>
+						<boolean value="YES" key="WebKitPluginsEnabled"/>
+					</dictionary>
+				</object>
+				<bool key="UseBackForwardList">NO</bool>
+				<bool key="AllowsUndo">YES</bool>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -264,14 +263,6 @@
 						<reference key="destination" ref="1057131178"/>
 					</object>
 					<int key="connectionID">45</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">webView</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="909005857"/>
-					</object>
-					<int key="connectionID">46</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -329,6 +320,14 @@
 					</object>
 					<int key="connectionID">47</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">webView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="909005857"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -360,7 +359,6 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="1005"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="909005857"/>
 							<reference ref="758833664"/>
 							<reference ref="962119598"/>
 							<reference ref="628158590"/>
@@ -370,12 +368,6 @@
 							<reference ref="584165613"/>
 						</array>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">3</int>
-						<reference key="object" ref="909005857"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="1005"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
@@ -452,6 +444,11 @@
 						<int key="objectID">31</int>
 						<reference key="object" ref="530278154"/>
 						<reference key="parent" ref="758833664"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">3</int>
+						<reference key="object" ref="909005857"/>
+						<reference key="parent" ref="0"/>
 					</object>
 				</array>
 			</object>
