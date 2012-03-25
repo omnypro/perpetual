@@ -171,7 +171,7 @@
 
 - (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
 {
-    return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -18);
+    return NSOffsetRect(NSInsetRect(rect, 8, 0), 0, -13);
 }
 
 @end
