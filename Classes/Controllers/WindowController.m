@@ -99,10 +99,8 @@
     INAppStoreWindow *window = (INAppStoreWindow *)[self window];
     NSView *titleBarView = [window titleBarView];
     NSSize controlSize = NSMakeSize(64.f, 32.f);
-    NSRect controlFrame = NSMakeRect(NSMaxX([titleBarView bounds]) - (controlSize.width + 7.f),
-                                     NSMidY([titleBarView bounds]) - (controlSize.height / 2.f + 1.f),
-                                     controlSize.width,
-                                     controlSize.height);
+    NSRect controlFrame = NSMakeRect(NSMaxX([titleBarView bounds]) - (controlSize.width + 7.f), NSMidY([titleBarView bounds]) - (controlSize.height / 2.f + 1.f), controlSize.width, controlSize.height);
+
     NSSegmentedControl *switcher = [[NSSegmentedControl alloc] initWithFrame:controlFrame];
     [switcher setSegmentCount:2];
     [switcher setSegmentStyle:NSSegmentStyleTexturedRounded];
@@ -112,6 +110,7 @@
     [switcher setEnabled:FALSE forSegment:1]; // Disables the statistics segment.
     [switcher setAutoresizingMask:NSViewMinXMargin|NSViewMaxXMargin|NSViewMinYMargin|NSViewMaxYMargin];
     [[switcher cell] setTrackingMode:NSSegmentSwitchTrackingSelectOne];
+
     [titleBarView addSubview:switcher];
 }
 
