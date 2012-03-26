@@ -486,6 +486,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
@@ -501,6 +502,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
