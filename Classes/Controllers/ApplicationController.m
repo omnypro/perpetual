@@ -79,7 +79,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
     NSOpenPanel *panel = [NSOpenPanel openPanel];
 
-    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"public.audio"]];
 
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
