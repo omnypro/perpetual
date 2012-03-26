@@ -9,6 +9,7 @@
 #import "WindowController.h"
 
 #import "ApplicationController.h"
+#import "DropZoneViewController.h"
 #import "INAppStoreWindow.h"
 #import "PlaybackController.h"
 #import "PlayerViewController.h"
@@ -20,6 +21,7 @@
 
 @interface WindowController () <NSWindowDelegate>
 @property (nonatomic, strong) PlaybackController *playbackController;
+@property (nonatomic, strong) DropZoneViewController *dropZoneViewController;
 @property (nonatomic, strong) NSViewController *currentViewController;
 @property (nonatomic, strong) PlayerViewController *playerViewController;
 
@@ -33,6 +35,7 @@
 
 @implementation WindowController
 
+@synthesize dropZoneViewController = _dropZoneViewController;
 @synthesize playbackController = _playbackController;
 @synthesize currentViewController = _currentViewController;
 @synthesize playerViewController = _playerViewController;
@@ -69,6 +72,7 @@
 
 - (void)setupControllers
 {
+    self.dropZoneViewController = [[DropZoneViewController alloc] initWithNibName:@"DropZone" bundle:nil];
     self.playerViewController = [[PlayerViewController alloc] initWithNibName:@"PlayerView" bundle:nil];
 
     self.currentViewController = self.playerViewController;
