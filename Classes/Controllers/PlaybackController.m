@@ -25,7 +25,18 @@
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
-- (void)updateLoopCount:(NSUInteger)count {
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openURL:) name:FileWasDroppedNotification object:nil];
+    }
+
+    return self;
+}
+
+- (void)updateLoopCount:(NSUInteger)count
+{
     self.loopCount = count;
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackLoopCountChangedNotification object:self userInfo:nil];
 }

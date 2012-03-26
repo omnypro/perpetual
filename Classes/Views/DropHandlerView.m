@@ -8,6 +8,8 @@
 
 #import "DropHandlerView.h"
 
+#import "Constants.h"
+
 @implementation DropHandlerView
 
 - (id)initWithFrame:(NSRect)frame
@@ -46,7 +48,7 @@
         NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
         if ([files count] == 1) {
             NSLog(@"YAYHOORAY.");
-            // [[[ApplicationController sharedInstance] playbackController] openURL:[NSURL fileURLWithPath:[files lastObject]]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FileWasDroppedNotification object:self userInfo:nil];
             return YES;
         }
     }
