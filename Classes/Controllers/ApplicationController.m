@@ -16,8 +16,6 @@
 // All builds should expire in 4 weeks time.
 #define EXPIREAFTERDAYS 28
 
-NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
-
 @interface ApplicationController ()
 @property (nonatomic, strong) WindowController *windowController;
 @property (nonatomic, strong) PlaybackController *playbackController;

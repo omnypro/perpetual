@@ -9,6 +9,7 @@
 #import "PlayerViewController.h"
 
 #import "ApplicationController.h"
+#import "Constants.h"
 #import "NSString+TimeConversion.h"
 #import "PlaybackController.h"
 #import "SMDoubleSlider.h"
@@ -19,7 +20,6 @@
 #import <WebKit/WebKit.h>
 
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
-NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface PlayerViewController ()
 - (void)composeInterface;

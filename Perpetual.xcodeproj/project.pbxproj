@@ -27,6 +27,7 @@
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
 		93AB5696152067640033C6A7 /* DropHandlerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AB5695152067640033C6A7 /* DropHandlerView.m */; };
+		93AB569A152073460033C6A7 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AB5699152073460033C6A7 /* Constants.m */; };
 		93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AE625C151B21DA0026F654 /* ColorGradientView.m */; };
 		93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */; };
 		93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */; };
@@ -73,6 +74,8 @@
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
 		93AB5694152067640033C6A7 /* DropHandlerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropHandlerView.h; path = Views/DropHandlerView.h; sourceTree = "<group>"; };
 		93AB5695152067640033C6A7 /* DropHandlerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropHandlerView.m; path = Views/DropHandlerView.m; sourceTree = "<group>"; };
+		93AB5698152073450033C6A7 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		93AB5699152073460033C6A7 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		93AE625B151B21DA0026F654 /* ColorGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorGradientView.h; path = Views/ColorGradientView.h; sourceTree = "<group>"; };
 		93AE625C151B21DA0026F654 /* ColorGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColorGradientView.m; path = Views/ColorGradientView.m; sourceTree = "<group>"; };
 		93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MusicNoteTemplate.pdf; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				9394227515038D9200440F23 /* Models */,
 				93AE6259151B21B50026F654 /* Views */,
 				9394227715038D9B00440F23 /* Controllers */,
+				93AB5698152073450033C6A7 /* Constants.h */,
+				93AB5699152073460033C6A7 /* Constants.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -400,6 +405,7 @@
 				9354E628151FD67E007B6E39 /* PlayerView.m in Sources */,
 				930FF938152058C800A0E797 /* PlaybackController.m in Sources */,
 				93AB5696152067640033C6A7 /* DropHandlerView.m in Sources */,
+				93AB569A152073460033C6A7 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
