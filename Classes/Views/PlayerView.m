@@ -27,20 +27,20 @@
     // Drawing code here.
     
     //// Color Declarations
-    NSColor* topColor = [NSColor colorWithCalibratedRed: 0.97 green: 0.97 blue: 0.97 alpha: 1];
-    NSColor* bottomColor = [NSColor colorWithCalibratedRed: 0.82 green: 0.82 blue: 0.82 alpha: 1];
-    NSColor* topHighlightCover = [NSColor whiteColor];
-    NSColor* bottomShadowColor = [NSColor colorWithCalibratedRed: 0.62 green: 0.62 blue: 0.62 alpha: 1];
+    NSColor *topColor = [NSColor colorWithHex:@"#fafafa"];
+    NSColor *bottomColor = [NSColor colorWithHex:@"#d9d9d9"];
+    NSColor *topHighlightCover = [NSColor whiteColor];
+    NSColor *bottomShadowColor = [NSColor colorWithHex:@"#666"];
     
     //// Gradient Declarations
-    NSGradient* gradient = [[NSGradient alloc] initWithStartingColor: topColor endingColor: bottomColor];
+    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor: topColor endingColor: bottomColor];
     
     //// Shadow Declarations
-    NSShadow* innerShadow = [[NSShadow alloc] init];
-    [innerShadow setShadowColor: topHighlightCover];
-    [innerShadow setShadowOffset: NSMakeSize(0, -1)];
-    [innerShadow setShadowBlurRadius: 0];
-    NSShadow* dropShadow = [[NSShadow alloc] init];
+    NSShadow *componentInnerShadow = [[NSShadow alloc] init];
+    [componentInnerShadow setShadowColor: topHighlightCover];
+    [componentInnerShadow setShadowOffset: NSMakeSize(0, -1)];
+    [componentInnerShadow setShadowBlurRadius: 0];
+    NSShadow *dropShadow = [[NSShadow alloc] init];
     [dropShadow setShadowColor: bottomShadowColor];
     [dropShadow setShadowOffset: NSMakeSize(0, -1)];
     [dropShadow setShadowBlurRadius: 0];
@@ -66,8 +66,8 @@
     [gradient drawInBezierPath: rectanglePath angle: -90];
     
     ////// Rectangle Inner Shadow
-    NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -innerShadow.shadowBlurRadius, -innerShadow.shadowBlurRadius);
-    rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -innerShadow.shadowOffset.width, -innerShadow.shadowOffset.height);
+    NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -componentInnerShadow.shadowBlurRadius, -componentInnerShadow.shadowBlurRadius);
+    rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -componentInnerShadow.shadowOffset.width, -componentInnerShadow.shadowOffset.height);
     rectangleBorderRect = NSInsetRect(NSUnionRect(rectangleBorderRect, [rectanglePath bounds]), -1, -1);
     
     NSBezierPath* rectangleNegativePath = [NSBezierPath bezierPathWithRect: rectangleBorderRect];
@@ -76,7 +76,7 @@
     
     [NSGraphicsContext saveGraphicsState];
     {
-        NSShadow* innerShadow = [innerShadow copy];
+        NSShadow* innerShadow = [componentInnerShadow copy];
         CGFloat xOffset = innerShadow.shadowOffset.width + round(rectangleBorderRect.size.width);
         CGFloat yOffset = innerShadow.shadowOffset.height;
         innerShadow.shadowOffset = NSMakeSize(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset));

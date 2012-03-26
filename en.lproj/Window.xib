@@ -44,14 +44,14 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{196, 240}, {480, 155}}</string>
+				<string key="NSWindowRect">{{196, 240}, {480, 168}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Perpetual</string>
 				<string key="NSWindowClass">INAppStoreWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMaxSize">{480, 155}</string>
-				<string key="NSWindowContentMinSize">{480, 155}</string>
+				<string key="NSWindowContentMaxSize">{480, 168}</string>
+				<string key="NSWindowContentMinSize">{480, 168}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -121,7 +121,7 @@
 									<string key="NSResourceName">NSRightFacingTriangleTemplate</string>
 								</object>
 								<string key="NSAlternateContents"/>
-								<string key="NSKeyEquivalent"/>
+								<string type="base64-UTF8" key="NSKeyEquivalent">IA</string>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
 							</object>
@@ -209,7 +209,7 @@
 						<object class="NSCustomView" id="515283230">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">274</int>
-							<string key="NSFrame">{{0, 35}, {480, 120}}</string>
+							<string key="NSFrame">{{0, 35}, {480, 133}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1018697144"/>
@@ -217,14 +217,14 @@
 							<string key="NSClassName">NSView</string>
 						</object>
 					</array>
-					<string key="NSFrameSize">{480, 155}</string>
+					<string key="NSFrameSize">{480, 168}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="515283230"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{480, 177}</string>
-				<string key="NSMaxSize">{480, 177}</string>
+				<string key="NSMinSize">{480, 190}</string>
+				<string key="NSMaxSize">{480, 190}</string>
 				<string key="NSFrameAutosaveName">Window</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
