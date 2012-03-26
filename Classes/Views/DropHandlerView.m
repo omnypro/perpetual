@@ -14,15 +14,43 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code here.
+        [self registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     }
     
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+#pragma Drag Operation Methods
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
+    if ([files count] == 1) {
+        NSString *filepath = [files lastObject];
+        if ([[filepath pathExtension] isEqualToString:@"m4a"] || [[filepath pathExtension] isEqualToString:@"mp3"]) {
+            return NSDragOperationCopy;
+        }
+    }
+    return NSDragOperationNone;
+}
+
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
 {
-    // Drawing code here.
+    return YES;
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    if ([[pasteboard types] containsObject:NSFilenamesPboardType]) {
+        NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
+        if ([files count] == 1) {
+            NSLog(@"YAYHOORAY.");
+            // [[[ApplicationController sharedInstance] playbackController] openURL:[NSURL fileURLWithPath:[files lastObject]]];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end

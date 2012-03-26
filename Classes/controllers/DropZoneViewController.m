@@ -8,6 +8,9 @@
 
 #import "DropZoneViewController.h"
 
+#import "ApplicationController.h"
+
+
 @interface DropZoneViewController ()
 
 @end
@@ -24,9 +27,9 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)loadView
 {
-    [self.view registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+    [super loadView];
 }
 
 @end

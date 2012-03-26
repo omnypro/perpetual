@@ -12,6 +12,7 @@
 		351CA58DF08E43309D0C1A7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F63DF7AE63C4BFF97E85379 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		9309191514F07766000D82ED /* cover.css in Resources */ = {isa = PBXBuildFile; fileRef = 9309191414F07766000D82ED /* cover.css */; };
 		9309192114F07F79000D82ED /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9309192014F07F79000D82ED /* background.png */; };
+		930FF938152058C800A0E797 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FF936152058C800A0E797 /* PlaybackController.m */; };
 		931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 931DC86F1504B0D900D44887 /* NSColor+Hex.m */; };
 		9326B7B514F1A839009D451C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9326B7B414F1A839009D451C /* AVFoundation.framework */; };
 		9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9337A03B151B2943004108FE /* PlayerFooterView.m */; };
@@ -25,12 +26,12 @@
 		9395B6AD14EB88A8002999D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395B6AC14EB88A8002999D9 /* QuartzCore.framework */; };
 		939EF98E14FCA1DA00CDBA32 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 939EF99014FCA1DA00CDBA32 /* Window.xib */; };
 		93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A6238514F0B65200B907E3 /* NSString+base64.m */; };
+		93AB5696152067640033C6A7 /* DropHandlerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AB5695152067640033C6A7 /* DropHandlerView.m */; };
 		93AE625D151B21DA0026F654 /* ColorGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93AE625C151B21DA0026F654 /* ColorGradientView.m */; };
 		93B6278A1501E64100FFF08B /* MusicNoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */; };
 		93B6278C1501E72E00FFF08B /* BarGraphTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278B1501E72E00FFF08B /* BarGraphTemplate.pdf */; };
 		93B6278E1501E96100FFF08B /* InfinityTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */; };
 		93C0A97014FBA51C00D63507 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C0A96F14FBA51C00D63507 /* WindowController.m */; };
-		93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81A914FE0A48004CE24F /* PlaybackController.m */; };
 		93FC81DF14FE16F1004CE24F /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FC81DE14FE16F1004CE24F /* Track.m */; };
 		9A041EBD14EAEBA2009AC43F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9A041EBC14EAEBA2009AC43F /* cover.jpg */; };
 		9AC739D314EAEAB6000A57AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC739D214EAEAB6000A57AD /* Cocoa.framework */; };
@@ -47,6 +48,8 @@
 		4F63DF7AE63C4BFF97E85379 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9309191414F07766000D82ED /* cover.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = cover.css; sourceTree = "<group>"; };
 		9309192014F07F79000D82ED /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		930FF936152058C800A0E797 /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
+		930FF937152058C800A0E797 /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
 		931DC86E1504B0D900D44887 /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
 		931DC86F1504B0D900D44887 /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
 		9326B7B414F1A839009D451C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -68,6 +71,8 @@
 		939EF98F14FCA1DA00CDBA32 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Window.xib; sourceTree = "<group>"; };
 		93A6238414F0B65200B907E3 /* NSString+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+base64.h"; sourceTree = "<group>"; };
 		93A6238514F0B65200B907E3 /* NSString+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+base64.m"; sourceTree = "<group>"; };
+		93AB5694152067640033C6A7 /* DropHandlerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropHandlerView.h; path = Views/DropHandlerView.h; sourceTree = "<group>"; };
+		93AB5695152067640033C6A7 /* DropHandlerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropHandlerView.m; path = Views/DropHandlerView.m; sourceTree = "<group>"; };
 		93AE625B151B21DA0026F654 /* ColorGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorGradientView.h; path = Views/ColorGradientView.h; sourceTree = "<group>"; };
 		93AE625C151B21DA0026F654 /* ColorGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColorGradientView.m; path = Views/ColorGradientView.m; sourceTree = "<group>"; };
 		93B627891501E64100FFF08B /* MusicNoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MusicNoteTemplate.pdf; sourceTree = "<group>"; };
@@ -75,8 +80,6 @@
 		93B6278D1501E96100FFF08B /* InfinityTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = InfinityTemplate.pdf; sourceTree = "<group>"; };
 		93C0A96E14FBA51C00D63507 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		93C0A96F14FBA51C00D63507 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
-		93FC81A814FE0A48004CE24F /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
-		93FC81A914FE0A48004CE24F /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		93FC81DD14FE16F1004CE24F /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		93FC81DE14FE16F1004CE24F /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		9A041EBC14EAEBA2009AC43F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
@@ -141,10 +144,8 @@
 				9AC739E514EAEAB6000A57AD /* ApplicationController.m */,
 				9342AD20151AF63B00087073 /* DropZoneViewController.h */,
 				9342AD21151AF63B00087073 /* DropZoneViewController.m */,
-				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
-				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
-				93FC81A814FE0A48004CE24F /* PlaybackController.h */,
-				93FC81A914FE0A48004CE24F /* PlaybackController.m */,
+				930FF937152058C800A0E797 /* PlaybackController.h */,
+				930FF936152058C800A0E797 /* PlaybackController.m */,
 				9337A077151C534A004108FE /* PlayerViewController.h */,
 				9337A078151C534A004108FE /* PlayerViewController.m */,
 				93C0A96E14FBA51C00D63507 /* WindowController.h */,
@@ -156,10 +157,10 @@
 		939EF99114FCA1E900CDBA32 /* NIBs */ = {
 			isa = PBXGroup;
 			children = (
+				9342AD2C151B048400087073 /* DropZone.xib */,
 				9AC739E714EAEAB6000A57AD /* Menu.xib */,
 				9337A084151C53B3004108FE /* PlayerView.xib */,
 				939EF99014FCA1DA00CDBA32 /* Window.xib */,
-				9342AD2C151B048400087073 /* DropZone.xib */,
 			);
 			name = NIBs;
 			sourceTree = "<group>";
@@ -192,6 +193,8 @@
 			children = (
 				93AE625B151B21DA0026F654 /* ColorGradientView.h */,
 				93AE625C151B21DA0026F654 /* ColorGradientView.m */,
+				93AB5694152067640033C6A7 /* DropHandlerView.h */,
+				93AB5695152067640033C6A7 /* DropHandlerView.m */,
 				9337A03A151B2943004108FE /* PlayerFooterView.h */,
 				9337A03B151B2943004108FE /* PlayerFooterView.m */,
 				9354E626151FD67D007B6E39 /* PlayerView.h */,
@@ -387,7 +390,6 @@
 				9AC739E614EAEAB6000A57AD /* ApplicationController.m in Sources */,
 				93A6238614F0B65200B907E3 /* NSString+base64.m in Sources */,
 				93C0A97014FBA51C00D63507 /* WindowController.m in Sources */,
-				93FC81AA14FE0A48004CE24F /* PlaybackController.m in Sources */,
 				93FC81DF14FE16F1004CE24F /* Track.m in Sources */,
 				938212DF1503041E00EEBEC6 /* NSString+TimeConversion.m in Sources */,
 				931DC8701504B0D900D44887 /* NSColor+Hex.m in Sources */,
@@ -396,12 +398,22 @@
 				9337A03C151B2943004108FE /* PlayerFooterView.m in Sources */,
 				9337A07A151C534A004108FE /* PlayerViewController.m in Sources */,
 				9354E628151FD67E007B6E39 /* PlayerView.m in Sources */,
+				930FF938152058C800A0E797 /* PlaybackController.m in Sources */,
+				93AB5696152067640033C6A7 /* DropHandlerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		9337A084151C53B3004108FE /* PlayerView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9337A085151C53B3004108FE /* en */,
+			);
+			name = PlayerView.xib;
+			sourceTree = "<group>";
+		};
 		9342AD2C151B048400087073 /* DropZone.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -409,14 +421,6 @@
 			);
 			name = DropZone.xib;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		9337A084151C53B3004108FE /* PlayerView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9337A085151C53B3004108FE /* en */,
-			);
-			name = PlayerView.xib;
 			sourceTree = "<group>";
 		};
 		939EF99014FCA1DA00CDBA32 /* Window.xib */ = {
