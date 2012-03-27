@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Revyver, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 extern NSString *const FileWasDroppedNotification;
 extern NSString *const PlaybackDidStartNotification;

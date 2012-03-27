@@ -8,8 +8,6 @@
 
 #import "DropHandlerView.h"
 
-#import "Constants.h"
-
 @implementation DropHandlerView
 
 - (id)initWithFrame:(NSRect)frame

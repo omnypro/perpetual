@@ -9,7 +9,6 @@
 #import "WindowController.h"
 
 #import "ApplicationController.h"
-#import "Constants.h"
 #import "DropZoneViewController.h"
 #import "INAppStoreWindow.h"
 #import "PlaybackController.h"
