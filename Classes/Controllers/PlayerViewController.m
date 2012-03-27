@@ -19,7 +19,6 @@
 #import <WebKit/WebKit.h>
 
 NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
-NSString *const RangeDidChangeNotification = @"com.revyver.perpetual.RangeDidChangeNotification";
 
 @interface PlayerViewController ()
 - (void)composeInterface;

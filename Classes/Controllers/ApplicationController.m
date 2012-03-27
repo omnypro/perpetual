@@ -16,8 +16,6 @@
 // All builds should expire in 4 weeks time.
 #define EXPIREAFTERDAYS 28
 
-NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
-
 @interface ApplicationController ()
 @property (nonatomic, strong) WindowController *windowController;
 @property (nonatomic, strong) PlaybackController *playbackController;
@@ -79,7 +77,7 @@ NSString *const AppDelegateHTMLImagePlaceholder = @"{{ image_url }}";
 
     NSOpenPanel *panel = [NSOpenPanel openPanel];
 
-    [panel setAllowedFileTypes:[NSArray arrayWithObjects:@"mp3", @"m4a", nil]];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"public.audio"]];
 
     handler = ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
