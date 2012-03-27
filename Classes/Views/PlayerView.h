@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PlayerView : NSView
+#import "DropHandlerView.h"
+
+@interface PlayerView : DropHandlerView
 
 @end

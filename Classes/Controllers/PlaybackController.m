@@ -10,12 +10,6 @@
 
 #import "Track.h"
 
-NSString *const PlaybackDidStartNotification = @"com.revyver.perpetual.PlaybackDidStartNotification";
-NSString *const PlaybackDidStopNotification = @"com.revyver.perpetual.PlaybackDidStopNotification";
-NSString *const PlaybackHasProgressedNotification = @"com.revyver.perpetual.PlaybackHasProgressedNotification";
-NSString *const TrackLoopCountChangedNotification = @"com.revyver.perpetual.TrackLoopCountChangedNotification";
-NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoadedNotification";
-
 @interface PlaybackController ()
 @property (nonatomic, strong) Track *track;
 
@@ -30,7 +24,8 @@ NSString *const TrackWasLoadedNotification = @"com.revyver.perpetual.TrackWasLoa
 @synthesize loopCount = _loopCount;
 @synthesize loopInfiniteCount = _loopInfiniteCount;
 
-- (void)updateLoopCount:(NSUInteger)count {
+- (void)updateLoopCount:(NSUInteger)count
+{
     self.loopCount = count;
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackLoopCountChangedNotification object:self userInfo:nil];
 }

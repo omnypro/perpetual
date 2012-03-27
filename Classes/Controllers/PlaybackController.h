@@ -10,12 +10,6 @@
 
 @class Track;
 
-extern NSString *const PlaybackDidStartNotification;
-extern NSString *const PlaybackDidStopNotification;
-extern NSString *const PlaybackHasProgressedNotification;
-extern NSString *const TrackLoopCountChangedNotification;
-extern NSString *const TrackWasLoadedNotification;
-
 @interface PlaybackController : NSObject
 
 @property (nonatomic, readonly, strong) Track *track;

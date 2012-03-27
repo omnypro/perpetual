@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Afonso Wilsson. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @interface NSString (TimeConversion)
 
