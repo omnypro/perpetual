@@ -10,4 +10,6 @@
 
 @interface DropHandlerView : NSView
 
+@property (nonatomic, retain) NSURL *fileURL;
+
 @end

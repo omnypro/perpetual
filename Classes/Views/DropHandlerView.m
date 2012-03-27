@@ -10,6 +10,8 @@
 
 @implementation DropHandlerView
 
+@synthesize fileURL = _fileURL;
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -45,7 +47,7 @@
     if ([[pasteboard types] containsObject:NSFilenamesPboardType]) {
         NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
         if ([files count] == 1) {
-            NSLog(@"YAYHOORAY.");
+            self.fileURL = [NSURL fileURLWithPath:[files lastObject]];
             [[NSNotificationCenter defaultCenter] postNotificationName:FileWasDroppedNotification object:self userInfo:nil];
             return YES;
         }

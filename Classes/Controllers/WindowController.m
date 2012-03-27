@@ -9,6 +9,7 @@
 #import "WindowController.h"
 
 #import "ApplicationController.h"
+#import "DropHandlerView.h"
 #import "DropZoneViewController.h"
 #import "INAppStoreWindow.h"
 #import "PlaybackController.h"
@@ -29,6 +30,9 @@
 - (void)composeInterface;
 - (void)layoutTitleBarSegmentedControls;
 - (void)updateVolumeSlider;
+
+- (void)swapViewController:(NSViewController *)viewController;
+- (void)showPlayerView;
 
 - (void)trackLoopCountChanged:(NSNotification *)notification;
 @end
@@ -62,6 +66,7 @@
     // Register notifications for our playback services.
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStart:) name:PlaybackDidStartNotification object:nil];
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackDidStop:) name:PlaybackDidStopNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileWasDropped:) name:FileWasDroppedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackLoopCountChanged:) name:TrackLoopCountChangedNotification object:nil];
 
     [self setupControllers];
@@ -75,7 +80,7 @@
     self.dropZoneViewController = [[DropZoneViewController alloc] initWithNibName:@"DropZone" bundle:nil];
     self.playerViewController = [[PlayerViewController alloc] initWithNibName:@"PlayerView" bundle:nil];
 
-    self.currentViewController = self.playerViewController;
+    self.currentViewController = self.dropZoneViewController;
     [self.currentViewController.view setFrame:self.masterView.bounds];
     [self.currentViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.masterView addSubview:self.currentViewController.view];
@@ -125,7 +130,42 @@
 }
 
 
+- (void)swapViewController:(NSViewController *)viewController
+{
+    // Don't switch the view if it doesn't need switching.
+    if (self.currentViewController == viewController) return;
+
+    NSView *currentView = [self.currentViewController view];
+    NSView *swappedView = [viewController view];
+
+    [self.masterView replaceSubview:currentView with:swappedView];
+    self.currentViewController = viewController;
+    currentView = swappedView;
+
+    [currentView setFrame:[self.masterView bounds]];
+    [currentView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+}
+
+- (void)showPlayerView
+{
+    [self swapViewController:self.playerViewController];
+}
+
+
 #pragma mark Notification Observers
+
+- (void)fileWasDropped:(NSNotification *)notification
+{
+    DropHandlerView *object = [notification object];
+    if ([object isKindOfClass:[DropHandlerView class]]) {
+        if (self.currentViewController == self.dropZoneViewController) {
+            // TODO: Animate this! o_o;
+            [self showPlayerView];
+        }
+
+        [[[ApplicationController sharedInstance] playbackController] openURL:object.fileURL];
+    }
+}
 
 - (void)trackLoopCountChanged:(NSNotification *)notification
 {
