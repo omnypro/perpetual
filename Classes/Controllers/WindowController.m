@@ -32,7 +32,6 @@
 - (void)updateVolumeSlider;
 
 - (void)swapViewController:(NSViewController *)viewController;
-- (void)showPlayerView;
 
 - (void)trackLoopCountChanged:(NSNotification *)notification;
 @end
