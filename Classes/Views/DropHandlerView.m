@@ -8,15 +8,21 @@
 
 #import "DropHandlerView.h"
 
+@interface DropHandlerView ()
+@property (nonatomic, retain) NSArray *pasteboardTypes;
+@end
+
 @implementation DropHandlerView
 
 @synthesize fileURL = _fileURL;
+@synthesize pasteboardTypes = _pasteboardTypes;
 
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+        _pasteboardTypes = [NSArray arrayWithObjects:@"com.apple.pasteboard.promised-file-url", @"public.file-url", nil];
+        [self registerForDraggedTypes:self.pasteboardTypes];
     }
     
     return self;
@@ -44,10 +50,18 @@
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
     NSPasteboard *pasteboard = [sender draggingPasteboard];
-    if ([[pasteboard types] containsObject:NSFilenamesPboardType]) {
-        NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
-        if ([files count] == 1) {
-            self.fileURL = [NSURL fileURLWithPath:[files lastObject]];
+    for (NSPasteboardItem *item in [pasteboard pasteboardItems]) {
+        NSString *fileString = nil;
+        for (NSString *type in self.pasteboardTypes) {
+            if ([[item types] containsObject:type]) {
+                fileString = [item stringForType:type];
+                NSLog(@"%@", fileString);
+                break;
+            }
+        }
+        if (fileString) {
+            self.fileURL = [NSURL URLWithString:fileString];
+            NSLog(@"%@", self.fileURL);
             [[NSNotificationCenter defaultCenter] postNotificationName:FileWasDroppedNotification object:self userInfo:nil];
             return YES;
         }
