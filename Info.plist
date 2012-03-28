@@ -7,17 +7,16 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>mp3</string>
-				<string>m4a</string>
-			</array>
 			<key>CFBundleTypeName</key>
 			<string>Audio File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>NSDocument</string>
+			<key>LSHandlerRank</key>
+			<string>None</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.audio</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
