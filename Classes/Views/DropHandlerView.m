@@ -31,12 +31,11 @@
 #pragma Drag Operation Methods
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-    NSPasteboard *pasteboard = [sender draggingPasteboard];
-    NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
-    if ([files count] == 1) {
-        NSString *filepath = [files lastObject];
-        if ([[filepath pathExtension] isEqualToString:@"m4a"] || [[filepath pathExtension] isEqualToString:@"mp3"]) {
-            return NSDragOperationCopy;
+    for (NSPasteboardItem *item in [[sender draggingPasteboard] pasteboardItems]) {
+        for (NSString *type in self.pasteboardTypes) {
+            if ([[item types] containsObject:type]) {
+                return NSDragOperationCopy;
+            }
         }
     }
     return NSDragOperationNone;
@@ -49,8 +48,7 @@
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
-    NSPasteboard *pasteboard = [sender draggingPasteboard];
-    for (NSPasteboardItem *item in [pasteboard pasteboardItems]) {
+    for (NSPasteboardItem *item in [[sender draggingPasteboard] pasteboardItems]) {
         NSString *fileString = nil;
         for (NSString *type in self.pasteboardTypes) {
             if ([[item types] containsObject:type]) {
