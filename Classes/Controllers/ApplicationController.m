@@ -94,7 +94,8 @@
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
 {
-	return [self.playbackController openURL:[NSURL fileURLWithPath:filename]];
+    [self.windowController showPlayerView];
+    return [self.playbackController openURL:[NSURL fileURLWithPath:filename]];
 }
 
 @end
