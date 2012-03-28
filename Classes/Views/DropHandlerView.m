@@ -59,7 +59,6 @@
         }
         if (fileString) {
             self.fileURL = [NSURL URLWithString:fileString];
-            NSLog(@"%@", self.fileURL);
             [[NSNotificationCenter defaultCenter] postNotificationName:FileWasDroppedNotification object:self userInfo:nil];
             return YES;
         }

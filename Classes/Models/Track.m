@@ -49,7 +49,8 @@
     // We should always have a title, so let's start with the file's name.
     _title = fileURL.lastPathComponent;
 
-    AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:AVAssetReferenceRestrictionForbidNone], AVURLAssetReferenceRestrictionsKey, nil];
+    AVAsset *asset = [AVURLAsset URLAssetWithURL:self.asset.url options:options];
     for (NSString *format in [asset availableMetadataFormats]) {
         for (AVMetadataItem *item in [asset metadataForFormat:format]) {
             if ([[item commonKey] isEqualToString:@"title"]) {
