@@ -168,6 +168,7 @@ NSString *const WindowControllerHTMLImagePlaceholder = @"{{ image_url }}";
         [self layoutInitialInterface:[object track]];
 
         WindowController *windowController = [ApplicationController sharedInstance].windowController;
+        [windowController showPlayerView];
         [windowController.play setEnabled:TRUE];
     }
 }

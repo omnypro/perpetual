@@ -86,6 +86,8 @@
                 NSLog(@"Could not load track.");
                 return;
             }
+            [[ApplicationController sharedInstance].windowController showPlayerView];
+            [[ApplicationController sharedInstance].playbackController openURL:filePath];
         }
     };
 
