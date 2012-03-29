@@ -21,6 +21,6 @@
 - (void)updateLoopCount:(NSUInteger)count;
 - (BOOL)openURL:(NSURL *)filename;
 - (void)play;
-- (void)stop;
+- (void)pause;
 
 @end

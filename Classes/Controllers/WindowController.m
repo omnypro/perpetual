@@ -190,7 +190,7 @@
 {
     PlaybackController *playbackController = [ApplicationController sharedInstance].playbackController;
     if (playbackController.track.asset.playing) {
-        [playbackController stop];
+        [playbackController pause];
     }
     else {
         [playbackController play];

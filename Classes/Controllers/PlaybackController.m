@@ -82,9 +82,9 @@
 }
 
 
-- (void)stop
+- (void)pause
 {
-    [self.track.asset stop];
+    [self.track.asset pause];
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStopNotification object:self userInfo:nil];
 }
 
