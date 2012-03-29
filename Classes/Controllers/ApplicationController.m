@@ -47,7 +47,7 @@
 	PlaybackController *playbackController = [[PlaybackController alloc] init];
     [self setPlaybackController:playbackController];
     [self.playbackController setLoopInfiniteCount:31];
-    [self.playbackController updateLoopCount:10];
+    [self.playbackController updateLoopCount:31];
 
     // Set the max value of the loop counter.
     [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
