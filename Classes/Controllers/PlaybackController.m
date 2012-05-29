@@ -47,6 +47,9 @@
 
 - (void)loadTrack
 {
+    // Reset pause state
+    self.paused = YES; 
+    
     // Broadcast a notification to tell the UI to update.
     [[NSNotificationCenter defaultCenter] postNotificationName:TrackWasLoadedNotification object:self userInfo:nil];
 
@@ -78,6 +81,7 @@
 - (void)play
 {
     [self.track.asset play];
+    self.paused = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStartNotification object:self userInfo:nil];
 }
 
@@ -85,6 +89,7 @@
 - (void)pause
 {
     [self.track.asset pause];
+    self.paused = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackDidStopNotification object:self userInfo:nil];
 }
 

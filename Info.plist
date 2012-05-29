@@ -46,6 +46,6 @@
 	<key>NSMainNibFile</key>
 	<string>Menu</string>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>PerpetualApplication</string>
 </dict>
 </plist>
