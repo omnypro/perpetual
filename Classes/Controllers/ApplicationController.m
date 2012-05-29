@@ -21,6 +21,7 @@
 @property (nonatomic, strong) PlaybackController *playbackController;
 
 - (void)checkFreshness;
+- (void)loadLastOpenedTrack;
 @end
 
 @implementation ApplicationController
@@ -32,6 +33,8 @@
 {
     return [NSApp delegate];
 }
+
+#pragma mark - NSApplicationDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -51,6 +54,22 @@
 
     // Set the max value of the loop counter.
     [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
+    
+    [self loadLastOpenedTrack];
+}
+
+#pragma mark -
+
+- (void)loadLastOpenedTrack
+{       
+    NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
+    NSArray *latestDocuments = [documentController recentDocumentURLs];
+    
+    if (latestDocuments.count > 0) {
+        
+        [self.windowController showPlayerView];
+        [self.playbackController openURL:[latestDocuments objectAtIndex:0]];
+    }
 }
 
 - (void)checkFreshness
