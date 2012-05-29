@@ -21,6 +21,7 @@
 @property (nonatomic, strong) PlaybackController *playbackController;
 
 - (void)checkFreshness;
+- (void)loadLastOpenedTrack;
 @end
 
 @implementation ApplicationController
@@ -33,24 +34,18 @@
     return [NSApp delegate];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Kill the application if it's over EXPIREAFTERDAYS days old.
-    [self checkFreshness];
+#pragma mark -
 
-    WindowController *windowController = [[WindowController alloc] init];
-    [self setWindowController:windowController];
-    [self.windowController showWindow:self];
-
-    // Basic implementation of the default loop count.
-    // Infinity = 31 until further notice.
-	PlaybackController *playbackController = [[PlaybackController alloc] init];
-    [self setPlaybackController:playbackController];
-    [self.playbackController setLoopInfiniteCount:31];
-    [self.playbackController updateLoopCount:31];
-
-    // Set the max value of the loop counter.
-    [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
+- (void)loadLastOpenedTrack
+{       
+    NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
+    NSArray *latestDocuments = [documentController recentDocumentURLs];
+    
+    if (latestDocuments.count > 0) {
+        
+        [self.windowController showPlayerView];
+        [self.playbackController openURL:[latestDocuments objectAtIndex:0]];
+    }
 }
 
 - (void)checkFreshness
@@ -98,6 +93,44 @@
 {
     [self.windowController showPlayerView];
     return [self.playbackController openURL:[NSURL fileURLWithPath:filename]];
+}
+
+#pragma mark - NSApplicationDelegate
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Kill the application if it's over EXPIREAFTERDAYS days old.
+    [self checkFreshness];
+    
+    WindowController *windowController = [[WindowController alloc] init];
+    [self setWindowController:windowController];
+    [self.windowController showWindow:self];
+    
+    // Basic implementation of the default loop count.
+    // Infinity = 31 until further notice.
+	PlaybackController *playbackController = [[PlaybackController alloc] init];
+    [self setPlaybackController:playbackController];
+    [self.playbackController setLoopInfiniteCount:31];
+    [self.playbackController updateLoopCount:31];
+    
+    // Set the max value of the loop counter.
+    [[self.windowController loopCountStepper] setMaxValue:(double)[self.playbackController loopInfiniteCount]];
+    
+    [self loadLastOpenedTrack];
+}
+
+#pragma mark - PerpetualApplicationDelegate
+
+- (void)playMediaKeyWasClicked {
+    
+    if (self.playbackController.paused) {
+        
+        [self.playbackController play];
+    }
+    else {
+        
+        [self.playbackController pause];
+    }
 }
 
 @end

@@ -1,1 +1,1 @@
-../../SMDoubleSlider/SMDoubleSlider.h
+../../SMDoubleSlider/SMDoubleSlider/SMDoubleSlider.h
