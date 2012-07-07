@@ -7,12 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "PerpetualApplication.h"
 
 @class PlaybackController;
 @class Track;
 @class WindowController;
 
-@interface ApplicationController : NSObject <NSApplicationDelegate> {}
+@interface ApplicationController : NSObject <PerpetualApplicationDelegate> {}
 
 @property (nonatomic, readonly, strong) WindowController *windowController;
 @property (nonatomic, readonly, strong) PlaybackController *playbackController;

@@ -41,6 +41,7 @@
 		9AC739E314EAEAB6000A57AD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E114EAEAB6000A57AD /* Credits.rtf */; };
 		9AC739E614EAEAB6000A57AD /* ApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC739E514EAEAB6000A57AD /* ApplicationController.m */; };
 		9AC739E914EAEAB6000A57AD /* Menu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC739E714EAEAB6000A57AD /* Menu.xib */; };
+		A416D9501574FA8200BAE9E5 /* PerpetualApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A416D94F1574FA8200BAE9E5 /* PerpetualApplication.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,8 @@
 		9AC739E514EAEAB6000A57AD /* ApplicationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationController.m; sourceTree = "<group>"; };
 		9AC739E814EAEAB6000A57AD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Menu.xib; sourceTree = "<group>"; };
 		9AE4EA5614EC59D6002EF094 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
+		A416D94E1574FA8200BAE9E5 /* PerpetualApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerpetualApplication.h; sourceTree = "<group>"; };
+		A416D94F1574FA8200BAE9E5 /* PerpetualApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerpetualApplication.m; sourceTree = "<group>"; };
 		DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -189,6 +192,8 @@
 				9394227715038D9B00440F23 /* Controllers */,
 				93AB5698152073450033C6A7 /* Constants.h */,
 				93AB5699152073460033C6A7 /* Constants.m */,
+				A416D94E1574FA8200BAE9E5 /* PerpetualApplication.h */,
+				A416D94F1574FA8200BAE9E5 /* PerpetualApplication.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -406,6 +411,7 @@
 				930FF938152058C800A0E797 /* PlaybackController.m in Sources */,
 				93AB5696152067640033C6A7 /* DropHandlerView.m in Sources */,
 				93AB569A152073460033C6A7 /* Constants.m in Sources */,
+				A416D9501574FA8200BAE9E5 /* PerpetualApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,13 +524,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -534,13 +541,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDB3CDEF03204F9F8C7160C4 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Prefix.pch;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = app;
 			};
