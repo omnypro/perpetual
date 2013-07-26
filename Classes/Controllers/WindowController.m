@@ -81,7 +81,6 @@
 
     self.currentViewController = self.dropZoneViewController;
     [self.currentViewController.view setFrame:self.masterView.bounds];
-    [self.currentViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.masterView addSubview:self.currentViewController.view];
 }
 
