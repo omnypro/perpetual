@@ -27,12 +27,6 @@ INAppStoreWindow *aWindow = (INAppStoreWindow*)[windowController window];
 aWindow.titleBarHeight = 60.0;
 ```
 
-### Sheet Windows
-
-Because of the enlarged title bar, sheet windows may not appear properly (it'll look like they're popping out of the center of the title bar). To fix this, override this `NSWindow` delegate method and return an appropriate rect for where you want the sheet window to be positioned:
-
-`- (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect`
-
 ### Adding buttons and other controls to the title bar
 
 Adding controls and other views to the title bar is simple. This can be done either programmatically or through Interface Builder. Here are examples of both methods:
@@ -74,23 +68,28 @@ You can tell INAppStoreWindow to hide when entering fullscreen mode, and reappea
 
 The left padding of the traffic lights can be adjusted with `trafficLightButtonsLeftMargin` and the right padding of the fullscreen button can be adjusted with `fullScreenButtonRightMargin`.
 
-### Hiding the baseline(divider line between the titlebar and the content view)
+### Hiding the baseline (divider line between the titlebar and the content view)
 
 The baseline divider can be hidden by setting `showsBaselineSeparator` to `NO`, the default value is `YES`.
 
-## Who am I?
+### Using your own drawing code
 
-I'm Indragie Karunaratne, a 16 year old Mac OS X and iOS Developer from Edmonton AB, Canada. Visit [my website](http://indragie.com) to check out my work, or to get in touch with me.
+A lot of time and effort has gone into making the custom titlebar in INAppStoreWindow function just right, it would be a shame to have to re-implement all this work just to draw your own custom title bar. So INAppStoreWindow has a `titleBarDrawingBlock` property that can be set to a block containing your own drawing code!
 
-## Special Thanks To
+[![](http://dribbble.com/system/assets/2398/7253/screenshots/541256/notepad.png)](http://dribbble.com/shots/541256-Notepad-App-Mockup)
 
-- Alex Rozanski ([@Perspx](https://github.com/perspx))
-- David Keegan ([@kgn](https://github.com/kgn))
-- Victor Pimentel ([@victorpimentel](https://github.com/victorpimentel))
-- Wade Cosgrove ([@wadeco](https://github.com/wadeco))
-- Levi Nunnink ([@levinunnink](https://github.com/levinunnink))
-- Georg C. Brückmann ([@gcbrueckmann](https://github.com/gcbrueckmann))
-- nonamelive ([@nonamelive](https://github.com/nonamelive))
+```obj-c
+[self.window setTitleBarDrawingBlock:^(BOOL drawsAsMainWindow, CGRect drawingRect, CGPathRef clippingPath){
+    // Custom drawing code!    
+}];
+```
+
+This block gets passed some useful parameters like if the window is the main one(`drawsAsMainWindow`), the drawing rect of the title bar(`drawingRect`), and a pre-made clipping path with rounded corners at the top(`clippingPath`).
+
+
+## Authors
+
+INAppStoreWindow is maintained by [Indragie Karunaratne](http://indragie.com) and [David Keegan](http://inscopeapps.com). Special thanks to [everyone else](https://github.com/indragiek/INAppStoreWindow/contributors) who contributed various fixes and improvements to the code.
 
 ## Licensing
 
