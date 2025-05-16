@@ -1,7 +1,0 @@
-PODS:
-  - INAppStoreWindow (1.0)
-  - SMDoubleSlider (2.0.2)
-
-DEPENDENCIES:
-  - INAppStoreWindow (from `https://github.com/indragiek/INAppStoreWindow.git')
-  - SMDoubleSlider (from `https://github.com/bryanveloso/SMDoubleSlider.git')
