@@ -24,31 +24,49 @@ struct WaveformView: View {
                 // Waveform path
                 if let waveform = waveformData.waveformPath {
                     waveform
-                        .stroke(Color.blue, lineWidth: 1)
+                        .stroke(Color.cyan, lineWidth: 1.5)
+                        .opacity(0.8)
                 }
                 
-                // Loop region highlight
+                // Loop region highlight - make more prominent
                 if duration > 0 {
                     let startX = (loopStartTime / duration) * geometry.size.width
                     let endX = (loopEndTime / duration) * geometry.size.width
-                    let width = endX - startX
+                    let width = max(0, endX - startX)
                     
                     Rectangle()
-                        .fill(Color.yellow.opacity(0.2))
+                        .fill(Color.yellow.opacity(0.3))
                         .frame(width: width)
                         .position(x: startX + width/2, y: geometry.size.height/2)
+                        .overlay(
+                            // Add subtle border to loop region
+                            Rectangle()
+                                .stroke(Color.yellow, lineWidth: 2)
+                                .opacity(0.6)
+                                .frame(width: width)
+                                .position(x: startX + width/2, y: geometry.size.height/2)
+                        )
                 }
                 
-                // Current position indicator
-                if duration > 0 {
+                // Current position indicator - make more visible
+                if duration > 0 && currentTime >= 0 {
                     let positionX = (currentTime / duration) * geometry.size.width
+                    
+                    // Current position line with glow effect
                     Rectangle()
                         .fill(Color.red)
-                        .frame(width: 2)
+                        .frame(width: 3)
                         .position(x: positionX, y: geometry.size.height/2)
+                        .overlay(
+                            Rectangle()
+                                .fill(Color.red.opacity(0.5))
+                                .frame(width: 6)
+                                .position(x: positionX, y: geometry.size.height/2)
+                                .blur(radius: 2)
+                        )
                 }
                 
-                // Loop markers
+                // Loop markers - make much more visible
                 if duration > 0 {
                     // Start marker
                     LoopMarker(
@@ -56,7 +74,8 @@ struct WaveformView: View {
                         duration: duration,
                         geometry: geometry,
                         color: .green,
-                        isDragging: $isDraggingStart
+                        isDragging: $isDraggingStart,
+                        label: "START"
                     )
                     
                     // End marker
@@ -65,7 +84,8 @@ struct WaveformView: View {
                         duration: duration,
                         geometry: geometry,
                         color: .orange,
-                        isDragging: $isDraggingEnd
+                        isDragging: $isDraggingEnd,
+                        label: "END"
                     )
                 }
             }
@@ -98,22 +118,52 @@ struct LoopMarker: View {
     let geometry: GeometryProxy
     let color: Color
     @Binding var isDragging: Bool
+    let label: String
     
     var body: some View {
         let x = (time / duration) * geometry.size.width
         
-        VStack {
-            Circle()
-                .fill(color)
-                .frame(width: 12, height: 12)
-                .scaleEffect(isDragging ? 1.5 : 1.0)
+        ZStack {
+            // Vertical line
             Rectangle()
                 .fill(color)
-                .frame(width: 2, height: geometry.size.height)
+                .frame(width: 3, height: geometry.size.height)
+                .overlay(
+                    Rectangle()
+                        .fill(color.opacity(0.3))
+                        .frame(width: 6, height: geometry.size.height)
+                        .blur(radius: 1)
+                )
+            
+            // Top handle with label
+            VStack(spacing: 4) {
+                // Label
+                Text(label)
+                    .font(.caption2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(color)
+                    .cornerRadius(4)
+                
+                // Handle circle
+                Circle()
+                    .fill(color)
+                    .frame(width: 16, height: 16)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white, lineWidth: 2)
+                    )
+                    .scaleEffect(isDragging ? 1.4 : 1.0)
+                    .animation(.easeInOut(duration: 0.2), value: isDragging)
+                
+                Spacer()
+            }
         }
         .position(x: x, y: geometry.size.height/2)
         .gesture(
-            DragGesture()
+            DragGesture(minimumDistance: 0)
                 .onChanged { value in
                     isDragging = true
                     let newX = max(0, min(value.location.x, geometry.size.width))
@@ -130,7 +180,7 @@ struct LoopMarker: View {
 
 class WaveformData: ObservableObject {
     @Published var waveformPath: Path?
-    private let resolution: Int = 1000 // Number of waveform points
+    private let resolution: Int = 2000 // Increased for better detail
     
     func generateWaveform(from audioFile: AVAudioFile) {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -145,9 +195,11 @@ class WaveformData: ObservableObject {
         let frameCount = Int(audioFile.length)
         let samplesPerPixel = max(1, frameCount / resolution)
         
+        // Reset file position
+        audioFile.framePosition = 0
+        
         // Read audio data
-        guard let buffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(frameCount)),
-              audioFile.framePosition == 0 else { return nil }
+        guard let buffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(frameCount)) else { return nil }
         
         do {
             try audioFile.read(into: buffer)
@@ -162,7 +214,7 @@ class WaveformData: ObservableObject {
         let samples = channelData[0]
         var waveformSamples: [Float] = []
         
-        // Downsample with RMS
+        // Downsample with RMS for better representation
         for i in stride(from: 0, to: frameCount, by: samplesPerPixel) {
             let endIndex = min(i + samplesPerPixel, frameCount)
             var sum: Float = 0
@@ -177,14 +229,15 @@ class WaveformData: ObservableObject {
             waveformSamples.append(rms)
         }
         
-        // Create path
+        // Create path with better scaling
         var path = Path()
         let height: CGFloat = 100
         let width: CGFloat = 400
         
         for (index, sample) in waveformSamples.enumerated() {
             let x = CGFloat(index) / CGFloat(waveformSamples.count) * width
-            let y = height/2 - CGFloat(sample) * height/2
+            let normalizedSample = min(CGFloat(sample) * 2, 1.0) // Scale for better visibility
+            let y = height/2 - normalizedSample * height/2
             
             if index == 0 {
                 path.move(to: CGPoint(x: x, y: y))
@@ -196,7 +249,8 @@ class WaveformData: ObservableObject {
         // Mirror for symmetrical waveform
         for (index, sample) in waveformSamples.enumerated().reversed() {
             let x = CGFloat(index) / CGFloat(waveformSamples.count) * width
-            let y = height/2 + CGFloat(sample) * height/2
+            let normalizedSample = min(CGFloat(sample) * 2, 1.0)
+            let y = height/2 + normalizedSample * height/2
             path.addLine(to: CGPoint(x: x, y: y))
         }
         

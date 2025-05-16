@@ -1,0 +1,195 @@
+//
+//  DebugView.swift
+//  Perpetual
+//
+//  Created by Bryan Veloso on 5/16/25.
+//
+
+import SwiftUI
+
+struct LoopTestView: View {
+    @ObservedObject var audioManager: AudioManager
+    @State private var testResults: [String] = []
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Loop Test Status")
+                .font(.headline)
+            
+            HStack {
+                Button("Run Loop Test") {
+                    runLoopTest()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Clear Results") {
+                    testResults.removeAll()
+                }
+                .buttonStyle(.bordered)
+            }
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(testResults, id: \.self) { result in
+                        Text(result)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .frame(height: 100)
+        }
+        .padding()
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(8)
+    }
+    
+    private func runLoopTest() {
+        testResults.removeAll()
+        addTestResult("Starting loop test...")
+        
+        // Test 1: Check if loop points are set
+        if audioManager.loopEndTime > audioManager.loopStartTime {
+            addTestResult("✓ Loop points set correctly")
+            addTestResult("  Start: \(formatTime(audioManager.loopStartTime))")
+            addTestResult("  End: \(formatTime(audioManager.loopEndTime))")
+            addTestResult("  Duration: \(formatTime(audioManager.loopEndTime - audioManager.loopStartTime))")
+        } else {
+            addTestResult("⚠ Loop points not set properly")
+        }
+        
+        // Test 2: Check current playback state
+        addTestResult("Current position: \(formatTime(audioManager.currentTime))")
+        addTestResult("Playing: \(audioManager.isPlaying)")
+        addTestResult("Current loop: \(audioManager.currentLoopIteration)")
+        
+        // Test 3: Set a short loop for testing
+        let testStart = audioManager.duration * 0.1
+        let testEnd = audioManager.duration * 0.2
+        audioManager.setLoopPoints(start: testStart, end: testEnd)
+        addTestResult("Set test loop: \(formatTime(testStart)) to \(formatTime(testEnd))")
+        
+        // Test 4: Check if seeking works
+        audioManager.seek(to: testStart)
+        addTestResult("Seeked to loop start")
+        
+        if audioManager.isPlaying {
+            addTestResult("✓ Audio is playing - monitor for seamless loops")
+        } else {
+            addTestResult("⚠ Not playing - press play to test looping")
+        }
+    }
+    
+    private func addTestResult(_ message: String) {
+        testResults.append(message)
+    }
+    
+    private func formatTime(_ time: TimeInterval) -> String {
+        String(format: "%02d:%05.2f", Int(time) / 60, time.truncatingRemainder(dividingBy: 60))
+    }
+}
+
+// Add this to your ContentView or create a new debug tab
+struct DebugView: View {
+    @ObservedObject var audioManager: AudioManager
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Debug Information")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            // Audio Engine Status
+            AudioEngineStatusView(audioManager: audioManager)
+            
+            // Loop Test
+            LoopTestView(audioManager: audioManager)
+            
+            // Performance Monitor
+            PerformanceMonitorView()
+        }
+        .padding()
+    }
+}
+
+struct AudioEngineStatusView: View {
+    @ObservedObject var audioManager: AudioManager
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Audio Engine Status")
+                .font(.headline)
+            
+            Grid(alignment: .leading) {
+                GridRow {
+                    Text("Playing:")
+                    Text(audioManager.isPlaying ? "✓ Yes" : "• No")
+                        .foregroundColor(audioManager.isPlaying ? .green : .gray)
+                }
+                
+                GridRow {
+                    Text("Current Time:")
+                    Text(formatTime(audioManager.currentTime))
+                }
+                
+                GridRow {
+                    Text("Duration:")
+                    Text(formatTime(audioManager.duration))
+                }
+                
+                GridRow {
+                    Text("Loop Count:")
+                    Text(audioManager.loopCount == 0 ? "∞" : "\(audioManager.loopCount)")
+                }
+                
+                GridRow {
+                    Text("Loop Iteration:")
+                    Text("\(audioManager.currentLoopIteration)")
+                }
+            }
+        }
+        .padding()
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(8)
+    }
+    
+    private func formatTime(_ time: TimeInterval) -> String {
+        String(format: "%02d:%05.2f", Int(time) / 60, time.truncatingRemainder(dividingBy: 60))
+    }
+}
+
+struct PerformanceMonitorView: View {
+    @State private var cpuUsage: Double = 0
+    @State private var memoryUsage: Double = 0
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Performance Monitor")
+                .font(.headline)
+            
+            HStack {
+                Text("CPU: \(cpuUsage, specifier: "%.1f")%")
+                Spacer()
+                Text("Memory: \(memoryUsage, specifier: "%.1f") MB")
+            }
+            .font(.caption)
+        }
+        .padding()
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(8)
+        .onAppear {
+            // You could implement actual CPU/memory monitoring here
+            // For now, placeholder values
+            updatePerformanceMetrics()
+        }
+    }
+    
+    private func updatePerformanceMetrics() {
+        // Placeholder - implement actual performance monitoring if needed
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            // This is just demo data
+            cpuUsage = Double.random(in: 0...25)
+            memoryUsage = Double.random(in: 50...200)
+        }
+    }
+}

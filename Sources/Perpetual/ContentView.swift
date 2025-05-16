@@ -6,22 +6,42 @@ struct ContentView: View {
     @StateObject private var audioManager = AudioManager()
     @State private var selectedFile: AVAudioFile?
     @State private var showingFilePicker = false
+    @State private var selectedTab = 0 // Add this to track tab selection
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 0) {
             // Header
             HeaderView()
             
-            // Main content area
-            if selectedFile != nil {
-                PlayerView(audioManager: audioManager, audioFile: $selectedFile)
-            } else {
-                EmptyStateView {
-                    showingFilePicker = true
+            // Tab View for Player and Debug
+            TabView(selection: $selectedTab) {
+                // Main Player Tab
+                VStack(spacing: 20) {
+                    if selectedFile != nil {
+                        PlayerView(audioManager: audioManager, audioFile: $selectedFile)
+                    } else {
+                        EmptyStateView {
+                            showingFilePicker = true
+                        }
+                    }
+                    Spacer()
+                }
+                .tabItem {
+                    Image(systemName: "waveform.path.ecg")
+                    Text("Player")
+                }
+                .tag(0)
+                
+                // Debug Tab
+                if selectedFile != nil {
+                    DebugView(audioManager: audioManager)
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Debug")
+                        }
+                        .tag(1)
                 }
             }
-            
-            Spacer()
         }
         .padding()
         .onReceive(NotificationCenter.default.publisher(for: .openFile)) { _ in

@@ -5,7 +5,6 @@ class AudioManager: ObservableObject {
     private let audioEngine = AVAudioEngine()
     private let playerNode = AVAudioPlayerNode()
     private var audioFile: AVAudioFile?
-    private var displayLink: CVDisplayLink?
     
     // Published properties for UI binding
     @Published var isPlaying = false
@@ -21,6 +20,12 @@ class AudioManager: ObservableObject {
     private var sampleRate: Double = 44100
     private var positionTimer: Timer?
     
+    // More accurate timing tracking
+    private var playbackStartTime: TimeInterval = 0
+    private var pausedTime: TimeInterval = 0
+    private var lastLoopStartTime: TimeInterval = 0
+    private var systemStartTime: CFTimeInterval = 0
+    
     init() {
         setupAudioEngine()
     }
@@ -34,6 +39,9 @@ class AudioManager: ObservableObject {
         // Connect audio components
         audioEngine.attach(playerNode)
         audioEngine.connect(playerNode, to: audioEngine.mainMixerNode, format: nil)
+        
+        // Configure for low latency
+        audioEngine.mainMixerNode.outputFormat(forBus: 0)
         
         // Start the engine
         do {
@@ -58,6 +66,9 @@ class AudioManager: ObservableObject {
         audioBuffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: frameCount)
         
         guard let buffer = audioBuffer else { return }
+        
+        // Reset file position to beginning
+        file.framePosition = 0
         try file.read(into: buffer)
         buffer.frameLength = frameCount
         
@@ -72,31 +83,69 @@ class AudioManager: ObservableObject {
     func play() {
         guard !isPlaying, let buffer = audioBuffer else { return }
         
+        // Determine start position based on loop settings
+        let startPosition: TimeInterval
+        
+        if loopStartTime > 0 && loopEndTime > loopStartTime {
+            // If loop points are set, start from loop start
+            startPosition = loopStartTime
+            currentTime = loopStartTime
+        } else {
+            // Otherwise start from current position or beginning
+            startPosition = max(0, currentTime)
+        }
+        
+        // Record timing for accurate tracking
+        systemStartTime = CACurrentMediaTime()
+        playbackStartTime = startPosition
+        lastLoopStartTime = loopStartTime
+        
         isPlaying = true
-        scheduleBuffer(buffer)
+        scheduleFromTime(startPosition)
         playerNode.play()
         
-        // Start position tracking
+        // Start position tracking with higher frequency
         startTrackingPosition()
     }
     
     func pause() {
         playerNode.pause()
         isPlaying = false
+        pausedTime = currentTime
         stopTrackingPosition()
     }
     
     func stop() {
         playerNode.stop()
         isPlaying = false
-        currentTime = 0
+        
+        // When stopping, if loop points are set, reset to loop start
+        // Otherwise reset to beginning
+        if loopStartTime > 0 && loopEndTime > loopStartTime {
+            currentTime = loopStartTime
+        } else {
+            currentTime = 0
+        }
+        
         currentLoopIteration = 0
+        pausedTime = 0
         stopTrackingPosition()
     }
     
     func setLoopPoints(start: TimeInterval, end: TimeInterval) {
         loopStartTime = max(0, min(start, duration))
         loopEndTime = max(loopStartTime, min(end, duration))
+        
+        // If we're not playing and loop points are valid,
+        // move current position to loop start
+        if !isPlaying && loopStartTime > 0 && loopEndTime > loopStartTime {
+            currentTime = loopStartTime
+        }
+        
+        // If playing, we need to reschedule with new loop points
+        if isPlaying {
+            lastLoopStartTime = loopStartTime
+        }
     }
     
     func seek(to time: TimeInterval) {
@@ -104,44 +153,52 @@ class AudioManager: ObservableObject {
         currentTime = clampedTime
         
         if isPlaying {
-            // Restart playback from new position
+            // Stop current playback
             playerNode.stop()
+            
+            // Update timing references
+            systemStartTime = CACurrentMediaTime()
+            playbackStartTime = clampedTime
+            lastLoopStartTime = loopStartTime
+            
+            // Restart from new position
             scheduleFromTime(clampedTime)
             playerNode.play()
         }
     }
     
-    private func scheduleBuffer(_ buffer: AVAudioPCMBuffer) {
-        let startFrame = AVAudioFramePosition(loopStartTime * sampleRate)
-        scheduleFromFrame(startFrame)
-    }
-    
     private func scheduleFromTime(_ time: TimeInterval) {
-        let frame = AVAudioFramePosition(time * sampleRate)
-        scheduleFromFrame(frame)
-    }
-    
-    private func scheduleFromFrame(_ startFrame: AVAudioFramePosition) {
         guard let buffer = audioBuffer else { return }
         
-        let loopStartFrame = AVAudioFramePosition(loopStartTime * sampleRate)
-        let loopEndFrame = AVAudioFramePosition(loopEndTime * sampleRate)
-        let loopFrameCount = AVAudioFrameCount(loopEndFrame - loopStartFrame)
+        let startFrame = AVAudioFramePosition(time * sampleRate)
+        let endFrame: AVAudioFramePosition
         
-        // Create buffer for current loop segment
-        guard let loopBuffer = AVAudioPCMBuffer(pcmFormat: buffer.format, frameCapacity: loopFrameCount) else { return }
+        // If loop points are set, use loop end; otherwise use track end
+        if loopStartTime > 0 && loopEndTime > loopStartTime && time >= loopStartTime {
+            endFrame = AVAudioFramePosition(loopEndTime * sampleRate)
+        } else {
+            endFrame = AVAudioFramePosition(duration * sampleRate)
+        }
         
-        // Copy audio data for current loop
+        let framesToPlay = AVAudioFrameCount(endFrame - startFrame)
+        
+        // Don't schedule empty segments
+        guard framesToPlay > 0 else { return }
+        
+        // Create a buffer for the segment from current position to end point
+        guard let segmentBuffer = AVAudioPCMBuffer(pcmFormat: buffer.format, frameCapacity: framesToPlay) else { return }
+        
+        // Copy audio data for the current segment
         let sourceChannels = Int(buffer.format.channelCount)
         for channel in 0..<sourceChannels {
             let sourcePtr = buffer.floatChannelData![channel]
-            let destPtr = loopBuffer.floatChannelData![channel]
-            destPtr.update(from: sourcePtr + Int(loopStartFrame), count: Int(loopFrameCount))
+            let destPtr = segmentBuffer.floatChannelData![channel]
+            destPtr.update(from: sourcePtr + Int(startFrame), count: Int(framesToPlay))
         }
-        loopBuffer.frameLength = loopFrameCount
+        segmentBuffer.frameLength = framesToPlay
         
-        // Schedule with loop-aware completion handler
-        playerNode.scheduleBuffer(loopBuffer, at: nil, options: [], completionHandler: { [weak self] in
+        // Schedule with completion handler for looping
+        playerNode.scheduleBuffer(segmentBuffer, at: nil, options: [], completionHandler: { [weak self] in
             DispatchQueue.main.async {
                 self?.handleBufferCompletion()
             }
@@ -151,26 +208,36 @@ class AudioManager: ObservableObject {
     private func handleBufferCompletion() {
         guard isPlaying else { return }
         
-        currentLoopIteration += 1
-        
-        // Check if we should continue looping
-        if loopCount == 0 || currentLoopIteration < loopCount {
-            // Schedule next loop
-            currentTime = loopStartTime
-            scheduleFromTime(loopStartTime)
+        // Check if we have valid loop points
+        if loopStartTime > 0 && loopEndTime > loopStartTime {
+            currentLoopIteration += 1
+            
+            // Check if we should continue looping
+            if loopCount == 0 || currentLoopIteration < loopCount {
+                // Update timing for the new loop
+                systemStartTime = CACurrentMediaTime()
+                playbackStartTime = loopStartTime
+                currentTime = loopStartTime
+                
+                // Schedule next loop
+                scheduleFromTime(loopStartTime)
+            } else {
+                // Stop looping
+                stop()
+            }
         } else {
-            // Stop looping
+            // No loop points set, just stop at end
             stop()
         }
     }
     
     private func startTrackingPosition() {
-        // Use Timer for position updates (simpler than CVDisplayLink for this use case)
+        // Use a higher frequency timer for more accurate tracking
         positionTimer?.invalidate()
-        positionTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [weak self] _ in
+        positionTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
             self?.updateCurrentTime()
         }
-        positionTimer?.tolerance = 0.005 // Allow 5ms tolerance for better performance
+        positionTimer?.tolerance = 0.001 // Very tight tolerance
     }
     
     private func stopTrackingPosition() {
@@ -181,25 +248,31 @@ class AudioManager: ObservableObject {
     private func updateCurrentTime() {
         guard isPlaying else { return }
         
-        // Calculate current playback position
-        guard let lastRenderTime = playerNode.lastRenderTime,
-              let playerTime = playerNode.playerTime(forNodeTime: lastRenderTime) else {
-            return
-        }
+        // Calculate time based on system time elapsed since play started
+        let currentSystemTime = CACurrentMediaTime()
+        let elapsedTime = currentSystemTime - systemStartTime
         
-        let sampleTime = playerTime.sampleTime
-        let sessionSampleRate = audioEngine.mainMixerNode.outputFormat(forBus: 0).sampleRate
-        
-        // Calculate elapsed time since loop start
-        let totalElapsedTime = Double(sampleTime) / sessionSampleRate
-        let loopDuration = loopEndTime - loopStartTime
-        
-        // Calculate position within current loop
-        let positionInLoop = totalElapsedTime.truncatingRemainder(dividingBy: loopDuration)
-        let currentPosition = loopStartTime + positionInLoop
-        
-        DispatchQueue.main.async {
-            self.currentTime = currentPosition
+        // Calculate where we should be
+        if loopStartTime > 0 && loopEndTime > loopStartTime {
+            // We're in loop mode
+            let loopDuration = loopEndTime - loopStartTime
+            let timeSinceLoopStart = elapsedTime.truncatingRemainder(dividingBy: loopDuration)
+            let calculatedTime = lastLoopStartTime + timeSinceLoopStart
+            
+            // Clamp to loop boundaries
+            let newTime = max(loopStartTime, min(calculatedTime, loopEndTime))
+            
+            DispatchQueue.main.async {
+                self.currentTime = newTime
+            }
+        } else {
+            // Normal playback mode
+            let calculatedTime = playbackStartTime + elapsedTime
+            let newTime = max(0, min(calculatedTime, duration))
+            
+            DispatchQueue.main.async {
+                self.currentTime = newTime
+            }
         }
     }
 }
