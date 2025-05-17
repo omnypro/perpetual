@@ -1,12 +1,14 @@
 import SwiftUI
 import AVFoundation
 import UniformTypeIdentifiers
+import Combine
 
 struct ContentView: View {
     @StateObject private var audioManager = AudioManager()
     @State private var selectedFile: AVAudioFile?
     @State private var showingFilePicker = false
     @State private var selectedTab = 0 // Add this to track tab selection
+    @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -44,16 +46,8 @@ struct ContentView: View {
             }
         }
         .padding()
-        .onReceive(NotificationCenter.default.publisher(for: .openFile)) { _ in
-            showingFilePicker = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .seekToTime)) { notification in
-            if let time = notification.object as? TimeInterval {
-                audioManager.seek(to: time)
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .loopPointsChanged)) { _ in
-            audioManager.setLoopPoints(start: audioManager.loopStartTime, end: audioManager.loopEndTime)
+        .onAppear {
+            setupEventSubscriptions()
         }
         .fileImporter(
             isPresented: $showingFilePicker,
@@ -73,6 +67,37 @@ struct ContentView: View {
                 print("Error loading file: \(error)")
             }
         }
+    }
+    
+    private func setupEventSubscriptions() {
+        // Subscribe to open file events
+        EventBus.shared.openFilePublisher
+            .sink { _ in
+                showingFilePicker = true
+            }
+            .store(in: &cancellables)
+        
+        // Subscribe to seek time events
+        EventBus.shared.seekToTimePublisher
+            .sink { time in
+                audioManager.seek(to: time)
+            }
+            .store(in: &cancellables)
+        
+        // Subscribe to loop points changed events
+        EventBus.shared.loopPointsChangedPublisher
+            .sink { _ in
+                audioManager.setLoopPoints(start: audioManager.loopStartTime, end: audioManager.loopEndTime)
+            }
+            .store(in: &cancellables)
+            
+        // Subscribe to audio error events (optional)
+        EventBus.shared.audioErrorPublisher
+            .sink { error in
+                print("Audio error: \(error.localizedDescription)")
+                // Could implement UI feedback for errors here
+            }
+            .store(in: &cancellables)
     }
     
     private func loadAudioFile(url: URL) {

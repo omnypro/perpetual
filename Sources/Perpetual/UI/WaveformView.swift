@@ -1,6 +1,7 @@
 import SwiftUI
 import AVFoundation
 import Accelerate
+import Combine
 
 struct WaveformView: View {
     @StateObject private var waveformData = WaveformData()
@@ -100,7 +101,8 @@ struct WaveformView: View {
                 // Seek to tapped position
                 if !isDraggingStart && !isDraggingEnd {
                     let newTime = (location.x / geometry.size.width) * duration
-                    NotificationCenter.default.post(name: .seekToTime, object: newTime)
+                    // Use EventBus instead of NotificationCenter
+                    EventBus.shared.publishSeekToTime(newTime)
                 }
             }
         }
@@ -173,7 +175,8 @@ struct LoopMarker: View {
                 }
                 .onEnded { _ in
                     isDragging = false
-                    NotificationCenter.default.post(name: .loopPointsChanged, object: nil)
+                    // Use EventBus instead of NotificationCenter
+                    EventBus.shared.publishLoopPointsChanged()
                 }
         )
     }
@@ -206,6 +209,7 @@ class WaveformData: ObservableObject {
             try audioFile.read(into: buffer)
         } catch {
             print("Error reading audio file: \(error)")
+            EventBus.shared.publishAudioError(error)
             return nil
         }
         
@@ -258,9 +262,4 @@ class WaveformData: ObservableObject {
         path.closeSubpath()
         return path
     }
-}
-
-extension Notification.Name {
-    static let seekToTime = Notification.Name("seekToTime")
-    static let loopPointsChanged = Notification.Name("loopPointsChanged")
 }

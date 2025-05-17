@@ -37,14 +37,10 @@ struct FileCommands: Commands {
     var body: some Commands {
         CommandGroup(after: .newItem) {
             Button("Open Audio File...") {
-                // Handle file opening
-                NotificationCenter.default.post(name: .openFile, object: nil)
+                // Use EventBus instead of NotificationCenter
+                EventBus.shared.publishOpenFile()
             }
             .keyboardShortcut("o")
         }
     }
-}
-
-extension Notification.Name {
-    static let openFile = Notification.Name("openFile")
 }

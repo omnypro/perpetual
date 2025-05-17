@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct LoopTestView: View {
     @ObservedObject var audioManager: AudioManager
@@ -161,6 +162,7 @@ struct AudioEngineStatusView: View {
 struct PerformanceMonitorView: View {
     @State private var cpuUsage: Double = 0
     @State private var memoryUsage: Double = 0
+    @State private var performanceTimer: Timer?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -178,18 +180,30 @@ struct PerformanceMonitorView: View {
         .background(Color.secondary.opacity(0.1))
         .cornerRadius(8)
         .onAppear {
-            // You could implement actual CPU/memory monitoring here
-            // For now, placeholder values
-            updatePerformanceMetrics()
+            // Start monitoring when view appears
+            startPerformanceMonitoring()
+        }
+        .onDisappear {
+            // Clean up resources when view disappears
+            stopPerformanceMonitoring()
         }
     }
     
-    private func updatePerformanceMetrics() {
-        // Placeholder - implement actual performance monitoring if needed
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            // This is just demo data
+    private func startPerformanceMonitoring() {
+        // Cancel any existing timer
+        performanceTimer?.invalidate()
+        
+        // Create and store new timer
+        performanceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            // This is just demo data - replace with actual monitoring code
             cpuUsage = Double.random(in: 0...25)
             memoryUsage = Double.random(in: 50...200)
         }
+    }
+    
+    private func stopPerformanceMonitoring() {
+        // Invalidate and release timer
+        performanceTimer?.invalidate()
+        performanceTimer = nil
     }
 }
