@@ -6,6 +6,7 @@ import Foundation
 
 struct ContentView: View {
     @StateObject private var audioManager = AudioManager()
+    @StateObject private var structureAnalyzer = MusicStructureAnalyzer()
     @State private var selectedFile: AVAudioFile?
     @State private var showingFilePicker = false
     @State private var selectedTab = 0 // Add this to track tab selection
@@ -43,6 +44,14 @@ struct ContentView: View {
                             Text("Debug")
                         }
                         .tag(1)
+                    
+                    // Structure Analysis Tab
+                    StructureVisualizerView(analyzer: structureAnalyzer, audioManager: audioManager)
+                        .tabItem {
+                            Image(systemName: "waveform.path")
+                            Text("Structure")
+                        }
+                        .tag(2)
                 }
             }
         }
@@ -106,6 +115,11 @@ struct ContentView: View {
             let audioFile = try AVAudioFile(forReading: url)
             selectedFile = audioFile
             try audioManager.loadAudioFile(url: url)
+            
+            // Trigger structure analysis
+            Task {
+                try await structureAnalyzer.analyzeAudioFile(url)
+            }
         } catch {
             print("Error loading audio file: \(error)")
             // Could add user-facing error handling here

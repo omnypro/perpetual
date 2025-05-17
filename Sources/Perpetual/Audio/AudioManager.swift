@@ -22,7 +22,12 @@ class AudioManager: ObservableObject {
     private let playerNode = AVAudioPlayerNode()
     
     /// Reference to the currently loaded audio file
-    private var audioFile: AVAudioFile?
+    private var _audioFile: AVAudioFile?
+    
+    /// Access to the currently loaded audio file
+    var audioFile: AVAudioFile? {
+        return _audioFile
+    }
     
     // MARK: - Published Properties
     
@@ -171,7 +176,7 @@ class AudioManager: ObservableObject {
                 throw AudioManagerError.emptyFile
             }
             
-            audioFile = file
+            _audioFile = file
             
             // Update properties
             sampleRate = file.processingFormat.sampleRate
