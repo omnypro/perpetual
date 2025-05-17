@@ -35,9 +35,9 @@ class MusicStructureAnalyzer: ObservableObject {
     private var similarityMatrix: [[Float]]? = nil
     
     // Analysis parameters
-    private let windowSize: Int = 16384 // Relatively large window for macro analysis
-    private let hopSize: Int = 8192     // 50% overlap for windows
-    private let minSectionDuration: Double = 3.0 // Minimum section length in seconds
+    private let windowSize: Int = 8192  // Smaller for better temporal resolution
+    private let hopSize: Int = 4096     // 50% overlap still
+    private let minSectionDuration: Double = 2.0 // Allow shorter sections for game music
     
     struct AudioFeatures {
         var timeOffset: TimeInterval
@@ -341,18 +341,19 @@ class MusicStructureAnalyzer: ObservableObject {
             }
             
             for j in 0..<featureCount {
-                // Calculate Euclidean distance between feature vectors
+                // Calculate Euclidean distance between feature vectors - adjusted weights
                 let rmsDiff = features[i].rms - features[j].rms
                 let centroidDiff = features[i].spectralCentroid - features[j].spectralCentroid
                 let fluxDiff = features[i].spectralFlux - features[j].spectralFlux
                 let zcrDiff = features[i].zeroCrossingRate - features[j].zeroCrossingRate
-                
-                // Normalized Euclidean distance (weighted to emphasize certain features)
+
+                // Enhanced normalized Euclidean distance with larger weights on flux
+                // Spectral flux is very sensitive to musical changes
                 let distance = sqrt(
-                    pow(rmsDiff * 2.0, 2) +        // Emphasize amplitude changes
-                    pow(centroidDiff * 0.5, 2) +   // De-emphasize timbre changes
-                    pow(fluxDiff, 2) +             // Normal weight for spectral changes
-                    pow(zcrDiff * 0.3, 2)          // De-emphasize noise vs. tone
+                    pow(rmsDiff * 1.5, 2) +        // Volume changes
+                    pow(centroidDiff * 1.0, 2) +   // Timbre changes
+                    pow(fluxDiff * 3.0, 2) +       // Heavily emphasize spectral changes
+                    pow(zcrDiff * 0.5, 2)          // Noise vs. tone
                 )
                 
                 // Convert distance to similarity (higher value = more similar)
@@ -366,80 +367,123 @@ class MusicStructureAnalyzer: ObservableObject {
     }
 
     private func detectSections() {
-        guard let matrix = similarityMatrix, !features.isEmpty else { return }
+        // Instead of relying on the similarity matrix, let's use direct feature analysis
+        guard !features.isEmpty else { return }
         
-        // Calculate novelty curve (diagonal cross-similarity)
-        var novelty = [Float](repeating: 0, count: features.count)
+        // We'll track large changes in spectral flux and RMS
+        var changePoints: [Int] = []
+        let halfWindowSize = 4 // Look 4 frames before and after
         
-        // Use a smaller kernel size for smaller datasets
-        let maxKernelSize = 15
-        let kernelSize = min(maxKernelSize, (features.count / 10)) // Adjust kernel based on data size
+        print("Analyzing \(features.count) feature frames for direct changes")
         
-        // Make sure kernel size is at least 2 for meaningful analysis
-        let safeKernelSize = max(2, kernelSize)
-        
-        // Skip if we don't have enough data
-        guard features.count > (safeKernelSize * 2) else {
-            return
-        }
-        
-        // Process only indices where we can safely apply the kernel
-        for i in safeKernelSize..<features.count-safeKernelSize {
-            // Report progress
-            if i % 20 == 0 {
-                let progress = Double(i) / Double(features.count)
-                DispatchQueue.main.async {
-                    self.progress = 0.75 + progress * 0.15 // Third quarter of analysis
+        // 1. Look for significant changes in spectral flux and RMS
+        if features.count > (halfWindowSize * 2 + 1) {
+            for i in halfWindowSize..<(features.count - halfWindowSize) {
+                // Calculate average features before and after
+                var fluxBefore: Float = 0
+                var rmsBefore: Float = 0
+                var fluxAfter: Float = 0
+                var rmsAfter: Float = 0
+                
+                for j in 1...halfWindowSize {
+                    fluxBefore += features[i-j].spectralFlux
+                    rmsBefore += features[i-j].rms
+                    fluxAfter += features[i+j].spectralFlux
+                    rmsAfter += features[i+j].rms
+                }
+                
+                fluxBefore /= Float(halfWindowSize)
+                rmsBefore /= Float(halfWindowSize)
+                fluxAfter /= Float(halfWindowSize)
+                rmsAfter /= Float(halfWindowSize)
+                
+                // Calculate relative differences
+                let fluxDiff = abs(fluxAfter - fluxBefore) / max(0.001, (fluxAfter + fluxBefore) / 2)
+                let rmsDiff = abs(rmsAfter - rmsBefore) / max(0.001, (rmsAfter + rmsBefore) / 2)
+                
+                // If there's a significant change in either flux or RMS, mark it
+                if fluxDiff > 0.5 || rmsDiff > 0.4 {
+                    changePoints.append(i)
                 }
             }
+        }
+        
+        print("Found \(changePoints.count) raw change points")
+        
+        // 2. Merge change points that are too close
+        let minFrameDistance = Int(minSectionDuration * sampleRate / Double(hopSize))
+        var filteredChangePoints: [Int] = []
+        
+        if !changePoints.isEmpty {
+            filteredChangePoints.append(changePoints[0])
             
-            var sum: Float = 0
-            for k in 1...safeKernelSize {
-                // Ensure all indices are within valid range
-                if (i-k >= 0 && i+k < matrix.count && i-k < matrix[i].count && i+k < matrix[i].count) {
-                    // Calculate checkerboard kernel at this position
-                    let before = Float(matrix[i-k][i-k])
-                    let after = Float(matrix[i+k][i+k])
-                    let crossBefore = Float(matrix[i][i-k])
-                    let crossAfter = Float(matrix[i][i+k])
-                    
-                    // Checkerboard pattern: high on diagonal, low on cross-points
-                    sum += (before + after) - (crossBefore + crossAfter)
+            for point in changePoints.dropFirst() {
+                if let lastPoint = filteredChangePoints.last, point - lastPoint >= minFrameDistance {
+                    filteredChangePoints.append(point)
                 }
             }
-            novelty[i] = sum / Float(safeKernelSize * 2)
         }
         
-        // Find peaks in novelty curve (section boundaries)
-        let minDistance = Int(minSectionDuration * sampleRate / Double(hopSize))
-        var peaks = findPeaks(in: novelty, minDistance: minDistance, threshold: 0.15)
+        print("After filtering, keeping \(filteredChangePoints.count) change points")
         
-        // Convert peak indices to time positions
-        var boundaries = peaks.map { features[$0].timeOffset }
+        // 3. If we still don't have enough sections, force division
+        if filteredChangePoints.count < 2 && features.count > 20 {
+            print("Not enough change points detected - forcing divisions")
+            
+            // Divide into 3 roughly equal parts as a fallback
+            let third = features.count / 3
+            if third >= minFrameDistance {
+                filteredChangePoints = [third, third * 2]
+                print("Forced division into 3 parts at indices \(third) and \(third * 2)")
+            }
+        }
+        
+        // 4. Convert to time boundaries
+        var boundaries: [TimeInterval] = filteredChangePoints.map { features[$0].timeOffset }
         
         // Always include start and end points
         boundaries.insert(0, at: 0)
         if let audioBuffer = audioBuffer {
             let duration = Double(audioBuffer.frameLength) / sampleRate
-            boundaries.append(duration)
+            if !boundaries.contains(where: { abs($0 - duration) < 0.1 }) {
+                boundaries.append(duration)
+            }
         }
         
-        // Create sections from boundaries
+        // Sort boundaries (just in case)
+        boundaries.sort()
+        
+        // 5. Create sections
         var detectedSections: [AudioSection] = []
-        for i in 0..<boundaries.count-1 {
+        for i in 0..<(boundaries.count - 1) {
             let startTime = boundaries[i]
             let endTime = boundaries[i+1]
             
-            // Determine section type (temporary)
-            let type: AudioSection.SectionType = i == 0 ? .intro : .loop
-            let confidence: Float = i < peaks.count ? novelty[peaks[i]] : 0.5
-            
-            detectedSections.append(AudioSection(
-                startTime: startTime,
-                endTime: endTime,
-                type: type,
-                confidence: confidence
-            ))
+            // Only add if section is long enough
+            if endTime - startTime >= minSectionDuration {
+                // Determine section type
+                let type: AudioSection.SectionType
+                if i == 0 {
+                    type = .intro
+                } else if i == boundaries.count - 2 {
+                    type = .outro
+                } else {
+                    type = .loop
+                }
+                
+                detectedSections.append(AudioSection(
+                    id: UUID(),
+                    startTime: startTime,
+                    endTime: endTime,
+                    type: type,
+                    confidence: 0.7
+                ))
+            }
+        }
+        
+        print("Detected \(detectedSections.count) sections:")
+        for section in detectedSections {
+            print("Section from \(section.startTime) to \(section.endTime), type: \(section.type), confidence: \(section.confidence)")
         }
         
         DispatchQueue.main.async {
@@ -451,129 +495,80 @@ class MusicStructureAnalyzer: ObservableObject {
         var peaks: [Int] = []
         
         // Find all peaks
-        for i in 1..<signal.count-1 {
-            if signal[i] > signal[i-1] && signal[i] > signal[i+1] && signal[i] > threshold {
+        for i in 2..<signal.count-2 {
+            // More robust peak detection - check 2 points in each direction
+            if signal[i] > signal[i-1] && signal[i] > signal[i-2] &&
+               signal[i] > signal[i+1] && signal[i] > signal[i+2] &&
+               signal[i] > threshold {
                 peaks.append(i)
             }
         }
         
-        // Filter peaks by minimum distance
+        print("Found \(peaks.count) potential peaks with threshold \(threshold)")
+        
+        // Filter peaks by minimum distance and prominence
         var filteredPeaks: [Int] = []
         
         if !peaks.isEmpty {
-            filteredPeaks.append(peaks[0])
+            // Sort peaks by amplitude (highest first)
+            let sortedPeaks = peaks.sorted { signal[$0] > signal[$1] }
             
-            for peak in peaks[1...] {
-                if let lastPeak = filteredPeaks.last, peak - lastPeak >= minDistance {
+            // Add the strongest peak first
+            filteredPeaks.append(sortedPeaks[0])
+            
+            // Add other peaks if they're far enough from existing ones
+            for peak in sortedPeaks[1...] {
+                let isFarEnough = filteredPeaks.allSatisfy { abs(peak - $0) >= minDistance }
+                if isFarEnough {
                     filteredPeaks.append(peak)
-                } else if let lastPeak = filteredPeaks.last, signal[peak] > signal[lastPeak] {
-                    // Replace existing peak if new one is stronger
-                    filteredPeaks[filteredPeaks.count - 1] = peak
                 }
             }
+            
+            // Sort by position (ascending)
+            filteredPeaks.sort()
         }
+        
+        print("After filtering, keeping \(filteredPeaks.count) peaks")
         
         return filteredPeaks
     }
 
     private func findGameMusicLoopPoints() {
-        guard sections.count >= 2 else {
-            // Not enough sections to determine loop points
+        // Reset values
+        var introEnd: TimeInterval = 0
+        var loopEnd: TimeInterval = 0
+        
+        if sections.isEmpty {
+            // No detected sections - use fallback
             if let audioBuffer = audioBuffer {
                 let duration = Double(audioBuffer.frameLength) / sampleRate
-                DispatchQueue.main.async {
-                    self.suggestedLoopStart = 0
-                    self.suggestedLoopEnd = duration
-                }
+                // Default to 1/3 strategy - common pattern in music
+                introEnd = duration / 3
+                loopEnd = duration
             }
-            return
+        } else if sections.count == 1 {
+            // Only one section - suggest dividing it
+            let section = sections[0]
+            introEnd = section.startTime + (section.endTime - section.startTime) / 3
+            loopEnd = section.endTime
+        } else {
+            // Multiple sections
+            // Assume first section is intro, set loop end to track end
+            introEnd = sections[0].endTime
+            loopEnd = sections.last!.endTime
         }
         
-        DispatchQueue.main.async {
-            self.progress = 0.9 // Final stage
-        }
+        print("Initial loop suggestion: \(TimeFormatter.formatPrecise(introEnd)) to \(TimeFormatter.formatPrecise(loopEnd))")
         
-        // Game music heuristics:
-        // 1. First section is usually an intro
-        // 2. Main loop usually starts after the intro
-        // 3. Many game tracks loop from 2nd section to end
-        // 4. Look for high self-similarity between end and loop start
+        // CRITICAL CHANGE: Do fade-out detection BEFORE setting the suggested values
+        let adjustedLoopEnd = checkForFadeOut(loopEnd)
         
-        // Start with a simple approach: assume first section is intro, rest is loop
-        var introEnd = sections[0].endTime
-        var loopEnd = sections.last!.endTime
-        
-        // Find the best loop point (highest similarity between loop end and potential loop start)
-        if let matrix = similarityMatrix, features.count > 30 { // Ensure we have enough data
-            var bestCorrelation: Float = -1
-            var bestLoopStartIndex = 0
-            
-            // Find the feature index closest to the intro end
-            let introEndIndex = features.firstIndex { $0.timeOffset >= introEnd } ?? 0
-            
-            // Find the feature index closest to the end
-            let endIndex = features.count - 1
-            
-            // Ensure we have enough features for meaningful analysis
-            let safeWindowSize = min(10, features.count / 4)
-            
-            // Only analyze if we have enough data at the end
-            if endIndex >= (safeWindowSize * 2) && introEndIndex < endIndex - safeWindowSize {
-                // Calculate max potential loop start index to avoid buffer overflows
-                let maxStartIndex = endIndex - (safeWindowSize * 2)
-                let safeIntroEndIndex = min(introEndIndex, maxStartIndex)
-                
-                // Check correlation between potential loop starts and the end
-                for startIndex in safeIntroEndIndex..<maxStartIndex {
-                    let timePosition = features[startIndex].timeOffset
-                    
-                    // Don't consider positions too close to the end
-                    if loopEnd - timePosition < 5.0 {
-                        continue
-                    }
-                    
-                    // Calculate average similarity in a window
-                    var sum: Float = 0
-                    var validPoints = 0
-                    
-                    for offset in 0..<safeWindowSize {
-                        if startIndex + offset < matrix.count && 
-                           endIndex - safeWindowSize + offset < matrix[startIndex + offset].count {
-                            sum += matrix[startIndex + offset][endIndex - safeWindowSize + offset]
-                            validPoints += 1
-                        }
-                    }
-                    
-                    if validPoints > 0 {
-                        let correlation = sum / Float(validPoints)
-                        
-                        if correlation > bestCorrelation {
-                            bestCorrelation = correlation
-                            bestLoopStartIndex = startIndex
-                        }
-                    }
-                }
-            }
-            
-            // Optimize loop start based on feature boundaries if correlation is good enough
-            if bestCorrelation > 0.7 {
-                let candidateLoopStart = features[bestLoopStartIndex].timeOffset
-                
-                // Find the nearest section boundary
-                for section in sections {
-                    if abs(section.startTime - candidateLoopStart) < 1.0 {
-                        introEnd = section.startTime
-                        break
-                    }
-                }
-            }
-        }
-        
-        // Update suggested loop points
+        // Now update the suggested values, after the fade-out check
         DispatchQueue.main.async {
             self.suggestedLoopStart = introEnd
-            self.suggestedLoopEnd = loopEnd
+            self.suggestedLoopEnd = adjustedLoopEnd
             self.progress = 1.0
+            print("Final loop suggestion: \(TimeFormatter.formatPrecise(introEnd)) to \(TimeFormatter.formatPrecise(adjustedLoopEnd))")
         }
     }
     
@@ -611,5 +606,277 @@ class MusicStructureAnalyzer: ObservableObject {
         }
         
         return context.makeImage()
+    }
+    
+    /**
+     * Detects fade-outs in the audio and adjusts loop points to exclude them.
+     *
+     * Game music often ends with fade-outs that should be excluded from loops.
+     * This function analyzes the amplitude envelope to find the start of any fade-out
+     * and ensures the loop end point is set before it begins.
+     */
+    private func detectAndAvoidFadeOut() {
+        guard !features.isEmpty else {
+            print("No features available for fade-out detection")
+            return
+        }
+        
+        // Only analyze if we have a suggested loop end near the track end
+        if let audioBuffer = audioBuffer {
+            let duration = Double(audioBuffer.frameLength) / sampleRate
+            let endThreshold = duration * 0.9 // Only check if loop end is in last 10% of track
+            
+            print("FADE-OUT CHECK: Track duration: \(duration), loop end: \(suggestedLoopEnd), threshold: \(endThreshold)")
+            
+            if suggestedLoopEnd > endThreshold {
+                print("Loop end is near track end, checking for fade-out...")
+                
+                // Get RMS values for the last 25% of the track - increased from 20%
+                let analysisStart = Int(Double(features.count) * 0.75)
+                var rmsValues: [Float] = []
+                
+                for i in analysisStart..<features.count {
+                    rmsValues.append(features[i].rms)
+                }
+                
+                // No data to analyze
+                guard !rmsValues.isEmpty else {
+                    print("No RMS values available in the analysis window")
+                    return
+                }
+                
+                print("Analyzing \(rmsValues.count) RMS values for fade-out detection")
+                
+                // Additional debug: print the RMS values for manual inspection
+                for (i, rms) in rmsValues.enumerated() {
+                    if i % 5 == 0 { // Print every 5th value to avoid log spam
+                        print("RMS[\(i)]: \(rms)")
+                    }
+                }
+                
+                // Check if there's a consistent decrease in amplitude toward the end
+                let isFadeOut = isFadeOutPattern(rmsValues)
+                
+                if isFadeOut {
+                    // Find where the fade-out begins
+                    let fadeOutIndex = findFadeOutStart(rmsValues)
+                    if fadeOutIndex >= 0 {
+                        // Convert to the actual feature index
+                        let actualFeatureIndex = analysisStart + fadeOutIndex
+                        // Get the time position
+                        let fadeOutStartTime = features[actualFeatureIndex].timeOffset
+                        
+                        print("Fade-out detected! Moving loop end from \(TimeFormatter.formatPrecise(suggestedLoopEnd)) to \(TimeFormatter.formatPrecise(fadeOutStartTime))")
+                        
+                        // Adjust the loop end to be before the fade-out starts
+                        DispatchQueue.main.async {
+                            self.suggestedLoopEnd = fadeOutStartTime
+                        }
+                    } else {
+                        print("Couldn't determine fade-out start position")
+                    }
+                } else {
+                    print("No fade-out pattern detected at end of track")
+                }
+            } else {
+                print("Loop end is not near track end, skipping fade-out check")
+            }
+        }
+    }
+
+    /**
+     * Determines if an array of RMS values exhibits a fade-out pattern.
+     *
+     * - Parameter rmsValues: Array of RMS (amplitude) values
+     * - Returns: True if a fade-out pattern is detected
+     */
+    private func isFadeOutPattern(_ rmsValues: [Float]) -> Bool {
+        // Need enough data to analyze
+        guard rmsValues.count > 5 else {
+            print("Not enough RMS values for fade-out analysis")
+            return false
+        }
+        
+        // Compare average of first half to average of second half
+        let halfPoint = rmsValues.count / 2
+        let firstHalfAvg = rmsValues[0..<halfPoint].reduce(0, +) / Float(halfPoint)
+        let secondHalfAvg = rmsValues[halfPoint..<rmsValues.count].reduce(0, +) / Float(rmsValues.count - halfPoint)
+        
+        // If second half is significantly softer than first half, it's likely a fade-out
+        let ratio = secondHalfAvg / firstHalfAvg
+        print("Fade-out analysis: first half avg = \(firstHalfAvg), second half avg = \(secondHalfAvg), ratio = \(ratio)")
+        
+        // Count how many decreasing steps we have
+        var decreaseCount = 0
+        for i in 1..<rmsValues.count {
+            if rmsValues[i] < rmsValues[i-1] * 0.97 { // More sensitive - 3% drop instead of 5%
+                decreaseCount += 1
+            }
+        }
+        
+        let decreaseRatio = Float(decreaseCount) / Float(rmsValues.count - 1)
+        print("Decrease ratio: \(decreaseRatio) (\(decreaseCount) decreases in \(rmsValues.count-1) steps)")
+        
+        // Look for a trend of decreasing values at the very end (last 25%)
+        let endQuarterStart = Int(Float(rmsValues.count) * 0.75)
+        var endDecreaseTrend = true
+        if rmsValues.count > 4 && endQuarterStart < rmsValues.count - 3 {
+            for i in endQuarterStart..<(rmsValues.count-3) {
+                // Check if values are generally decreasing in this window
+                if rmsValues[i] <= rmsValues[i+2] { // Allow some minor fluctuations
+                    endDecreaseTrend = false
+                    break
+                }
+            }
+        }
+        
+        // Modified thresholds for game music and added end trend check
+        return ratio < 0.85 || decreaseRatio > 0.5 || endDecreaseTrend
+    }
+    
+    /**
+     * Finds the starting point of a fade-out in an array of RMS values.
+     *
+     * - Parameter rmsValues: Array of RMS (amplitude) values
+     * - Returns: Index where the fade-out begins, or -1 if not found
+     */
+    private func findFadeOutStart(_ rmsValues: [Float]) -> Int {
+        guard rmsValues.count > 5 else { return -1 }
+        
+        // First, smooth the RMS values to reduce noise
+        var smoothedRMS = [Float](repeating: 0, count: rmsValues.count)
+        let windowSize = 2 // Smaller window for more precise detection
+        
+        for i in 0..<rmsValues.count {
+            var sum: Float = 0
+            var count = 0
+            
+            for j in max(0, i - windowSize)...min(rmsValues.count - 1, i + windowSize) {
+                sum += rmsValues[j]
+                count += 1
+            }
+            
+            smoothedRMS[i] = sum / Float(count)
+        }
+        
+        // Calculate the global maximum amplitude
+        guard let maxRMS = smoothedRMS.max() else { return -1 }
+        
+        // Look for consistent amplitude drop
+        var maxDropIndex = -1
+        var maxDropAmount: Float = 0
+        
+        // Find the point with the largest percentage drop
+        for i in 1..<smoothedRMS.count {
+            let drop = smoothedRMS[i-1] - smoothedRMS[i]
+            let dropPercentage = drop / smoothedRMS[i-1]
+            
+            if dropPercentage > maxDropAmount && dropPercentage > 0.05 { // 5% drop threshold
+                maxDropAmount = dropPercentage
+                maxDropIndex = i-1 // Point before the drop
+            }
+        }
+        
+        if maxDropIndex > 0 {
+            print("Found significant drop at index \(maxDropIndex) (drop: \(maxDropAmount * 100)%)")
+            return maxDropIndex
+        }
+        
+        // If no single big drop, look for the start of a consistent downward trend
+        for i in 1..<smoothedRMS.count-3 {
+            // Check if we have several decreasing values in a row
+            if smoothedRMS[i] > smoothedRMS[i+1] &&
+               smoothedRMS[i+1] > smoothedRMS[i+2] &&
+               smoothedRMS[i+2] > smoothedRMS[i+3] {
+                print("Found downward trend starting at index \(i)")
+                return i
+            }
+        }
+        
+        // If no clear fade start found, use 80% mark (more conservative)
+        let defaultIndex = Int(Float(rmsValues.count) * 0.8)
+        print("No clear fade start found, using default at 80% mark (index \(defaultIndex))")
+        return defaultIndex
+    }
+    
+    /**
+     * Checks for a fade-out at the end of the track and returns an adjusted loop end point.
+     *
+     * @param proposedEnd The initially proposed loop end time
+     * @return An adjusted loop end time that avoids any fade-out
+     */
+    private func checkForFadeOut(_ proposedEnd: TimeInterval) -> TimeInterval {
+        guard !features.isEmpty else {
+            print("No features available for fade-out detection")
+            return proposedEnd
+        }
+        
+        // Only analyze if we have a proposed end near the track end
+        if let audioBuffer = audioBuffer {
+            let duration = Double(audioBuffer.frameLength) / sampleRate
+            let endThreshold = duration * 0.85 // Check if end is in last 15% of track
+            
+            print("FADE-OUT CHECK: Track duration: \(duration), proposed end: \(proposedEnd), threshold: \(endThreshold)")
+            
+            if proposedEnd > endThreshold {
+                print("Loop end is near track end, checking for fade-out...")
+                
+                // Get RMS values for the last 30% of the track - increase for short tracks
+                let analysisStart = Int(Double(features.count) * 0.7)
+                var rmsValues: [Float] = []
+                
+                for i in analysisStart..<features.count {
+                    rmsValues.append(features[i].rms)
+                }
+                
+                // No data to analyze
+                guard !rmsValues.isEmpty else {
+                    print("No RMS values available in the analysis window")
+                    return proposedEnd
+                }
+                
+                print("Analyzing \(rmsValues.count) RMS values for fade-out detection")
+                
+                // Check for a very simple fade-out pattern - just look for decreasing volume at end
+                var lastQuarterAvg: Float = 0
+                var finalFewAvg: Float = 0
+                
+                let lastQuarterStart = Int(Double(rmsValues.count) * 0.75)
+                if lastQuarterStart < rmsValues.count {
+                    lastQuarterAvg = rmsValues[0..<lastQuarterStart].reduce(0, +) / Float(lastQuarterStart)
+                    finalFewAvg = rmsValues[lastQuarterStart..<rmsValues.count].reduce(0, +) / Float(rmsValues.count - lastQuarterStart)
+                    
+                    print("Last quarter average: \(lastQuarterAvg), Final few average: \(finalFewAvg)")
+                    
+                    // If final part is more than 10% quieter than the rest, it's likely a fade-out
+                    if finalFewAvg < lastQuarterAvg * 0.9 {
+                        // This is a fade-out! Find a good cutoff point
+                        
+                        // Simple approach: go back from the end until we find a point that's not too quiet
+                        for i in (0..<rmsValues.count).reversed() {
+                            if rmsValues[i] > finalFewAvg * 1.5 {
+                                let actualFeatureIndex = analysisStart + i
+                                if actualFeatureIndex < features.count {
+                                    let fadeOutStartTime = features[actualFeatureIndex].timeOffset
+                                    print("Fade-out detected! Moving loop end from \(TimeFormatter.formatPrecise(proposedEnd)) to \(TimeFormatter.formatPrecise(fadeOutStartTime))")
+                                    return fadeOutStartTime
+                                }
+                            }
+                        }
+                        
+                        // If we couldn't find a clear point, just use 80% of the track
+                        let safeEnd = duration * 0.8
+                        print("Fade-out detected but no clear start found. Using 80% point: \(TimeFormatter.formatPrecise(safeEnd))")
+                        return safeEnd
+                    }
+                }
+                
+                print("No clear fade-out pattern detected")
+            } else {
+                print("Loop end is not near track end, skipping fade-out check")
+            }
+        }
+        
+        return proposedEnd
     }
 }

@@ -65,6 +65,11 @@ struct StructureVisualizerView: View {
                     }
                     .buttonStyle(.bordered)
                     .disabled(analyzer.suggestedLoopStart >= analyzer.suggestedLoopEnd)
+                    
+                    Text("Fade-out detection: Loop end placed before any track fade-out")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 4)
                 }
                 
                 // A/B testing controls
