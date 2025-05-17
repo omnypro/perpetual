@@ -24,9 +24,17 @@ class AudioManager: ObservableObject {
     /// Reference to the currently loaded audio file
     private var _audioFile: AVAudioFile?
     
+    /// Current audio file URL
+    private var _audioFileURL: URL?
+    
     /// Access to the currently loaded audio file
     var audioFile: AVAudioFile? {
         return _audioFile
+    }
+    
+    /// Access to the current audio file URL
+    var audioFileURL: URL? {
+        return _audioFileURL
     }
     
     // MARK: - Published Properties
@@ -182,6 +190,7 @@ class AudioManager: ObservableObject {
             }
             
             _audioFile = file
+            _audioFileURL = url
             
             // Update properties
             sampleRate = file.processingFormat.sampleRate

@@ -92,10 +92,14 @@ class LoopTransitionAnalyzer {
             postLoopStartsAtZeroCrossing: postLoopStartsAtZeroCrossing
         )
         
+        // Get filename if available
+        let filename = audioManager.audioFileURL?.lastPathComponent ?? "Unknown file"
+        
         // Format the results
         return """
         LOOP TRANSITION ANALYSIS
         -----------------------
+        File: \(filename)
         Loop Start: \(TimeFormatter.formatPrecise(audioManager.loopStartTime))
         Loop End: \(TimeFormatter.formatPrecise(audioManager.loopEndTime))
         Loop Duration: \(TimeFormatter.formatPrecise(audioManager.loopEndTime - audioManager.loopStartTime))

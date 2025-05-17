@@ -7,14 +7,8 @@ import Combine
  * MusicStructureAnalyzer
  *
  * A class responsible for analyzing audio structure at a macro level to identify
- * loop points suitable for game music. Uses feature extraction and self-similarity
- * analysis to detect major compositional sections.
- *
- * Key features:
- * - Macro-level audio analysis with large time windows
- * - Self-similarity matrix visualization
- * - Game music pattern recognition
- * - Automatic detection of intro and looping sections
+ * loop points suitable for game music. Uses feature extraction, self-similarity
+ * analysis, and transition quality assessment to detect optimal loop points.
  */
 class MusicStructureAnalyzer: ObservableObject {
     // Analysis results
@@ -27,6 +21,10 @@ class MusicStructureAnalyzer: ObservableObject {
     @Published var progress: Double = 0
     @Published var error: Error? = nil
     
+    // New published properties for transition quality assessment
+    @Published var loopCandidates: [LoopCandidate] = []
+    @Published var transitionQuality: Float = 0
+    
     // Audio features
     private var audioBuffer: AVAudioPCMBuffer? = nil
     private var audioFormat: AVAudioFormat? = nil
@@ -35,9 +33,29 @@ class MusicStructureAnalyzer: ObservableObject {
     private var similarityMatrix: [[Float]]? = nil
     
     // Analysis parameters
-    private let windowSize: Int = 8192  // Smaller for better temporal resolution
-    private let hopSize: Int = 4096     // 50% overlap still
-    private let minSectionDuration: Double = 2.0 // Allow shorter sections for game music
+    private let windowSize: Int = 8192  // For feature extraction
+    private let hopSize: Int = 4096     // 50% overlap
+    private let minSectionDuration: Double = 2.0 // Minimum section length in seconds
+    private let transitionAnalysisWindowSize: Int = 4096 // For loop transition analysis
+    
+    // New struct to represent and rank loop candidates
+    struct LoopCandidate: Identifiable {
+        var id = UUID()
+        var startTime: TimeInterval
+        var endTime: TimeInterval
+        var quality: Float
+        var metrics: TransitionMetrics
+        
+        struct TransitionMetrics {
+            var volumeChange: Float
+            var phaseJump: Float
+            var spectralDifference: Float
+            var harmonicContinuity: Float
+            var envelopeContinuity: Float
+            var zeroStart: Bool
+            var zeroEnd: Bool
+        }
+    }
     
     struct AudioFeatures {
         var timeOffset: TimeInterval
@@ -75,6 +93,7 @@ class MusicStructureAnalyzer: ObservableObject {
             self.progress = 0
             self.error = nil
             self.sections = []
+            self.loopCandidates = []
         }
         
         do {
@@ -99,19 +118,27 @@ class MusicStructureAnalyzer: ObservableObject {
             
             DispatchQueue.main.async {
                 self.audioBuffer = buffer
+                self.progress = 0.1 // 10% progress after loading file
             }
             
             // Extract features in chunks
             try await extractAudioFeatures(from: buffer)
+            DispatchQueue.main.async { self.progress = 0.3 }
             
             // Build self-similarity matrix
             buildSimilarityMatrix()
+            DispatchQueue.main.async { self.progress = 0.4 }
             
             // Detect sections
             detectSections()
+            DispatchQueue.main.async { self.progress = 0.5 }
             
-            // Apply game music heuristics to find optimal loop points
-            findGameMusicLoopPoints()
+            // Find transition-based loop candidates
+            await findOptimalLoopCandidates()
+            DispatchQueue.main.async { self.progress = 0.8 }
+            
+            // Apply game music heuristics and select best candidate
+            selectBestLoopCandidate()
             
             DispatchQueue.main.async {
                 self.isAnalyzing = false
@@ -144,7 +171,7 @@ class MusicStructureAnalyzer: ObservableObject {
             // Report progress
             let progress = Double(windowIndex) / Double(totalWindows)
             DispatchQueue.main.async {
-                self.progress = progress * 0.5 // First half of the analysis process
+                self.progress = 0.1 + progress * 0.2 // 10-30% of the analysis process
             }
             
             // Process in batches to avoid blocking the main thread
@@ -336,7 +363,7 @@ class MusicStructureAnalyzer: ObservableObject {
             if i % 10 == 0 {
                 let progress = Double(i) / Double(featureCount)
                 DispatchQueue.main.async {
-                    self.progress = 0.5 + progress * 0.25 // Second quarter of analysis
+                    self.progress = 0.3 + progress * 0.1 // 30-40% of analysis
                 }
             }
             
@@ -490,49 +517,535 @@ class MusicStructureAnalyzer: ObservableObject {
             self.sections = detectedSections
         }
     }
-
-    private func findPeaks(in signal: [Float], minDistance: Int, threshold: Float) -> [Int] {
-        var peaks: [Int] = []
+    
+    /**
+     * NEW METHOD: Find optimal loop candidates based on transition quality
+     * This evaluates many potential transitions rather than just section boundaries
+     */
+    private func findOptimalLoopCandidates() async {
+        guard let buffer = audioBuffer,
+              let channelData = buffer.floatChannelData else { return }
         
-        // Find all peaks
-        for i in 2..<signal.count-2 {
-            // More robust peak detection - check 2 points in each direction
-            if signal[i] > signal[i-1] && signal[i] > signal[i-2] &&
-               signal[i] > signal[i+1] && signal[i] > signal[i+2] &&
-               signal[i] > threshold {
-                peaks.append(i)
+        let totalFrames = Int(buffer.frameLength)
+        let samples = channelData[0]
+        
+        // 1. Start with section boundaries as initial candidates
+        var candidateStarts: [TimeInterval] = []
+        var candidateEnds: [TimeInterval] = []
+        
+        // Add section boundaries
+        for section in sections {
+            if section.startTime > 1.0 { // Avoid very beginning of track
+                candidateStarts.append(section.startTime)
+            }
+            if section.endTime < Double(totalFrames) / sampleRate - 1.0 { // Avoid very end
+                candidateEnds.append(section.endTime)
             }
         }
         
-        print("Found \(peaks.count) potential peaks with threshold \(threshold)")
+        // 2. Add zero crossings near section boundaries for more precise points
+        for sectionTime in candidateStarts {
+            let nearbyZeroCrossings = findZeroCrossingsNear(time: sectionTime,
+                                                           samples: samples,
+                                                           window: 0.1) // 100ms window
+            candidateStarts.append(contentsOf: nearbyZeroCrossings)
+        }
         
-        // Filter peaks by minimum distance and prominence
-        var filteredPeaks: [Int] = []
+        for sectionTime in candidateEnds {
+            let nearbyZeroCrossings = findZeroCrossingsNear(time: sectionTime,
+                                                           samples: samples,
+                                                           window: 0.1)
+            candidateEnds.append(contentsOf: nearbyZeroCrossings)
+        }
         
-        if !peaks.isEmpty {
-            // Sort peaks by amplitude (highest first)
-            let sortedPeaks = peaks.sorted { signal[$0] > signal[$1] }
+        // 3. Add additional musical event points (phrase boundaries)
+        let phrasePoints = findPhraseBoundaries()
+        candidateStarts.append(contentsOf: phrasePoints)
+        candidateEnds.append(contentsOf: phrasePoints)
+        
+        // Remove duplicates and sort
+        candidateStarts = Array(Set(candidateStarts)).sorted()
+        candidateEnds = Array(Set(candidateEnds)).sorted()
+        
+        print("Found \(candidateStarts.count) candidate start points and \(candidateEnds.count) candidate end points")
+        
+        // 4. Evaluate all viable start/end combinations
+        var loopCandidates: [LoopCandidate] = []
+        let totalCombinations = candidateStarts.count * candidateEnds.count
+        var progress = 0
+        
+        // Limit the number of combinations to evaluate to prevent freezing on large files
+        let maxCombinations = 1000
+        let stride = max(1, totalCombinations / maxCombinations)
+        
+        for (startIndex, startTime) in candidateStarts.enumerated() {
+            for (endIndex, endTime) in candidateEnds.enumerated() {
+                // Skip some combinations for performance if we have too many
+                if totalCombinations > maxCombinations && (startIndex * candidateEnds.count + endIndex) % stride != 0 {
+                    continue
+                }
+                
+                // Report progress
+                progress += 1
+                if progress % 10 == 0 {
+                    DispatchQueue.main.async {
+                        self.progress = 0.5 + (0.3 * Double(progress) / Double(min(totalCombinations, maxCombinations)))
+                    }
+                }
+                
+                // Evaluate only valid loop regions
+                if endTime > startTime &&
+                   endTime - startTime >= minSectionDuration &&
+                   endTime - startTime <= Double(totalFrames) / sampleRate * 0.8 {
+                    
+                    // Evaluate transition quality
+                    let metrics = evaluateTransitionQuality(loopStart: startTime, loopEnd: endTime)
+                    let quality = calculateOverallQuality(metrics: metrics)
+                    
+                    // Add to candidates if quality is reasonable
+                    if quality > 3.0 { // Only keep candidates with at least mediocre quality
+                        loopCandidates.append(LoopCandidate(
+                            startTime: startTime,
+                            endTime: endTime,
+                            quality: quality,
+                            metrics: metrics
+                        ))
+                    }
+                    
+                    // Take a breath to avoid blocking the main thread
+                    if progress % 50 == 0 {
+                        try? await Task.sleep(nanoseconds: 1_000_000) // 1ms pause
+                    }
+                }
+            }
+        }
+        
+        // Sort candidates by quality
+        loopCandidates.sort { $0.quality > $1.quality }
+        
+        // Keep only the top candidates
+        let topCount = min(10, loopCandidates.count)
+        if topCount > 0 {
+            loopCandidates = Array(loopCandidates.prefix(topCount))
+        }
+        
+        DispatchQueue.main.async {
+            self.loopCandidates = loopCandidates
+            print("Found \(loopCandidates.count) quality loop candidates")
+            if let best = loopCandidates.first {
+                print("Best candidate: \(TimeFormatter.formatPrecise(best.startTime)) to \(TimeFormatter.formatPrecise(best.endTime)) with quality \(best.quality)/10")
+            }
+        }
+    }
+    
+    /**
+     * Find zero crossings near a specific time point
+     */
+    private func findZeroCrossingsNear(time: TimeInterval, samples: UnsafePointer<Float>, window: TimeInterval) -> [TimeInterval] {
+        guard let buffer = audioBuffer else { return [] }
+        
+        let framePos = Int(time * sampleRate)
+        let windowFrames = Int(window * sampleRate)
+        let startFrame = max(0, framePos - windowFrames/2)
+        let endFrame = min(Int(buffer.frameLength), framePos + windowFrames/2)
+        var zeroCrossings: [TimeInterval] = []
+        
+        // Check for zero crossings
+        for i in startFrame..<endFrame-1 {
+            if (samples[i] >= 0 && samples[i+1] < 0) ||
+               (samples[i] < 0 && samples[i+1] >= 0) {
+                // Linear interpolation to find precise zero crossing
+                let t = -samples[i] / (samples[i+1] - samples[i])
+                let frameExact = Double(i) + Double(t)
+                let timeExact = frameExact / sampleRate
+                zeroCrossings.append(timeExact)
+            }
+        }
+        
+        return zeroCrossings
+    }
+    
+    /**
+     * Identify phrase boundaries based on spectral flux and RMS changes
+     */
+    private func findPhraseBoundaries() -> [TimeInterval] {
+        guard !features.isEmpty else { return [] }
+        
+        var boundaries: [TimeInterval] = []
+        let windowSize = 4 // Look 4 frames before and after
+        
+        // Look for significant changes in spectral flux (musical events)
+        if features.count > (windowSize * 2 + 1) {
+            for i in windowSize..<(features.count - windowSize) {
+                // Calculate average features before and after
+                var fluxBefore: Float = 0
+                var rmsBefore: Float = 0
+                var fluxAfter: Float = 0
+                var rmsAfter: Float = 0
+                
+                for j in 1...windowSize {
+                    fluxBefore += features[i-j].spectralFlux
+                    rmsBefore += features[i-j].rms
+                    fluxAfter += features[i+j].spectralFlux
+                    rmsAfter += features[i+j].rms
+                }
+                
+                fluxBefore /= Float(windowSize)
+                rmsBefore /= Float(windowSize)
+                fluxAfter /= Float(windowSize)
+                rmsAfter /= Float(windowSize)
+                
+                // Calculate relative differences
+                let fluxDiff = abs(fluxAfter - fluxBefore) / max(0.001, (fluxAfter + fluxBefore) / 2)
+                let rmsDiff = abs(rmsAfter - rmsBefore) / max(0.001, (rmsAfter + rmsBefore) / 2)
+                
+                // If there's a change in either flux or RMS, mark it as a phrase boundary
+                // Using a lower threshold to find more candidates
+                if fluxDiff > 0.3 || rmsDiff > 0.3 {
+                    boundaries.append(features[i].timeOffset)
+                }
+            }
+        }
+        
+        return boundaries
+    }
+    
+    /**
+     * Evaluates transition quality between loop end and loop start
+     */
+    private func evaluateTransitionQuality(loopStart: TimeInterval, loopEnd: TimeInterval) -> LoopCandidate.TransitionMetrics {
+        guard let buffer = audioBuffer,
+              let channelData = buffer.floatChannelData else {
+            return LoopCandidate.TransitionMetrics(
+                volumeChange: 1.0,
+                phaseJump: 1.0,
+                spectralDifference: 1.0,
+                harmonicContinuity: 0.0,
+                envelopeContinuity: 0.0,
+                zeroStart: false,
+                zeroEnd: false
+            )
+        }
+        
+        let samples = channelData[0]
+        let loopStartFrame = Int(loopStart * sampleRate)
+        let loopEndFrame = Int(loopEnd * sampleRate)
+        let totalFrames = Int(buffer.frameLength)
+        
+        // Ensure frames are valid
+        guard loopStartFrame >= 0 && loopEndFrame > loopStartFrame &&
+              loopEndFrame < totalFrames else {
+            return LoopCandidate.TransitionMetrics(
+                volumeChange: 1.0,
+                phaseJump: 1.0,
+                spectralDifference: 1.0,
+                harmonicContinuity: 0.0,
+                envelopeContinuity: 0.0,
+                zeroStart: false,
+                zeroEnd: false
+            )
+        }
+        
+        // Extract samples around loop points
+        let preLoopSamples = extractSamples(from: samples,
+                                         startFrame: max(0, loopEndFrame - transitionAnalysisWindowSize),
+                                         count: min(transitionAnalysisWindowSize, loopEndFrame))
+        
+        let postLoopSamples = extractSamples(from: samples,
+                                          startFrame: loopStartFrame,
+                                          count: min(transitionAnalysisWindowSize, totalFrames - loopStartFrame))
+        
+        // Volume change analysis
+        let preLoopRMS = calculateRMS(samples: preLoopSamples)
+        let postLoopRMS = calculateRMS(samples: postLoopSamples)
+        let volumeChange = abs(preLoopRMS - postLoopRMS) / max(0.0001, max(preLoopRMS, postLoopRMS)) * 100
+        
+        // Phase analysis
+        let preLoopEndValue = preLoopSamples.last ?? 0
+        let postLoopStartValue = postLoopSamples.first ?? 0
+        let phaseJump = abs(preLoopEndValue - postLoopStartValue)
+        
+        // Zero crossing check
+        let zeroEnd = abs(preLoopEndValue) < 0.01
+        let zeroStart = abs(postLoopStartValue) < 0.01
+        
+        // Spectral analysis
+        let spectralDifference = calculateTransitionSpectralDifference(preLoopSamples, postLoopSamples)
+        
+        // Harmonic continuity
+        let harmonicContinuity = calculateHarmonicContinuity(preLoopSamples, postLoopSamples)
+        
+        // Envelope continuity
+        let envelopeContinuity = calculateEnvelopeContinuity(preLoopSamples, postLoopSamples)
+        
+        return LoopCandidate.TransitionMetrics(
+            volumeChange: volumeChange,
+            phaseJump: phaseJump,
+            spectralDifference: spectralDifference,
+            harmonicContinuity: harmonicContinuity,
+            envelopeContinuity: envelopeContinuity,
+            zeroStart: zeroStart,
+            zeroEnd: zeroEnd
+        )
+    }
+    
+    /**
+     * Extract samples from buffer for analysis
+     */
+    private func extractSamples(from buffer: UnsafePointer<Float>, startFrame: Int, count: Int) -> [Float] {
+        var samples = [Float](repeating: 0, count: count)
+        samples.withUnsafeMutableBufferPointer { ptr in
+            ptr.baseAddress!.update(from: buffer.advanced(by: startFrame), count: count)
+        }
+        return samples
+    }
+    
+    /**
+     * Calculate spectral difference between two sample arrays
+     */
+    private func calculateTransitionSpectralDifference(_ preLoopSamples: [Float], _ postLoopSamples: [Float]) -> Float {
+        // Calculate FFTs
+        let preLoopFFT = calculateTransitionFFT(preLoopSamples)
+        let postLoopFFT = calculateTransitionFFT(postLoopSamples)
+        
+        // Calculate normalized difference between spectra
+        var totalDifference: Float = 0
+        var totalMagnitude: Float = 0
+        
+        let minSize = min(preLoopFFT.count, postLoopFFT.count)
+        for i in 0..<minSize {
+            let diff = abs(preLoopFFT[i] - postLoopFFT[i])
+            totalDifference += diff
+            totalMagnitude += max(preLoopFFT[i], postLoopFFT[i])
+        }
+        
+        return totalMagnitude > 0 ? totalDifference / totalMagnitude : 1.0
+    }
+    
+    /**
+     * Calculate FFT for transition analysis
+     */
+    private func calculateTransitionFFT(_ samples: [Float]) -> [Float] {
+        // Pad to power of 2 if needed
+        let nextPowerOf2 = Int(pow(2, ceil(log2(Float(samples.count)))))
+        var paddedSamples = samples
+        if paddedSamples.count < nextPowerOf2 {
+            paddedSamples.append(contentsOf: [Float](repeating: 0, count: nextPowerOf2 - samples.count))
+        }
+        
+        // Apply window function
+        var windowedSamples = [Float](repeating: 0, count: paddedSamples.count)
+        vDSP_hann_window(&windowedSamples, vDSP_Length(paddedSamples.count), Int32(0))
+        vDSP_vmul(paddedSamples, 1, windowedSamples, 1, &windowedSamples, 1, vDSP_Length(paddedSamples.count))
+        
+        // Setup FFT
+        let log2n = vDSP_Length(log2(Float(paddedSamples.count)))
+        let fftSetup = vDSP_create_fftsetup(log2n, FFTRadix(kFFTRadix2))!
+        
+        var realp = [Float](repeating: 0, count: paddedSamples.count/2)
+        var imagp = [Float](repeating: 0, count: paddedSamples.count/2)
+        var splitComplex = DSPSplitComplex(realp: &realp, imagp: &imagp)
+        
+        // Convert to split complex format
+        windowedSamples.withUnsafeBufferPointer { ptr in
+            ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: paddedSamples.count/2) { complexPtr in
+                vDSP_ctoz(complexPtr, 2, &splitComplex, 1, vDSP_Length(paddedSamples.count/2))
+            }
+        }
+        
+        // Perform forward FFT
+        vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_FORWARD))
+        
+        // Calculate magnitude spectrum
+        var magnitudes = [Float](repeating: 0, count: paddedSamples.count/2)
+        vDSP_zvmags(&splitComplex, 1, &magnitudes, 1, vDSP_Length(paddedSamples.count/2))
+        
+        // Cleanup
+        vDSP_destroy_fftsetup(fftSetup)
+        
+        return magnitudes
+    }
+    
+    /**
+     * Calculate harmonic continuity between two sample arrays
+     */
+    private func calculateHarmonicContinuity(_ preLoopSamples: [Float], _ postLoopSamples: [Float]) -> Float {
+        // Get frequency spectra
+        let preLoopFFT = calculateTransitionFFT(preLoopSamples)
+        let postLoopFFT = calculateTransitionFFT(postLoopSamples)
+        
+        // Focus on lower frequencies (harmonics)
+        let harmonicRange = min(preLoopFFT.count, postLoopFFT.count) / 4
+        
+        // Find correlation between harmonic content
+        var correlation: Float = 0
+        var normPre: Float = 0
+        var normPost: Float = 0
+        
+        for i in 0..<harmonicRange {
+            correlation += preLoopFFT[i] * postLoopFFT[i]
+            normPre += preLoopFFT[i] * preLoopFFT[i]
+            normPost += postLoopFFT[i] * postLoopFFT[i]
+        }
+        
+        let normalization = sqrt(normPre * normPost)
+        return normalization > 0 ? correlation / normalization : 0
+    }
+    
+    /**
+     * Calculate envelope continuity between two sample arrays
+     */
+    private func calculateEnvelopeContinuity(_ preLoopSamples: [Float], _ postLoopSamples: [Float]) -> Float {
+        // Divide samples into small segments and compare RMS values
+        let segmentSize = 128 // ~3ms at 44.1kHz
+        let preSegmentCount = preLoopSamples.count / segmentSize
+        let postSegmentCount = postLoopSamples.count / segmentSize
+        
+        guard preSegmentCount > 0 && postSegmentCount > 0 else { return 0 }
+        
+        var preEnvelope = [Float]()
+        var postEnvelope = [Float]()
+        
+        // Calculate RMS envelope for pre-loop
+        for i in 0..<preSegmentCount {
+            let startIdx = i * segmentSize
+            let endIdx = min(startIdx + segmentSize, preLoopSamples.count)
+            let segment = Array(preLoopSamples[startIdx..<endIdx])
+            preEnvelope.append(calculateRMS(samples: segment))
+        }
+        
+        // Calculate RMS envelope for post-loop
+        for i in 0..<postSegmentCount {
+            let startIdx = i * segmentSize
+            let endIdx = min(startIdx + segmentSize, postLoopSamples.count)
+            let segment = Array(postLoopSamples[startIdx..<endIdx])
+            postEnvelope.append(calculateRMS(samples: segment))
+        }
+        
+        // Compare the end of pre-envelope with start of post-envelope
+        let comparisonLength = min(3, min(preEnvelope.count, postEnvelope.count))
+        var continuity: Float = 1.0
+        
+        if comparisonLength > 0 {
+            let preEnd = Array(preEnvelope.suffix(comparisonLength))
+            let postStart = Array(postEnvelope.prefix(comparisonLength))
             
-            // Add the strongest peak first
-            filteredPeaks.append(sortedPeaks[0])
+            var totalDiff: Float = 0
+            var totalValue: Float = 0
             
-            // Add other peaks if they're far enough from existing ones
-            for peak in sortedPeaks[1...] {
-                let isFarEnough = filteredPeaks.allSatisfy { abs(peak - $0) >= minDistance }
-                if isFarEnough {
-                    filteredPeaks.append(peak)
+            for i in 0..<comparisonLength {
+                totalDiff += abs(preEnd[i] - postStart[i])
+                totalValue += max(preEnd[i], postStart[i])
+            }
+            
+            continuity = totalValue > 0 ? 1.0 - (totalDiff / totalValue) : 0
+        }
+        
+        return continuity
+    }
+    
+    /**
+     * Calculate overall quality score from transition metrics
+     */
+    private func calculateOverallQuality(metrics: LoopCandidate.TransitionMetrics) -> Float {
+        // Weight factors
+        let volumeWeight: Float = 0.15
+        let phaseWeight: Float = 0.2
+        let spectralWeight: Float = 0.25
+        let harmonicWeight: Float = 0.25
+        let envelopeWeight: Float = 0.15
+        
+        // Convert each metric to a 0-10 scale
+        let volumeScore = 10.0 * (1.0 - min(1.0, metrics.volumeChange / 100.0))
+        let phaseScore = 10.0 * (1.0 - min(1.0, metrics.phaseJump * 5.0))
+        let spectralScore = 10.0 * (1.0 - min(1.0, metrics.spectralDifference * 2.0))
+        let harmonicScore = 10.0 * metrics.harmonicContinuity
+        let envelopeScore = 10.0 * metrics.envelopeContinuity
+        
+        // Bonus for zero crossings
+        let zeroBonus: Float = (metrics.zeroStart && metrics.zeroEnd) ? 1.0 : 0.0
+        
+        // Weighted average
+        return volumeWeight * volumeScore +
+               phaseWeight * phaseScore +
+               spectralWeight * spectralScore +
+               harmonicWeight * harmonicScore +
+               envelopeWeight * envelopeScore +
+               zeroBonus
+    }
+    
+    /**
+     * Select the best loop candidate based on transition quality and structure
+     */
+    private func selectBestLoopCandidate() {
+        guard !loopCandidates.isEmpty else {
+            // Fallback to traditional section-based approach if no good candidates
+            findGameMusicLoopPoints()
+            return
+        }
+        
+        // Apply game music specific heuristics to the candidates
+        
+        // Prefer candidates that align with structural boundaries
+        var scoredCandidates = loopCandidates.map { candidate -> (LoopCandidate, Float) in
+            var score = candidate.quality
+            
+            // Bonus for aligning with section boundaries
+            for section in sections {
+                // If the start aligns with a section start
+                if abs(candidate.startTime - section.startTime) < 0.1 {
+                    score += 1.0
+                }
+                
+                // If the end aligns with a section end
+                if abs(candidate.endTime - section.endTime) < 0.1 {
+                    score += 1.0
                 }
             }
             
-            // Sort by position (ascending)
-            filteredPeaks.sort()
+            // Bonus for candidates with appropriate duration (not too short or long)
+            let duration = candidate.endTime - candidate.startTime
+            let totalDuration = Double(audioBuffer?.frameLength ?? 0) / sampleRate
+            
+            // Ideal loop is between 20% and 60% of total duration
+            let idealRatio = min(1.0, max(0.0, (duration / totalDuration - 0.2) / 0.4))
+            score += Float(idealRatio) * 2.0
+            
+            // Penalty for very long loops (prefer concise loops)
+            if duration > totalDuration * 0.7 {
+                score -= 2.0
+            }
+            
+            return (candidate, score)
         }
         
-        print("After filtering, keeping \(filteredPeaks.count) peaks")
+        // Sort by adjusted score
+        scoredCandidates.sort { $0.1 > $1.1 }
         
-        return filteredPeaks
+        // Select best candidate
+        if let bestCandidate = scoredCandidates.first?.0 {
+            DispatchQueue.main.async {
+                self.suggestedLoopStart = bestCandidate.startTime
+                self.suggestedLoopEnd = bestCandidate.endTime
+                self.transitionQuality = bestCandidate.quality
+                
+                print("Selected best loop: \(TimeFormatter.formatPrecise(bestCandidate.startTime)) to \(TimeFormatter.formatPrecise(bestCandidate.endTime))")
+                print("Transition quality: \(bestCandidate.quality)/10")
+                print("Volume change: \(bestCandidate.metrics.volumeChange)%")
+                print("Phase jump: \(bestCandidate.metrics.phaseJump)")
+                print("Spectral difference: \(bestCandidate.metrics.spectralDifference * 100)%")
+                print("Harmonic continuity: \(bestCandidate.metrics.harmonicContinuity * 100)%")
+            }
+        } else {
+            // Fallback to traditional approach
+            findGameMusicLoopPoints()
+        }
     }
-
+    
+    /**
+     * Detects fade-outs in the audio and adjusts loop points to exclude them.
+     * (Existing fallback method kept for compatibility)
+     */
     private func findGameMusicLoopPoints() {
         // Reset values
         var introEnd: TimeInterval = 0
@@ -560,10 +1073,10 @@ class MusicStructureAnalyzer: ObservableObject {
         
         print("Initial loop suggestion: \(TimeFormatter.formatPrecise(introEnd)) to \(TimeFormatter.formatPrecise(loopEnd))")
         
-        // CRITICAL CHANGE: Do fade-out detection BEFORE setting the suggested values
+        // Check for fade-out
         let adjustedLoopEnd = checkForFadeOut(loopEnd)
         
-        // Now update the suggested values, after the fade-out check
+        // Update the suggested values
         DispatchQueue.main.async {
             self.suggestedLoopStart = introEnd
             self.suggestedLoopEnd = adjustedLoopEnd
@@ -573,237 +1086,8 @@ class MusicStructureAnalyzer: ObservableObject {
     }
     
     /**
-     * Generates a visualization of the self-similarity matrix as an image.
-     * This can be used to debug and fine-tune the analysis process.
-     *
-     * - Returns: CGImage containing the visualization, or nil if matrix isn't available
-     */
-    func generateSimilarityMatrixVisualization() -> CGImage? {
-        guard let matrix = similarityMatrix, !matrix.isEmpty else { return nil }
-        
-        let size = matrix.count
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-        
-        guard let context = CGContext(
-            data: nil,
-            width: size,
-            height: size,
-            bitsPerComponent: 8,
-            bytesPerRow: size * 4,
-            space: colorSpace,
-            bitmapInfo: bitmapInfo.rawValue
-        ) else { return nil }
-        
-        // Draw matrix values as grayscale pixels
-        for i in 0..<size {
-            for j in 0..<size {
-                let similarity = CGFloat(matrix[i][j])
-                let color = CGColor(red: similarity, green: similarity, blue: similarity, alpha: 1.0)
-                context.setFillColor(color)
-                context.fill(CGRect(x: j, y: i, width: 1, height: 1))
-            }
-        }
-        
-        return context.makeImage()
-    }
-    
-    /**
-     * Detects fade-outs in the audio and adjusts loop points to exclude them.
-     *
-     * Game music often ends with fade-outs that should be excluded from loops.
-     * This function analyzes the amplitude envelope to find the start of any fade-out
-     * and ensures the loop end point is set before it begins.
-     */
-    private func detectAndAvoidFadeOut() {
-        guard !features.isEmpty else {
-            print("No features available for fade-out detection")
-            return
-        }
-        
-        // Only analyze if we have a suggested loop end near the track end
-        if let audioBuffer = audioBuffer {
-            let duration = Double(audioBuffer.frameLength) / sampleRate
-            let endThreshold = duration * 0.9 // Only check if loop end is in last 10% of track
-            
-            print("FADE-OUT CHECK: Track duration: \(duration), loop end: \(suggestedLoopEnd), threshold: \(endThreshold)")
-            
-            if suggestedLoopEnd > endThreshold {
-                print("Loop end is near track end, checking for fade-out...")
-                
-                // Get RMS values for the last 25% of the track - increased from 20%
-                let analysisStart = Int(Double(features.count) * 0.75)
-                var rmsValues: [Float] = []
-                
-                for i in analysisStart..<features.count {
-                    rmsValues.append(features[i].rms)
-                }
-                
-                // No data to analyze
-                guard !rmsValues.isEmpty else {
-                    print("No RMS values available in the analysis window")
-                    return
-                }
-                
-                print("Analyzing \(rmsValues.count) RMS values for fade-out detection")
-                
-                // Additional debug: print the RMS values for manual inspection
-                for (i, rms) in rmsValues.enumerated() {
-                    if i % 5 == 0 { // Print every 5th value to avoid log spam
-                        print("RMS[\(i)]: \(rms)")
-                    }
-                }
-                
-                // Check if there's a consistent decrease in amplitude toward the end
-                let isFadeOut = isFadeOutPattern(rmsValues)
-                
-                if isFadeOut {
-                    // Find where the fade-out begins
-                    let fadeOutIndex = findFadeOutStart(rmsValues)
-                    if fadeOutIndex >= 0 {
-                        // Convert to the actual feature index
-                        let actualFeatureIndex = analysisStart + fadeOutIndex
-                        // Get the time position
-                        let fadeOutStartTime = features[actualFeatureIndex].timeOffset
-                        
-                        print("Fade-out detected! Moving loop end from \(TimeFormatter.formatPrecise(suggestedLoopEnd)) to \(TimeFormatter.formatPrecise(fadeOutStartTime))")
-                        
-                        // Adjust the loop end to be before the fade-out starts
-                        DispatchQueue.main.async {
-                            self.suggestedLoopEnd = fadeOutStartTime
-                        }
-                    } else {
-                        print("Couldn't determine fade-out start position")
-                    }
-                } else {
-                    print("No fade-out pattern detected at end of track")
-                }
-            } else {
-                print("Loop end is not near track end, skipping fade-out check")
-            }
-        }
-    }
-
-    /**
-     * Determines if an array of RMS values exhibits a fade-out pattern.
-     *
-     * - Parameter rmsValues: Array of RMS (amplitude) values
-     * - Returns: True if a fade-out pattern is detected
-     */
-    private func isFadeOutPattern(_ rmsValues: [Float]) -> Bool {
-        // Need enough data to analyze
-        guard rmsValues.count > 5 else {
-            print("Not enough RMS values for fade-out analysis")
-            return false
-        }
-        
-        // Compare average of first half to average of second half
-        let halfPoint = rmsValues.count / 2
-        let firstHalfAvg = rmsValues[0..<halfPoint].reduce(0, +) / Float(halfPoint)
-        let secondHalfAvg = rmsValues[halfPoint..<rmsValues.count].reduce(0, +) / Float(rmsValues.count - halfPoint)
-        
-        // If second half is significantly softer than first half, it's likely a fade-out
-        let ratio = secondHalfAvg / firstHalfAvg
-        print("Fade-out analysis: first half avg = \(firstHalfAvg), second half avg = \(secondHalfAvg), ratio = \(ratio)")
-        
-        // Count how many decreasing steps we have
-        var decreaseCount = 0
-        for i in 1..<rmsValues.count {
-            if rmsValues[i] < rmsValues[i-1] * 0.97 { // More sensitive - 3% drop instead of 5%
-                decreaseCount += 1
-            }
-        }
-        
-        let decreaseRatio = Float(decreaseCount) / Float(rmsValues.count - 1)
-        print("Decrease ratio: \(decreaseRatio) (\(decreaseCount) decreases in \(rmsValues.count-1) steps)")
-        
-        // Look for a trend of decreasing values at the very end (last 25%)
-        let endQuarterStart = Int(Float(rmsValues.count) * 0.75)
-        var endDecreaseTrend = true
-        if rmsValues.count > 4 && endQuarterStart < rmsValues.count - 3 {
-            for i in endQuarterStart..<(rmsValues.count-3) {
-                // Check if values are generally decreasing in this window
-                if rmsValues[i] <= rmsValues[i+2] { // Allow some minor fluctuations
-                    endDecreaseTrend = false
-                    break
-                }
-            }
-        }
-        
-        // Modified thresholds for game music and added end trend check
-        return ratio < 0.85 || decreaseRatio > 0.5 || endDecreaseTrend
-    }
-    
-    /**
-     * Finds the starting point of a fade-out in an array of RMS values.
-     *
-     * - Parameter rmsValues: Array of RMS (amplitude) values
-     * - Returns: Index where the fade-out begins, or -1 if not found
-     */
-    private func findFadeOutStart(_ rmsValues: [Float]) -> Int {
-        guard rmsValues.count > 5 else { return -1 }
-        
-        // First, smooth the RMS values to reduce noise
-        var smoothedRMS = [Float](repeating: 0, count: rmsValues.count)
-        let windowSize = 2 // Smaller window for more precise detection
-        
-        for i in 0..<rmsValues.count {
-            var sum: Float = 0
-            var count = 0
-            
-            for j in max(0, i - windowSize)...min(rmsValues.count - 1, i + windowSize) {
-                sum += rmsValues[j]
-                count += 1
-            }
-            
-            smoothedRMS[i] = sum / Float(count)
-        }
-        
-        // Calculate the global maximum amplitude
-        guard let maxRMS = smoothedRMS.max() else { return -1 }
-        
-        // Look for consistent amplitude drop
-        var maxDropIndex = -1
-        var maxDropAmount: Float = 0
-        
-        // Find the point with the largest percentage drop
-        for i in 1..<smoothedRMS.count {
-            let drop = smoothedRMS[i-1] - smoothedRMS[i]
-            let dropPercentage = drop / smoothedRMS[i-1]
-            
-            if dropPercentage > maxDropAmount && dropPercentage > 0.05 { // 5% drop threshold
-                maxDropAmount = dropPercentage
-                maxDropIndex = i-1 // Point before the drop
-            }
-        }
-        
-        if maxDropIndex > 0 {
-            print("Found significant drop at index \(maxDropIndex) (drop: \(maxDropAmount * 100)%)")
-            return maxDropIndex
-        }
-        
-        // If no single big drop, look for the start of a consistent downward trend
-        for i in 1..<smoothedRMS.count-3 {
-            // Check if we have several decreasing values in a row
-            if smoothedRMS[i] > smoothedRMS[i+1] &&
-               smoothedRMS[i+1] > smoothedRMS[i+2] &&
-               smoothedRMS[i+2] > smoothedRMS[i+3] {
-                print("Found downward trend starting at index \(i)")
-                return i
-            }
-        }
-        
-        // If no clear fade start found, use 80% mark (more conservative)
-        let defaultIndex = Int(Float(rmsValues.count) * 0.8)
-        print("No clear fade start found, using default at 80% mark (index \(defaultIndex))")
-        return defaultIndex
-    }
-    
-    /**
      * Checks for a fade-out at the end of the track and returns an adjusted loop end point.
-     *
-     * @param proposedEnd The initially proposed loop end time
-     * @return An adjusted loop end time that avoids any fade-out
+     * (Existing method kept for compatibility)
      */
     private func checkForFadeOut(_ proposedEnd: TimeInterval) -> TimeInterval {
         guard !features.isEmpty else {
@@ -821,7 +1105,7 @@ class MusicStructureAnalyzer: ObservableObject {
             if proposedEnd > endThreshold {
                 print("Loop end is near track end, checking for fade-out...")
                 
-                // Get RMS values for the last 30% of the track - increase for short tracks
+                // Get RMS values for the last 30% of the track
                 let analysisStart = Int(Double(features.count) * 0.7)
                 var rmsValues: [Float] = []
                 
@@ -837,7 +1121,7 @@ class MusicStructureAnalyzer: ObservableObject {
                 
                 print("Analyzing \(rmsValues.count) RMS values for fade-out detection")
                 
-                // Check for a very simple fade-out pattern - just look for decreasing volume at end
+                // Check for a simple fade-out pattern
                 var lastQuarterAvg: Float = 0
                 var finalFewAvg: Float = 0
                 
@@ -878,5 +1162,41 @@ class MusicStructureAnalyzer: ObservableObject {
         }
         
         return proposedEnd
+    }
+    
+    /**
+     * Generates a visualization of the self-similarity matrix as an image.
+     * This can be used to debug and fine-tune the analysis process.
+     *
+     * - Returns: CGImage containing the visualization, or nil if matrix isn't available
+     */
+    func generateSimilarityMatrixVisualization() -> CGImage? {
+        guard let matrix = similarityMatrix, !matrix.isEmpty else { return nil }
+        
+        let size = matrix.count
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+        
+        guard let context = CGContext(
+            data: nil,
+            width: size,
+            height: size,
+            bitsPerComponent: 8,
+            bytesPerRow: size * 4,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue
+        ) else { return nil }
+        
+        // Draw matrix values as grayscale pixels
+        for i in 0..<size {
+            for j in 0..<size {
+                let similarity = CGFloat(matrix[i][j])
+                let color = CGColor(red: similarity, green: similarity, blue: similarity, alpha: 1.0)
+                context.setFillColor(color)
+                context.fill(CGRect(x: j, y: i, width: 1, height: 1))
+            }
+        }
+        
+        return context.makeImage()
     }
 }

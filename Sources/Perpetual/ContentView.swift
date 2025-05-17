@@ -115,11 +115,6 @@ struct ContentView: View {
             let audioFile = try AVAudioFile(forReading: url)
             selectedFile = audioFile
             try audioManager.loadAudioFile(url: url)
-            
-            // Trigger structure analysis
-            Task {
-                try await structureAnalyzer.analyzeAudioFile(url)
-            }
         } catch {
             print("Error loading audio file: \(error)")
             // Could add user-facing error handling here

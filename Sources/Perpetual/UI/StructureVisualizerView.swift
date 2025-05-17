@@ -41,6 +41,11 @@ struct StructureVisualizerView: View {
                     .frame(height: 80)
                     .background(Color.black.opacity(0.2))
                     .cornerRadius(8)
+
+                // NEW: Loop candidates view
+                if !analyzer.loopCandidates.isEmpty {
+                    LoopCandidatesView(analyzer: analyzer, audioManager: audioManager)
+                }
                 
                 // Controls for applying suggested loop points
                 HStack {
@@ -66,10 +71,12 @@ struct StructureVisualizerView: View {
                     .buttonStyle(.bordered)
                     .disabled(analyzer.suggestedLoopStart >= analyzer.suggestedLoopEnd)
                     
-                    Text("Fade-out detection: Loop end placed before any track fade-out")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.top, 4)
+                    if analyzer.transitionQuality > 0 {
+                        Text("Quality: \(String(format: "%.1f", analyzer.transitionQuality))/10")
+                            .font(.caption)
+                            .foregroundColor(analyzer.transitionQuality > 5 ? .green : (analyzer.transitionQuality > 3 ? .orange : .red))
+                            .padding(.leading, 4)
+                    }
                 }
                 
                 // A/B testing controls
