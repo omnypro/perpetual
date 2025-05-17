@@ -60,6 +60,11 @@ class AudioManager: ObservableObject {
     /// Buffer containing the entire audio file for seamless looping
     private var audioBuffer: AVAudioPCMBuffer?
     
+    /// Provides access to the audio buffer for analysis
+    var getPCMBuffer: AVAudioPCMBuffer? {
+        return audioBuffer
+    }
+    
     /// Sample rate of the loaded audio file
     private var sampleRate: Double = 44100
     

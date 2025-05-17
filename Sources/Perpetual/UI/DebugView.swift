@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import Foundation
+import AppKit
 
 struct LoopTestView: View {
     @ObservedObject var audioManager: AudioManager
@@ -87,6 +88,63 @@ struct LoopTestView: View {
     }
 }
 
+struct LoopTransitionDebugView: View {
+    @ObservedObject var audioManager: AudioManager
+    @State private var analysisResult: String = "Press 'Analyze Loop' to evaluate the current loop points"
+    @State private var showingFullReport = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Loop Transition Analyzer")
+                .font(.headline)
+            
+            HStack {
+                Button("Analyze Loop") {
+                    let analyzer = LoopTransitionAnalyzer(audioManager: audioManager)
+                    analysisResult = analyzer.analyzeLoopTransition()
+                }
+                .buttonStyle(.bordered)
+                
+                Button(showingFullReport ? "Show Summary" : "Show Full Report") {
+                    showingFullReport.toggle()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Copy Analysis") {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(analysisResult, forType: .string)
+                }
+                .buttonStyle(.bordered)
+            }
+            
+            ScrollView {
+                TextEditor(text: .constant(showingFullReport ? analysisResult : summarizeAnalysis(analysisResult)))
+                    .font(.system(.caption, design: .monospaced))
+                    .frame(maxWidth: .infinity)
+                    .scrollContentBackground(.hidden)
+                    .background(Color.clear)
+                    .padding()
+            }
+            .frame(height: 200)
+            .background(Color.black.opacity(0.1))
+            .cornerRadius(8)
+        }
+        .padding()
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(8)
+    }
+    
+    private func summarizeAnalysis(_ analysis: String) -> String {
+        // Extract just the quality assessment section
+        if let start = analysis.range(of: "QUALITY ASSESSMENT")?.lowerBound,
+           let end = analysis.range(of: "SUGGESTIONS")?.lowerBound {
+            let section = analysis[start..<end]
+            return String(section)
+        }
+        return "Analysis not available"
+    }
+}
+
 // Add this to your ContentView or create a new debug tab
 struct DebugView: View {
     @ObservedObject var audioManager: AudioManager
@@ -99,6 +157,9 @@ struct DebugView: View {
             
             // Audio Engine Status
             AudioEngineStatusView(audioManager: audioManager)
+            
+            // Loop Transition Analyzer (new!)
+            LoopTransitionDebugView(audioManager: audioManager)
             
             // Loop Test
             LoopTestView(audioManager: audioManager)
