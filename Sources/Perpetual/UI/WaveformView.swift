@@ -21,11 +21,12 @@ struct WaveformView: View {
                 Rectangle()
                     .fill(Color.black)
                 
-                // Waveform path
+                // Waveform path - now properly scaled
                 if let waveform = waveformData.waveformPath {
                     waveform
                         .stroke(Color.cyan, lineWidth: 1.5)
                         .opacity(0.8)
+                        .scaleEffect(x: geometry.size.width / 400, y: 1, anchor: .leading) // Scale to fit width
                 }
                 
                 // Loop region highlight - make more prominent
@@ -229,10 +230,10 @@ class WaveformData: ObservableObject {
             waveformSamples.append(rms)
         }
         
-        // Create path with better scaling
+        // Create path with normalized width of 400 (will be scaled by the view)
         var path = Path()
         let height: CGFloat = 100
-        let width: CGFloat = 400
+        let width: CGFloat = 400 // Fixed width - will be scaled by the view
         
         for (index, sample) in waveformSamples.enumerated() {
             let x = CGFloat(index) / CGFloat(waveformSamples.count) * width
