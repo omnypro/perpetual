@@ -2,6 +2,7 @@ import SwiftUI
 import AVFoundation
 import UniformTypeIdentifiers
 import Combine
+import Foundation
 
 struct ContentView: View {
     @StateObject private var audioManager = AudioManager()
@@ -228,7 +229,7 @@ struct TrackInfoView: View {
     private func formatDuration() -> String {
         guard let file = audioFile else { return "00:00" }
         let duration = Double(file.length) / file.processingFormat.sampleRate
-        return String(format: "%02d:%02d", Int(duration) / 60, Int(duration) % 60)
+        return TimeFormatter.formatStandard(duration)
     }
 }
 
@@ -253,10 +254,10 @@ struct TransportControlsView: View {
             
             // Time display
             VStack(alignment: .trailing, spacing: 4) {
-                Text(formatTime(audioManager.currentTime))
+                Text(TimeFormatter.formatStandard(audioManager.currentTime))
                     .font(.title3)
                     .fontWeight(.medium)
-                Text("/ \(formatTime(audioManager.duration))")
+                Text("/ \(TimeFormatter.formatStandard(audioManager.duration))")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -270,10 +271,6 @@ struct TransportControlsView: View {
         } else {
             audioManager.play()
         }
-    }
-    
-    private func formatTime(_ time: TimeInterval) -> String {
-        String(format: "%02d:%02d", Int(time) / 60, Int(time) % 60)
     }
 }
 
@@ -311,10 +308,10 @@ struct LoopControlsView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                     HStack {
-                        Text("Start: \(formatTime(audioManager.loopStartTime))")
-                        Text("End: \(formatTime(audioManager.loopEndTime))")
+                        Text("Start: \(TimeFormatter.formatPrecise(audioManager.loopStartTime))")
+                        Text("End: \(TimeFormatter.formatPrecise(audioManager.loopEndTime))")
                         Spacer()
-                        Text("Duration: \(formatTime(audioManager.loopEndTime - audioManager.loopStartTime))")
+                        Text("Duration: \(TimeFormatter.formatPrecise(audioManager.loopEndTime - audioManager.loopStartTime))")
                     }
                     .font(.caption)
                 }
@@ -323,9 +320,5 @@ struct LoopControlsView: View {
         .padding()
         .background(Color.secondary.opacity(0.1))
         .cornerRadius(12)
-    }
-    
-    private func formatTime(_ time: TimeInterval) -> String {
-        String(format: "%02d:%05.2f", Int(time) / 60, time.truncatingRemainder(dividingBy: 60))
     }
 }

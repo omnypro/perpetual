@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Foundation
 
 struct LoopTestView: View {
     @ObservedObject var audioManager: AudioManager
@@ -52,15 +53,15 @@ struct LoopTestView: View {
         // Test 1: Check if loop points are set
         if audioManager.loopEndTime > audioManager.loopStartTime {
             addTestResult("✓ Loop points set correctly")
-            addTestResult("  Start: \(formatTime(audioManager.loopStartTime))")
-            addTestResult("  End: \(formatTime(audioManager.loopEndTime))")
-            addTestResult("  Duration: \(formatTime(audioManager.loopEndTime - audioManager.loopStartTime))")
+            addTestResult("  Start: \(TimeFormatter.formatPrecise(audioManager.loopStartTime))")
+            addTestResult("  End: \(TimeFormatter.formatPrecise(audioManager.loopEndTime))")
+            addTestResult("  Duration: \(TimeFormatter.formatPrecise(audioManager.loopEndTime - audioManager.loopStartTime))")
         } else {
             addTestResult("⚠ Loop points not set properly")
         }
         
         // Test 2: Check current playback state
-        addTestResult("Current position: \(formatTime(audioManager.currentTime))")
+        addTestResult("Current position: \(TimeFormatter.formatPrecise(audioManager.currentTime))")
         addTestResult("Playing: \(audioManager.isPlaying)")
         addTestResult("Current loop: \(audioManager.currentLoopIteration)")
         
@@ -68,7 +69,7 @@ struct LoopTestView: View {
         let testStart = audioManager.duration * 0.1
         let testEnd = audioManager.duration * 0.2
         audioManager.setLoopPoints(start: testStart, end: testEnd)
-        addTestResult("Set test loop: \(formatTime(testStart)) to \(formatTime(testEnd))")
+        addTestResult("Set test loop: \(TimeFormatter.formatPrecise(testStart)) to \(TimeFormatter.formatPrecise(testEnd))")
         
         // Test 4: Check if seeking works
         audioManager.seek(to: testStart)
@@ -83,10 +84,6 @@ struct LoopTestView: View {
     
     private func addTestResult(_ message: String) {
         testResults.append(message)
-    }
-    
-    private func formatTime(_ time: TimeInterval) -> String {
-        String(format: "%02d:%05.2f", Int(time) / 60, time.truncatingRemainder(dividingBy: 60))
     }
 }
 
@@ -130,12 +127,12 @@ struct AudioEngineStatusView: View {
                 
                 GridRow {
                     Text("Current Time:")
-                    Text(formatTime(audioManager.currentTime))
+                    Text(TimeFormatter.formatPrecise(audioManager.currentTime))
                 }
                 
                 GridRow {
                     Text("Duration:")
-                    Text(formatTime(audioManager.duration))
+                    Text(TimeFormatter.formatPrecise(audioManager.duration))
                 }
                 
                 GridRow {
@@ -152,10 +149,6 @@ struct AudioEngineStatusView: View {
         .padding()
         .background(Color.secondary.opacity(0.1))
         .cornerRadius(8)
-    }
-    
-    private func formatTime(_ time: TimeInterval) -> String {
-        String(format: "%02d:%05.2f", Int(time) / 60, time.truncatingRemainder(dividingBy: 60))
     }
 }
 

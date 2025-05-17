@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import Foundation
 import Accelerate
 import Combine
 
