@@ -11,18 +11,17 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/AudioKit/AudioKit.git", .upToNextMajor(from: "5.6.5")),
+        .package(url: "https://github.com/AudioKit/AudioKitEX.git", .upToNextMajor(from: "5.6.2")),
     ],
     targets: [
         .executableTarget(
             name: "Perpetual",
             dependencies: [
                 .product(name: "AudioKit", package: "AudioKit"),
+                .product(name: "AudioKitEX", package: "AudioKitEX")
             ],
             path: "Sources/Perpetual",
-            resources: [
-                .process("Resources"),
-                .process("Info.plist")
-            ]
+            resources: []
         ),
         .testTarget(
             name: "PerpetualTests",
